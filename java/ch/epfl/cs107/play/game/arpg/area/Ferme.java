@@ -41,7 +41,7 @@ public class Ferme extends ARPGArea {
         registerActor(new Foreground(this));
         
         // Doors
-        //registerDoors(areaKeys, destinationCoords, orientations, positions, otherCells);
+        registerDoors(areaKeys, destinationCoords, orientations, positions, otherCells);
     }
     
 }

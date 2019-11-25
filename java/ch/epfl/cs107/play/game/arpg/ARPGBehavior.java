@@ -2,6 +2,7 @@ package ch.epfl.cs107.play.game.arpg;
 
 import ch.epfl.cs107.play.game.areagame.AreaBehavior;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
+import ch.epfl.cs107.play.game.areagame.actor.Interactor;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.window.Window;
 
@@ -62,6 +63,16 @@ public class ARPGBehavior extends AreaBehavior {
                 setCell(x, y, new ARPGCell(x, y));
             }
         }
+    }
+    
+    @Override
+    protected void cellInteractionOf(Interactor interactor) {
+        super.cellInteractionOf(interactor);
+    }
+    
+    @Override
+    protected void viewInteractionOf(Interactor interactor) {
+        super.viewInteractionOf(interactor);
     }
     
 }

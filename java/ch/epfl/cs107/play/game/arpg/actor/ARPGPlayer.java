@@ -22,13 +22,13 @@ public class ARPGPlayer extends Player {
     
         @Override
         public void interactWith(Door door) {
-            door.acceptInteraction(this);
+            setIsPassingADoor(door);
         }
         
     }
     
     /// Animation duration in frame number
-    private static final int ANIMATION_DURATION = 8;
+    private static final int ANIMATION_DURATION = 4;
     
     private final ARPGPlayerHandler handler;
     
