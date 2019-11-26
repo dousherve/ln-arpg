@@ -34,8 +34,7 @@ public class Route extends ARPGArea {
     @Override
     protected void createArea() {
         // Background & Foreground
-        registerActor(new Background(this));
-        registerActor(new Foreground(this));
+        registerBackgroundAndForeground();
         
         // Doors
         registerDoors(areaKeys, destinationCoords, orientations, positions, otherCells);

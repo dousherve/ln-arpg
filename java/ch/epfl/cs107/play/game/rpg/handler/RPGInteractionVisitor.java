@@ -7,6 +7,8 @@ import ch.epfl.cs107.play.game.rpg.actor.Sign;
 
 
 public interface RPGInteractionVisitor extends AreaInteractionVisitor {
+    
+    // TODO: check on the tuto if we need to write default methods for every Interactable
 
     /// Add Interaction method with all non Abstract Interactable
 

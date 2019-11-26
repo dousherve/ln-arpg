@@ -1,6 +1,8 @@
 package ch.epfl.cs107.play.game.arpg.area;
 
 import ch.epfl.cs107.play.game.areagame.Area;
+import ch.epfl.cs107.play.game.areagame.actor.Background;
+import ch.epfl.cs107.play.game.areagame.actor.Foreground;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.arpg.ARPGBehavior;
 import ch.epfl.cs107.play.game.rpg.actor.Door;
@@ -42,15 +44,23 @@ public abstract class ARPGArea extends Area {
     }
     
     /**
+     * Register the default background and the foreground
+     */
+    protected void registerBackgroundAndForeground() {
+        registerActor(new Background(this));
+        registerActor(new Foreground(this));
+    }
+    
+    /**
      * Register the doors corresponding to the given parameters, as arrays.
-     * Every entry of the arrays corresponds to the metadata of a specific Door.
+     * Each entry of the arrays corresponds to the metadata of a specific Door.
      * @param areaKeys  (String[]) The keys of the areas to go to
      * @param destinationCoords (DiscreteCoordinates[]) The destination coordinates
      * @param orientations (Orientation[])
-     * @param positions
-     * @param otherCells
+     * @param positions (DiscreteCoordinates[]) The position coordinates
+     * @param otherCells (DiscreteCoordinates[][]) The other cells, possibly
      */
-    protected void registerDoors(String[] areaKeys, DiscreteCoordinates[] destinationCoords, Orientation[] orientations, DiscreteCoordinates[] positions, DiscreteCoordinates[][] otherCells) {
+    protected void registerDoors(String[] areaKeys, DiscreteCoordinates[] destinationCoords, Orientation[] orientations, DiscreteCoordinates[] positions, DiscreteCoordinates[]... otherCells) {
         for (int i = 0; i < areaKeys.length; ++i) {
             registerActor(new Door(
                     areaKeys[i],
