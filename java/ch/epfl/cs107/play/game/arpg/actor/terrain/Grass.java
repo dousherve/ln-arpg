@@ -6,8 +6,8 @@ import ch.epfl.cs107.play.game.areagame.actor.AreaEntity;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
-import ch.epfl.cs107.play.game.rpg.handler.RPGInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
@@ -20,9 +20,9 @@ public class Grass extends AreaEntity {
     
     private Sprite sprite;
     private Animation cutAnimation;
-    private static final int ANIMATION_DURATION = 30;
+    private static final int ANIMATION_DURATION = 4;
     
-    /// Keeps track of the current state
+    /// Keeps track of the current state of the Grass
     private boolean isCut;
     
     /**
@@ -38,10 +38,10 @@ public class Grass extends AreaEntity {
         sprite = new RPGSprite("zelda/grass", 1, 1, this);
         
         Sprite[] cutSprites = new Sprite[4];
-        for (int i = 0; i < 4; ++i) {
+        for (int i = 0; i < cutSprites.length; ++i) {
             cutSprites[i] = new Sprite("zelda/grass.sliced", 2, 2, this,
                     new RegionOfInterest(i * 32, 0, 32, 32),
-                    new Vector(-0.5f, 0.f));
+                    new Vector(-0.5f, 0));
         }
         cutAnimation = new Animation(ANIMATION_DURATION / 2, cutSprites, false);
         
@@ -99,7 +99,7 @@ public class Grass extends AreaEntity {
     
     @Override
     public void acceptInteraction(AreaInteractionVisitor v) {
-        ((RPGInteractionVisitor) v).interactWith(this);
+        ((ARPGInteractionVisitor) v).interactWith(this);
     }
     
 }

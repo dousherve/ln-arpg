@@ -1,6 +1,7 @@
 package ch.epfl.cs107.play.game.rpg.handler;
 
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
 import ch.epfl.cs107.play.game.rpg.actor.Door;
 import ch.epfl.cs107.play.game.rpg.actor.Sign;
@@ -27,7 +28,6 @@ public interface RPGInteractionVisitor extends AreaInteractionVisitor {
     default void interactWith(Sign sign){
         // by default the interaction is empty
     }
-    
     /**
      * Simulate an interaction between RPG Interactor and a Grass
      * @param grass (Grass), not null
@@ -35,5 +35,14 @@ public interface RPGInteractionVisitor extends AreaInteractionVisitor {
     default void interactWith(Grass grass){
         // by default the interaction is empty
     }
+    
+    /**
+     * Simulate an interaction between RPG Interactor and a Bomb
+     * @param bomb (Bomb), not null
+     */
+    default void interactWith(Bomb bomb){
+        // by default the interaction is empty
+    }
+    
 
 }

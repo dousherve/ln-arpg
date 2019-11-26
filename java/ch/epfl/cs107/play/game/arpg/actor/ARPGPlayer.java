@@ -30,7 +30,7 @@ public class ARPGPlayer extends Player {
     
         @Override
         public void interactWith(Grass grass) {
-            if (grass.isViewInteractable() && wantsViewInteraction()) {
+            if (wantsViewInteraction()) {
                 grass.cut();
             }
         }
