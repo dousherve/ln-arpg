@@ -41,6 +41,15 @@ public abstract class ARPGArea extends Area {
         return false;
     }
     
+    /**
+     * Register the doors corresponding to the given parameters, as arrays.
+     * Every entry of the arrays corresponds to the metadata of a specific Door.
+     * @param areaKeys  (String[]) The keys of the areas to go to
+     * @param destinationCoords (DiscreteCoordinates[]) The destination coordinates
+     * @param orientations (Orientation[])
+     * @param positions
+     * @param otherCells
+     */
     protected void registerDoors(String[] areaKeys, DiscreteCoordinates[] destinationCoords, Orientation[] orientations, DiscreteCoordinates[] positions, DiscreteCoordinates[][] otherCells) {
         for (int i = 0; i < areaKeys.length; ++i) {
             registerActor(new Door(
