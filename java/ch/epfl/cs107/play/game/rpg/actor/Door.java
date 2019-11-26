@@ -22,7 +22,7 @@ import java.util.List;
 public class Door extends AreaEntity{
 
     /// Door Debug flag. Door is an invisible Entity. When debug, we draw something visible
-    // TODO: remove debug flag when done
+    // TODO: remove debug door flag when done
     private static final boolean DEBUG_DOOR = true;
 
     /// Debug variable : useful only for drawing door debug shape
@@ -152,6 +152,6 @@ public class Door extends AreaEntity{
 
     @Override
     public void acceptInteraction(AreaInteractionVisitor v) {
-        ((ARPGInteractionVisitor)v).interactWith(this);
+        ((RPGInteractionVisitor) v).interactWith(this);
     }
 }

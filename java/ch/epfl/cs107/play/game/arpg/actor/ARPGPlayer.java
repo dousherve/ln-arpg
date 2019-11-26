@@ -1,13 +1,16 @@
 package ch.epfl.cs107.play.game.arpg.actor;
 
 import ch.epfl.cs107.play.game.areagame.Area;
+import ch.epfl.cs107.play.game.areagame.actor.Animation;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.actor.Door;
 import ch.epfl.cs107.play.game.rpg.actor.Player;
+import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Button;
 import ch.epfl.cs107.play.window.Canvas;
@@ -24,15 +27,25 @@ public class ARPGPlayer extends Player {
         public void interactWith(Door door) {
             setIsPassingADoor(door);
         }
+    
+        @Override
+        public void interactWith(Grass grass) {
+            if (grass.isViewInteractable() && wantsViewInteraction()) {
+                grass.cut();
+            }
+        }
         
     }
     
-    /// Animation duration in frame number
-    private static final int ANIMATION_DURATION = 4;
+    /// Animations array
+    private Animation[] animations;
+    /// Index of the current animation in the above-mentioned array
+    private int animationIndex;
+    /// Animation duration in number of frames
+    private static final int ANIMATION_DURATION = 2;
     
+    /// InteractionVisitor handler
     private final ARPGPlayerHandler handler;
-    
-    private Sprite sprite;
     
     /**
      * Default ARPGPlayer constructor
@@ -45,21 +58,32 @@ public class ARPGPlayer extends Player {
         
         handler = new ARPGPlayerHandler();
         
-        sprite = new Sprite("ghost.1", 1.f, 1.f,this);
-        
+        Sprite[][] sprites = RPGSprite.extractSprites("zelda/player", 4,
+                1, 2, this, 16, 32,
+                new Orientation[] {Orientation.DOWN, Orientation.RIGHT, Orientation.UP, Orientation.LEFT});
+        animations = RPGSprite.createAnimations(ANIMATION_DURATION / 2, sprites);
+        animationIndex = getOrientation().ordinal();
+    
         resetMotion();
     }
     
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
+    
+        animationIndex = getOrientation().ordinal();
+        if (isDisplacementOccurs()) {
+            animations[animationIndex].update(deltaTime);
+        } else {
+            animations[animationIndex].reset();
+        }
         
         handleKeyboardEvents();
     }
     
     @Override
     public void draw(Canvas canvas) {
-        sprite.draw(canvas);
+        animations[animationIndex].draw(canvas);
     }
     
     /**
@@ -120,7 +144,7 @@ public class ARPGPlayer extends Player {
     
     @Override
     public boolean wantsViewInteraction() {
-        return getOwnerArea().getKeyboard().get(Keyboard.E).isDown();
+        return getOwnerArea().getKeyboard().get(Keyboard.E).isPressed();
     }
     
     @Override
