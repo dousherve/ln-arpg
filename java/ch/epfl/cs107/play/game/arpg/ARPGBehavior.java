@@ -4,11 +4,42 @@ import ch.epfl.cs107.play.game.areagame.AreaBehavior;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Interactor;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.window.Window;
 
 public class ARPGBehavior extends AreaBehavior {
     
+    public enum ARPGCellType {
+        
+        NULL(0, false),
+        WALL(-16777216, false),
+        IMPASSABLE(-8750470, false),
+        INTERACT(-256, true),
+        DOOR(-195580, true),
+        WALKABLE(-1, true),;
+        
+        final int type;
+        final boolean isWalkable;
+    
+        ARPGCellType(int type, boolean isWalkable){
+            this.type = type;
+            this.isWalkable = isWalkable;
+        }
+        
+        public static ARPGCellType toType(int type) {
+            for (ARPGCellType ct : ARPGCellType.values()) {
+                if (ct.type == type)
+                    return ct;
+            }
+            
+            return NULL;
+        }
+        
+    }
+    
     public class ARPGCell extends AreaBehavior.Cell {
+        
+        private final ARPGCellType type;
         
         /**
          * Default ARPGCell constructor
@@ -16,8 +47,9 @@ public class ARPGBehavior extends AreaBehavior {
          * @param x (int): x-coordinate of this cell
          * @param y (int): y-coordinate of this cell
          */
-        protected ARPGCell(int x, int y) {
+        protected ARPGCell(int x, int y, ARPGCellType type) {
             super(x, y);
+            this.type = type;
         }
         
         @Override
@@ -27,7 +59,7 @@ public class ARPGBehavior extends AreaBehavior {
         
         @Override
         protected boolean canEnter(Interactable entity) {
-            return true;
+            return type.isWalkable && !hasNonTraversableContent();
         }
         
         @Override
@@ -42,7 +74,7 @@ public class ARPGBehavior extends AreaBehavior {
         
         @Override
         public void acceptInteraction(AreaInteractionVisitor v) {
-        
+            ((ARPGInteractionVisitor) v).interactWith(this);
         }
         
     }
@@ -60,7 +92,8 @@ public class ARPGBehavior extends AreaBehavior {
         int width = getWidth();
         for(int y = 0; y < height; y++) {
             for (int x = 0; x < width ; x++) {
-                setCell(x, y, new ARPGCell(x, y));
+                ARPGCellType color = ARPGCellType.toType(getRGB(height - 1 - y, x));
+                setCell(x, y, new ARPGCell(x, y, color));
             }
         }
     }

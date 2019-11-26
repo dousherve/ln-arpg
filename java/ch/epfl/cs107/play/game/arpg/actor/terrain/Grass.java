@@ -11,6 +11,7 @@ import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.game.rpg.handler.RPGInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RegionOfInterest;
+import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
 import java.util.Collections;
@@ -20,7 +21,7 @@ public class Grass extends AreaEntity {
     
     private Sprite sprite;
     private Animation cutAnimation;
-    private static final int ANIMATION_DURATION = 4;
+    private static final int ANIMATION_DURATION = 30;
     
     /// Keeps track of the current state
     private boolean isCut;
@@ -39,8 +40,9 @@ public class Grass extends AreaEntity {
         
         Sprite[] cutSprites = new Sprite[4];
         for (int i = 0; i < 4; ++i) {
-            cutSprites[i] = new RPGSprite("zelda/grass.sliced", 1, 1, this,
-                    new RegionOfInterest(i * 16, 0, 16, 16));
+            cutSprites[i] = new Sprite("zelda/grass.sliced", 2, 2, this,
+                    new RegionOfInterest(i * 32, 0, 32, 32),
+                    new Vector(-0.5f, 0.f));
         }
         cutAnimation = new Animation(ANIMATION_DURATION / 2, cutSprites, false);
         
@@ -83,17 +85,17 @@ public class Grass extends AreaEntity {
     
     @Override
     public boolean takeCellSpace() {
-        return true;
+        return !isCut;
     }
     
     @Override
     public boolean isCellInteractable() {
-        return false;
+        return true;
     }
     
     @Override
     public boolean isViewInteractable() {
-        return !isCut;
+        return true;
     }
     
     @Override

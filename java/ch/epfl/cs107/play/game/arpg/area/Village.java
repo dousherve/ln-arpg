@@ -10,7 +10,7 @@ public class Village extends ARPGArea {
     private String[] areaKeys = {"zelda/Ferme", "zelda/Ferme", "zelda/Route"};
     private DiscreteCoordinates[] destinationCoords = {
             new DiscreteCoordinates(4, 1),
-            new DiscreteCoordinates(14, 11),
+            new DiscreteCoordinates(14, 1),
             new DiscreteCoordinates(9, 1)
     };
     private Orientation[] orientations = {

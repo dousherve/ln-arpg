@@ -143,7 +143,7 @@ public abstract class AreaBehavior
          * Do the given interactor interacts with all Interactable sharing the same cell
          * @param interactor (Interactor), not null
          */
-       private void cellInteractionOf(Interactor interactor){ // REFACTOR: must become private with inner class
+       private void cellInteractionOf(Interactor interactor){
             interactor.interactWith(this);
             for(Interactable interactable : entities){
                 if(interactable.isCellInteractable())
