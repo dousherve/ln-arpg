@@ -42,7 +42,7 @@ public class ARPGPlayer extends Player {
     /// Index of the current animation in the above-mentioned array
     private int animationIndex;
     /// Animation duration in number of frames
-    private static final int ANIMATION_DURATION = 2;
+    private static final int ANIMATION_DURATION = 6;
     
     /// InteractionVisitor handler
     private final ARPGPlayerHandler handler;

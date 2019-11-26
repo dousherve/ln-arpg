@@ -32,7 +32,7 @@ public class Grass extends AreaEntity {
      * @param position    (DiscreteCoordinate): Initial position of the entity in the Area. Not null
      */
     public Grass(Area area, DiscreteCoordinates position) {
-        // TODO: see if there is a way to tell the orientation to go and fuck his ancestors, because pointless here
+        // TODO: see if there is a way not to take into account the orientation, because it's pointless here
         super(area, Orientation.DOWN, position);
         
         sprite = new RPGSprite("zelda/grass", 1, 1, this);
@@ -61,8 +61,14 @@ public class Grass extends AreaEntity {
     
     @Override
     public void update(float deltaTime) {
-        if (isCut && !cutAnimation.isCompleted()) {
-            cutAnimation.update(deltaTime);
+        if (isCut) {
+            if (cutAnimation.isCompleted()) {
+                // Unregister if the slicing animation after the cut is done
+                getOwnerArea().unregisterActor(this);
+            } else {
+                // If not, animate
+                cutAnimation.update(deltaTime);
+            }
         }
     }
     

@@ -12,6 +12,8 @@ import ch.epfl.cs107.play.window.Window;
 
 public class ARPG extends RPG {
     
+    public static final float CAMERA_SCALE_FACTOR = 13.f;
+    
     private void createAreas() {
         addArea(new Ferme());
         addArea(new Village());

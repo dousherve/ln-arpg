@@ -40,7 +40,7 @@ public class Bomb extends AreaEntity implements Interactor {
     
     /// The remaining time before the Bomb explodes
     private int timer;
-    /// Keeps track of the current state of the Bomb
+    /// Keep track of the current state of the Bomb
     private boolean isExploding, hasExploded;
     
     /**
@@ -61,7 +61,7 @@ public class Bomb extends AreaEntity implements Interactor {
         for (int i = 0; i < explosionSprites.length; ++i) {
             explosionSprites[i] = new Sprite("zelda/explosion", 2, 2, this,
                     new RegionOfInterest(i * 32, 0, 32, 32),
-                    new Vector(-0.5f, 0));
+                    new Vector(-0.5f, -0.5f));
         }
         explosionAnimation = new Animation(ANIMATION_DURATION / 2, explosionSprites, false);
     
@@ -87,8 +87,6 @@ public class Bomb extends AreaEntity implements Interactor {
         
         if (timer == 0 && !isExploding && !hasExploded) {
             isExploding = true;
-            // TODO: remove the BOOMS sysout
-            System.out.println("BOOMS");
         }
         
         if (isExploding) {
@@ -97,6 +95,11 @@ public class Bomb extends AreaEntity implements Interactor {
                 isExploding = false;
                 hasExploded = true;
             }
+        }
+        
+        if (hasExploded) {
+            // Unregister the bomb if it has exploded
+            getOwnerArea().unregisterActor(this);
         }
     }
     
