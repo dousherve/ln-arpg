@@ -32,16 +32,17 @@ public class Bomb extends AreaEntity implements Interactor {
         
     }
     
+    private static final int DEFAULT_TIMER_VALUE = 75;
+    /// The remaining time before the Bomb explodes
+    private int timer;
+    /// Keep track of the current state of the Bomb
+    private boolean isExploding, hasExploded;
+    
     private final BombHandler handler;
     
     private Sprite sprite;
     private Animation explosionAnimation;
     private static final int ANIMATION_DURATION = 4;
-    
-    /// The remaining time before the Bomb explodes
-    private int timer;
-    /// Keep track of the current state of the Bomb
-    private boolean isExploding, hasExploded;
     
     /**
      * Default Bomb constructor
@@ -65,7 +66,7 @@ public class Bomb extends AreaEntity implements Interactor {
         }
         explosionAnimation = new Animation(ANIMATION_DURATION / 2, explosionSprites, false);
     
-        timer = 75;
+        timer = DEFAULT_TIMER_VALUE;
         hasExploded = false;
         isExploding = false;
     }

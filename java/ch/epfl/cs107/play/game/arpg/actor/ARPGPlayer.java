@@ -11,6 +11,8 @@ import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.actor.Door;
 import ch.epfl.cs107.play.game.rpg.actor.Player;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
+import ch.epfl.cs107.play.game.rpg.actor.resources.Inventory;
+import ch.epfl.cs107.play.game.rpg.actor.resources.InventoryItem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Button;
 import ch.epfl.cs107.play.window.Canvas;
@@ -19,7 +21,7 @@ import ch.epfl.cs107.play.window.Keyboard;
 import java.util.Collections;
 import java.util.List;
 
-public class ARPGPlayer extends Player {
+public class ARPGPlayer extends Player implements Inventory.Holder {
     
     private class ARPGPlayerHandler implements ARPGInteractionVisitor {
     
@@ -36,6 +38,15 @@ public class ARPGPlayer extends Player {
         }
         
     }
+    
+    /// The maximum Health Points of the player
+    private static final float MAX_HP = 5.f;
+    /// Health points
+    private float hp;
+    
+    /// The Inventory of the Player
+    private final ARPGInventory inventory;
+    private ARPGItem currentItem;
     
     /// Animations array
     private Animation[] animations;
@@ -57,12 +68,17 @@ public class ARPGPlayer extends Player {
         super(owner, orientation, coordinates);
         
         handler = new ARPGPlayerHandler();
+        inventory = new ARPGInventory(5000);
+        inventory.add(ARPGItem.BOMB, 3);
+        inventory.add(ARPGItem.STAFF, 1);
         
         Sprite[][] sprites = RPGSprite.extractSprites("zelda/player", 4,
                 1, 2, this, 16, 32,
                 new Orientation[] {Orientation.DOWN, Orientation.RIGHT, Orientation.UP, Orientation.LEFT});
         animations = RPGSprite.createAnimations(ANIMATION_DURATION / 2, sprites);
         animationIndex = getOrientation().ordinal();
+        
+        hp = MAX_HP;
     
         resetMotion();
     }
@@ -110,7 +126,13 @@ public class ARPGPlayer extends Player {
         moveOrientate(Orientation.DOWN, keyboard.get(Keyboard.DOWN));
     }
     
-    // Interactable, Interactor
+    // MARK:- Inventory.Holder
+    @Override
+    public boolean possess(InventoryItem item) {
+        return inventory.contains(item);
+    }
+    
+    // MARK:- Interactable, Interactor
     
     @Override
     public boolean takeCellSpace() {

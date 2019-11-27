@@ -18,12 +18,12 @@ import java.util.List;
 
 public class Grass extends AreaEntity {
     
+    /// Keeps track of the current state of the Grass
+    private boolean isCut;
+    
     private Sprite sprite;
     private Animation cutAnimation;
     private static final int ANIMATION_DURATION = 4;
-    
-    /// Keeps track of the current state of the Grass
-    private boolean isCut;
     
     /**
      * Default Grass constructor
@@ -35,7 +35,8 @@ public class Grass extends AreaEntity {
         // TODO: see if there is a way not to take into account the orientation, because it's pointless here
         super(area, Orientation.DOWN, position);
         
-        sprite = new RPGSprite("zelda/grass", 1, 1, this);
+        sprite = new RPGSprite("zelda/grass", 1, 1, this,
+                new RegionOfInterest(0, 0, 16, 16));
         
         Sprite[] cutSprites = new Sprite[4];
         for (int i = 0; i < cutSprites.length; ++i) {
