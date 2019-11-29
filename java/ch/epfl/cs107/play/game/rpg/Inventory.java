@@ -120,10 +120,10 @@ public abstract class Inventory {
     }
     
     /**
-     * @return (Set) A set of the items of the inventory
+     * @return (InventoryItem[]) A set of the items of the inventory
      */
-    public Set<InventoryItem> getItems() {
-        return items.keySet();
+    public InventoryItem[] getItems() {
+        return (InventoryItem[]) items.keySet().toArray();
     }
     
 }

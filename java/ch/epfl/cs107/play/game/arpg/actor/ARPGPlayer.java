@@ -19,6 +19,7 @@ import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Keyboard;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 public class ARPGPlayer extends Player implements Inventory.Holder {
@@ -47,6 +48,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     /// The Inventory of the Player
     private final ARPGInventory inventory;
     private ARPGItem currentItem;
+    private int currentItemIndex = -1;
     
     /// Animations array
     private Animation[] animations;
@@ -69,6 +71,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         
         handler = new ARPGPlayerHandler();
         inventory = new ARPGInventory(5000);
+        
         inventory.add(ARPGItem.BOMB, 3);
         inventory.add(ARPGItem.STAFF, 1);
         inventory.add(ARPGItem.CASTLE_KEY, 1);
@@ -139,13 +142,13 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
      * Switch between items by looping through the Inventory
      */
     private void switchCurrentItem() {
-        if (!inventory.isEmpty()) {
+        /*if (!inventory.isEmpty()) {
             
-            final int CURRENT_INDEX = (currentItem == null) ? 0 : currentItem.ordinal();
+            final int CURRENT_INDEX = (currentItem == null) ? 0 : currentItem.ordinal() - 1;
     
             for (int i = 0; i < ARPGItem.values().length; ++i) {
                 // It is a way to handle the "looping back" if we arrive at the end of the array
-                int index = (CURRENT_INDEX + i) % ARPGItem.values().length;
+                int index = (CURRENT_INDEX + i - 1) % ARPGItem.values().length + 1;
                 ARPGItem item = ARPGItem.values()[index];
                 if (possess(item)) {
                     currentItem = item;
@@ -156,6 +159,16 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
                 }
             }
             
+        }*/
+    
+        if (!inventory.isEmpty()) {
+        
+            if (currentItemIndex == -1) {
+                currentItemIndex = 0;
+            }
+            
+            
+        
         }
         
         // TODO: Remove debug sysout
