@@ -60,4 +60,8 @@ public class ARPGInventory extends Inventory {
         return false;
     }
     
+    @Override
+    protected InventoryItem[] getItems() {
+        return super.getItems();
+    }
 }

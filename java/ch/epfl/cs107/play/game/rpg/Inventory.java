@@ -122,8 +122,10 @@ public abstract class Inventory {
     /**
      * @return (InventoryItem[]) A set of the items of the inventory
      */
-    public InventoryItem[] getItems() {
-        return (InventoryItem[]) items.keySet().toArray();
+    protected InventoryItem[] getItems() {
+        InventoryItem[] itemsArray = new InventoryItem[items.keySet().size()];
+        items.keySet().toArray(itemsArray);
+        return itemsArray;
     }
     
 }

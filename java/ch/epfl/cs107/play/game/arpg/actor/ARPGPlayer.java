@@ -142,24 +142,6 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
      * Switch between items by looping through the Inventory
      */
     private void switchCurrentItem() {
-        /*if (!inventory.isEmpty()) {
-            
-            final int CURRENT_INDEX = (currentItem == null) ? 0 : currentItem.ordinal() - 1;
-    
-            for (int i = 0; i < ARPGItem.values().length; ++i) {
-                // It is a way to handle the "looping back" if we arrive at the end of the array
-                int index = (CURRENT_INDEX + i - 1) % ARPGItem.values().length + 1;
-                ARPGItem item = ARPGItem.values()[index];
-                if (possess(item)) {
-                    currentItem = item;
-                    // TODO: Remove debug sysout
-                    System.out.println("Current item: " + item.getName() +
-                            " (" + inventory.getQuantity(item) + ")");
-                    return;
-                }
-            }
-            
-        }*/
     
         if (!inventory.isEmpty()) {
         
@@ -167,8 +149,14 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
                 currentItemIndex = 0;
             }
             
+            currentItemIndex = (currentItemIndex + 1) % inventory.getItems().length;
+            currentItem = (ARPGItem) inventory.getItems()[currentItemIndex];
+    
+            // TODO: Remove debug sysout
+            System.out.println("Current item: " + currentItem.getName() +
+                    " (" + inventory.getQuantity(currentItem) + ")");
             
-        
+            return;
         }
         
         // TODO: Remove debug sysout
