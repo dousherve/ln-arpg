@@ -26,20 +26,21 @@ public class Bomb extends AreaEntity implements Interactor {
     
         @Override
         public void interactWith(Grass grass) {
-                grass.cut();
+            grass.cut();
         }
 
         @Override
         public void interactWith(ARPGPlayer player) {
             player.harm(2.f);
         }
+        
     }
     
     private static final int DEFAULT_TIMER_VALUE = 75;
     /// The remaining time before the Bomb explodes
     private int timer;
     /// Keep track of the current state of the Bomb
-    private boolean isExploding, hasExploded;
+    private boolean isExploding, hasExploded, ignited;
     
     private final BombHandler handler;
     
@@ -89,7 +90,12 @@ public class Bomb extends AreaEntity implements Interactor {
     public void update(float deltaTime) {
         timer = Math.max(0, timer - 1);
         
+        if (ignited) {
+            ignited = false;
+        }
+        
         if (timer == 0 && !isExploding && !hasExploded) {
+            ignited = true;
             isExploding = true;
         }
         
@@ -121,12 +127,12 @@ public class Bomb extends AreaEntity implements Interactor {
     
     @Override
     public boolean wantsCellInteraction() {
-        return hasExploded;
+        return ignited;
     }
     
     @Override
     public boolean wantsViewInteraction() {
-        return hasExploded;
+        return ignited;
     }
     
     @Override

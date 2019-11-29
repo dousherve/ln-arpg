@@ -34,9 +34,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     
         @Override
         public void interactWith(Grass grass) {
-            if (wantsViewInteraction()) {
-                grass.cut();
-            }
+            grass.cut();
         }
 
     }
@@ -197,7 +195,8 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
 
     public void harm(float hp) {
         this.hp = Math.max(this.hp - hp, 0);
-        System.out.println("dégât");
+        // TODO: remove debug sysout
+        System.out.println("Damage (" + this.hp + ")");
     }
     
     // MARK:- Inventory.Holder
