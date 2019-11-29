@@ -25,7 +25,6 @@ hs_err_pid*
 # Custom
 
 .idea/
-MP2-2019.iml
 .DS_Store
 notes.txt
 
