@@ -1,7 +1,9 @@
-package ch.epfl.cs107.play.game.rpg.actor.resources;
+package ch.epfl.cs107.play.game.rpg;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Set;
 
 public abstract class Inventory {
     
@@ -18,7 +20,7 @@ public abstract class Inventory {
     /// The maximum weight that this Inventory can carry
     private float maxWeight;
     /// The Map matching all the items of the Inventory with their quantities
-    private Map<InventoryItem, Integer> items;
+    private HashMap<InventoryItem, Integer> items;
     
     protected Inventory(float maxWeight) {
         this.maxWeight = maxWeight;
@@ -49,7 +51,7 @@ public abstract class Inventory {
         }
     
         int currentQuantity = items.getOrDefault(item, 0);
-        float weight = items.get(item) * quantity;
+        float weight = item.getWeight() * quantity;
         
         if (totalWeight() + weight < maxWeight) {
             if (currentQuantity == 0) {
@@ -57,6 +59,8 @@ public abstract class Inventory {
             } else {
                 items.replace(item, currentQuantity + quantity);
             }
+    
+            System.out.println("Added " + quantity + " " + item.getName());
             
             return true;
         }
@@ -93,6 +97,33 @@ public abstract class Inventory {
      */
     public boolean contains(InventoryItem item) {
         return items.containsKey(item);
+    }
+    
+    /**
+     * @param item (InventoryItem) An InventoryItem
+     * @return (int) The quantity of the given InventoryItem ; throws NoSuchElementException if
+     *         it does not exist in the items Map
+     */
+    public int getQuantity(InventoryItem item) {
+        if (contains(item)) {
+            return items.get(item);
+        }
+        
+        throw new NoSuchElementException("The inventory does not contain the item " + item.getName());
+    }
+    
+    /**
+     * @return A boolean indicating wheteher or not the Inventory
+     */
+    public boolean isEmpty() {
+        return items.isEmpty();
+    }
+    
+    /**
+     * @return (Set) A set of the items of the inventory
+     */
+    public Set<InventoryItem> getItems() {
+        return items.keySet();
     }
     
 }

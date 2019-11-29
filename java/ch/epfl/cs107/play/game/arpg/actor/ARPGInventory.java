@@ -1,7 +1,7 @@
 package ch.epfl.cs107.play.game.arpg.actor;
 
-import ch.epfl.cs107.play.game.rpg.actor.resources.Inventory;
-import ch.epfl.cs107.play.game.rpg.actor.resources.InventoryItem;
+import ch.epfl.cs107.play.game.rpg.Inventory;
+import ch.epfl.cs107.play.game.rpg.InventoryItem;
 
 public class ARPGInventory extends Inventory {
     
@@ -42,11 +42,22 @@ public class ARPGInventory extends Inventory {
     
     @Override
     protected boolean add(InventoryItem item, int quantity) {
-        return super.add(item, quantity);
+        if (super.add(item, quantity)) {
+            fortune += item.getPrice() * quantity;
+            return true;
+        }
+        
+        return false;
     }
     
     @Override
     protected boolean remove(InventoryItem item, int quantity) {
-        return super.remove(item, quantity);
+        if (super.remove(item, quantity)) {
+            fortune -= item.getPrice() * quantity;
+            return true;
+        }
+        
+        return false;
     }
+    
 }

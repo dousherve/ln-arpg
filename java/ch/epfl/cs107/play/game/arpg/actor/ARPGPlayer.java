@@ -8,11 +8,11 @@ import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
+import ch.epfl.cs107.play.game.rpg.Inventory;
+import ch.epfl.cs107.play.game.rpg.InventoryItem;
 import ch.epfl.cs107.play.game.rpg.actor.Door;
 import ch.epfl.cs107.play.game.rpg.actor.Player;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
-import ch.epfl.cs107.play.game.rpg.actor.resources.Inventory;
-import ch.epfl.cs107.play.game.rpg.actor.resources.InventoryItem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Button;
 import ch.epfl.cs107.play.window.Canvas;
@@ -53,7 +53,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     /// Index of the current animation in the above-mentioned array
     private int animationIndex;
     /// Animation duration in number of frames
-    private static final int ANIMATION_DURATION = 6;
+    private static final int ANIMATION_DURATION = 2;
     
     /// InteractionVisitor handler
     private final ARPGPlayerHandler handler;
@@ -71,6 +71,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         inventory = new ARPGInventory(5000);
         inventory.add(ARPGItem.BOMB, 3);
         inventory.add(ARPGItem.STAFF, 1);
+        inventory.add(ARPGItem.CASTLE_KEY, 1);
         
         Sprite[][] sprites = RPGSprite.extractSprites("zelda/player", 4,
                 1, 2, this, 16, 32,
@@ -95,6 +96,10 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         }
         
         handleKeyboardEvents();
+        
+        if (currentItem == null) {
+            switchCurrentItem();
+        }
     }
     
     @Override
@@ -115,7 +120,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     }
     
     /**
-     * Handle the keyboard events by calling moveOrientate().
+     * Handle the keyboard events
      */
     private void handleKeyboardEvents() {
         Keyboard keyboard = getOwnerArea().getKeyboard();
@@ -124,6 +129,41 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         moveOrientate(Orientation.UP, keyboard.get(Keyboard.UP));
         moveOrientate(Orientation.RIGHT, keyboard.get(Keyboard.RIGHT));
         moveOrientate(Orientation.DOWN, keyboard.get(Keyboard.DOWN));
+        
+        if (keyboard.get(Keyboard.TAB).isPressed()) {
+            switchCurrentItem();
+        }
+    }
+    
+    /**
+     * Switch between items by looping through the Inventory
+     */
+    private void switchCurrentItem() {
+        if (!inventory.isEmpty()) {
+            
+            final int CURRENT_INDEX = (currentItem == null) ? 0 : currentItem.ordinal();
+    
+            for (int i = 0; i < ARPGItem.values().length; ++i) {
+                // It is a way to handle the "looping back" if we arrive at the end of the array
+                int index = (CURRENT_INDEX + i) % ARPGItem.values().length;
+                ARPGItem item = ARPGItem.values()[index];
+                if (possess(item)) {
+                    currentItem = item;
+                    // TODO: Remove debug sysout
+                    System.out.println("Current item: " + item.getName() +
+                            " (" + inventory.getQuantity(item) + ")");
+                    return;
+                }
+            }
+            
+        }
+        
+        // TODO: Remove debug sysout
+        System.out.println("Item didn't change");
+        if (currentItem != null) {
+            System.out.println("Current item: " + currentItem.getName() +
+                    " (" + inventory.getQuantity(currentItem) + ")");
+        }
     }
     
     // MARK:- Inventory.Holder

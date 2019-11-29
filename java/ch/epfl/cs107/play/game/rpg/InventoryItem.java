@@ -1,4 +1,4 @@
-package ch.epfl.cs107.play.game.rpg.actor.resources;
+package ch.epfl.cs107.play.game.rpg;
 
 public interface InventoryItem {
     

@@ -37,7 +37,7 @@ public class ARPG extends RPG {
     
     @Override
     public String getTitle() {
-        return "ZeldIC";
+        return "Tondeuse Simulator";
     }
     
 }
