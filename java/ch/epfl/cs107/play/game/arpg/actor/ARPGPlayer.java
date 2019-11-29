@@ -6,6 +6,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.Inventory;
@@ -73,8 +74,8 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         inventory = new ARPGInventory(5000);
         
         inventory.add(ARPGItem.BOMB, 3);
-        inventory.add(ARPGItem.STAFF, 1);
-        inventory.add(ARPGItem.CASTLE_KEY, 1);
+        /*inventory.add(ARPGItem.STAFF, 1);
+        inventory.add(ARPGItem.CASTLE_KEY, 1);*/
         
         Sprite[][] sprites = RPGSprite.extractSprites("zelda/player", 4,
                 1, 2, this, 16, 32,
@@ -136,13 +137,30 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         if (keyboard.get(Keyboard.TAB).isPressed()) {
             switchCurrentItem();
         }
+        
+        if (keyboard.get(Keyboard.SPACE).isPressed()) {
+            handleItemUse();
+        }
+    }
+    
+    private void handleItemUse() {
+        if (currentItem == null) {
+            return;
+        }
+        
+        switch (currentItem) {
+            case BOMB:
+                if (inventory.remove(currentItem, 1)) useBomb();
+                break;
+            default:
+                break;
+        }
     }
     
     /**
      * Switch between items by looping through the Inventory
      */
     private void switchCurrentItem() {
-    
         if (!inventory.isEmpty()) {
         
             if (currentItemIndex == -1) {
@@ -155,15 +173,15 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             // TODO: Remove debug sysout
             System.out.println("Current item: " + currentItem.getName() +
                     " (" + inventory.getQuantity(currentItem) + ")");
-            
-            return;
         }
-        
-        // TODO: Remove debug sysout
-        System.out.println("Item didn't change");
-        if (currentItem != null) {
-            System.out.println("Current item: " + currentItem.getName() +
-                    " (" + inventory.getQuantity(currentItem) + ")");
+    }
+    
+    // MARK:- Handle items usage
+    private void useBomb() {
+        DiscreteCoordinates bombPosition = getCurrentMainCellCoordinates().jump(getOrientation().toVector());
+        Bomb bomb = new Bomb(getOwnerArea(), bombPosition);
+        if (getOwnerArea().canEnterAreaCells(bomb, Collections.singletonList(bombPosition))) {
+            getOwnerArea().registerActor(bomb);
         }
     }
     
