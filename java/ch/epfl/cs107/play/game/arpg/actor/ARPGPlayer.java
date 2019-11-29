@@ -38,7 +38,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
                 grass.cut();
             }
         }
-        
+
     }
     
     /// The maximum Health Points of the player
@@ -193,6 +193,11 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         }
         
         return false;
+    }
+
+    public void harm(float hp) {
+        this.hp = Math.max(this.hp - hp, 0);
+        System.out.println("dégât");
     }
     
     // MARK:- Inventory.Holder

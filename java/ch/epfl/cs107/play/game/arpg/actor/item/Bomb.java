@@ -8,6 +8,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Interactor;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.arpg.actor.ARPGPlayer;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
@@ -25,11 +26,13 @@ public class Bomb extends AreaEntity implements Interactor {
     
         @Override
         public void interactWith(Grass grass) {
-            if (isExploding) {
                 grass.cut();
-            }
         }
-        
+
+        @Override
+        public void interactWith(ARPGPlayer player) {
+            player.harm(2.f);
+        }
     }
     
     private static final int DEFAULT_TIMER_VALUE = 75;
@@ -118,12 +121,12 @@ public class Bomb extends AreaEntity implements Interactor {
     
     @Override
     public boolean wantsCellInteraction() {
-        return isExploding;
+        return hasExploded;
     }
     
     @Override
     public boolean wantsViewInteraction() {
-        return isExploding;
+        return hasExploded;
     }
     
     @Override
