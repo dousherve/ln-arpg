@@ -150,7 +150,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         
         switch (currentItem) {
             case BOMB:
-                if (inventory.remove(currentItem, 1)) useBomb();
+                if (useBomb())  inventory.remove(currentItem, 1);
                 break;
             default:
                 break;
@@ -177,12 +177,22 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     }
     
     // MARK:- Handle items usage
-    private void useBomb() {
-        DiscreteCoordinates bombPosition = getCurrentMainCellCoordinates().jump(getOrientation().toVector());
-        Bomb bomb = new Bomb(getOwnerArea(), bombPosition);
-        if (getOwnerArea().canEnterAreaCells(bomb, Collections.singletonList(bombPosition))) {
-            getOwnerArea().registerActor(bomb);
+    
+    /**
+     * Put a Bomb on the floor if possible and removes it from the inve
+     */
+    private boolean useBomb() {
+        if (possess(ARPGItem.BOMB)) {
+            DiscreteCoordinates bombPosition = getCurrentMainCellCoordinates().jump(getOrientation().toVector());
+            Bomb bomb = new Bomb(getOwnerArea(), bombPosition);
+            
+            if (getOwnerArea().canEnterAreaCells(bomb, Collections.singletonList(bombPosition))) {
+                getOwnerArea().registerActor(bomb);
+                return true;
+            }
         }
+        
+        return false;
     }
     
     // MARK:- Inventory.Holder
