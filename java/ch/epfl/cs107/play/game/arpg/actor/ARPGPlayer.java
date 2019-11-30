@@ -177,7 +177,8 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     // MARK:- Handle items usage
     
     /**
-     * Put a Bomb on the floor if possible and removes it from the inve
+     * Set a Bomb on the floor (if possible) and removes it from the inventory
+     * @return (boolean) A flag indicating if the Bomb has successfully been set
      */
     private boolean useBomb() {
         if (possess(ARPGItem.BOMB)) {
@@ -192,7 +193,11 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         
         return false;
     }
-
+    
+    /**
+     * Harm the player. Make sure that the HP level does not go below 0.
+     * @param hp (float) The amount of Health Points to remove from the ARPGPlayer
+     */
     public void harm(float hp) {
         this.hp = Math.max(this.hp - hp, 0);
         // TODO: remove debug sysout
@@ -239,6 +244,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     
     @Override
     public boolean wantsViewInteraction() {
+        // The ARPGPlayer wants view interaction if the 'E' key is pressed
         return getOwnerArea().getKeyboard().get(Keyboard.E).isPressed();
     }
     

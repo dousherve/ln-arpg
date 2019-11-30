@@ -37,6 +37,7 @@ public class ARPG extends RPG {
     
     @Override
     public String getTitle() {
+        // TODO: change that bloody name
         return "Tondeuse Simulator";
     }
     

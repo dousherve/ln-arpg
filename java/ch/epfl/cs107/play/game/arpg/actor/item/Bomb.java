@@ -36,6 +36,7 @@ public class Bomb extends AreaEntity implements Interactor {
         
     }
     
+    /// The default remaining time before the Bomb explodes
     private static final int DEFAULT_TIMER_VALUE = 75;
     /// The remaining time before the Bomb explodes
     private int timer;

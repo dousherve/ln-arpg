@@ -62,6 +62,7 @@ public class ARPGInventory extends Inventory {
     
     @Override
     protected InventoryItem[] getItems() {
+        // TODO: check if we can return directly an ARPGItem[]
         return super.getItems();
     }
 }
