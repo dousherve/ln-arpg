@@ -20,7 +20,6 @@ import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Keyboard;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 public class ARPGPlayer extends Player implements Inventory.Holder {
@@ -39,6 +38,9 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
 
     }
     
+    /// The status GUI
+    private ARPGStatusGUI statusGui;
+    
     /// The maximum Health Points of the player
     private static final float MAX_HP = 5.f;
     /// Health points
@@ -50,9 +52,9 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     private int currentItemIndex = -1;
     
     /// Animations array
-    private Animation[] animations;
+    private Animation[] playerAnimations;
     /// Index of the current animation in the above-mentioned array
-    private int animationIndex;
+    private int playerAnimationIndex;
     /// Animation duration in number of frames
     private static final int ANIMATION_DURATION = 2;
     
@@ -68,18 +70,20 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     public ARPGPlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates) {
         super(owner, orientation, coordinates);
         
+        statusGui = new ARPGStatusGUI();
+        
         handler = new ARPGPlayerHandler();
         inventory = new ARPGInventory(5000);
         
         inventory.add(ARPGItem.BOMB, 3);
-        /*inventory.add(ARPGItem.STAFF, 1);
-        inventory.add(ARPGItem.CASTLE_KEY, 1);*/
+        inventory.add(ARPGItem.STAFF, 1);
+        inventory.add(ARPGItem.CASTLE_KEY, 1);
         
         Sprite[][] sprites = RPGSprite.extractSprites("zelda/player", 4,
                 1, 2, this, 16, 32,
                 new Orientation[] {Orientation.DOWN, Orientation.RIGHT, Orientation.UP, Orientation.LEFT});
-        animations = RPGSprite.createAnimations(ANIMATION_DURATION / 2, sprites);
-        animationIndex = getOrientation().ordinal();
+        playerAnimations = RPGSprite.createAnimations(ANIMATION_DURATION / 2, sprites);
+        playerAnimationIndex = getOrientation().ordinal();
         
         hp = MAX_HP;
     
@@ -89,12 +93,12 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-    
-        animationIndex = getOrientation().ordinal();
+        
+        playerAnimationIndex = getOrientation().ordinal();
         if (isDisplacementOccurs()) {
-            animations[animationIndex].update(deltaTime);
+            playerAnimations[playerAnimationIndex].update(deltaTime);
         } else {
-            animations[animationIndex].reset();
+            playerAnimations[playerAnimationIndex].reset();
         }
         
         handleKeyboardEvents();
@@ -106,7 +110,9 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     
     @Override
     public void draw(Canvas canvas) {
-        animations[animationIndex].draw(canvas);
+        playerAnimations[playerAnimationIndex].draw(canvas);
+
+        statusGui.draw(canvas);
     }
     
     /**
@@ -166,7 +172,10 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             }
             
             currentItemIndex = (currentItemIndex + 1) % inventory.getItems().length;
+            // TODO: find a way not to cast the Item, since we're in a specific context
             currentItem = (ARPGItem) inventory.getItems()[currentItemIndex];
+            
+            statusGui.updateItem(currentItem);
     
             // TODO: Remove debug sysout
             System.out.println("Current item: " + currentItem.getName() +

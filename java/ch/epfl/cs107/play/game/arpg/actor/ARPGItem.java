@@ -3,16 +3,18 @@ package ch.epfl.cs107.play.game.arpg.actor;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.rpg.InventoryItem;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
+import ch.epfl.cs107.play.math.RegionOfInterest;
 
 public enum ARPGItem implements InventoryItem {
     
-    ARROW("arrow"), SWORD("sword"), BOW("bow"),
-    BOMB("bomb"), STAFF("staff_water"), CASTLE_KEY("key");
+    ARROW("arrow.icon"), SWORD("sword.icon"), BOW("bow.icon"),
+    BOMB("bomb"), STAFF("staff_water.icon"), CASTLE_KEY("key");
     
-    Sprite sprite; 
+    Sprite sprite;
     
     ARPGItem(String resourceName) {
-        sprite = new RPGSprite(resourceName + ".icon", 16, 16, null);
+        sprite = new RPGSprite("zelda/" + resourceName, 0.5f, 0.5f, null,
+                new RegionOfInterest(0, 0, 16, 16));
     }
     
     @Override
@@ -30,7 +32,11 @@ public enum ARPGItem implements InventoryItem {
                 return "CastleKey";
         }
         
-        return null;
+        return "TO_IMPLEMENT";
+    }
+    
+    public Sprite getSprite() {
+        return sprite;
     }
     
     @Override
