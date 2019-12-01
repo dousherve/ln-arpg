@@ -27,12 +27,12 @@ public class ARPGStatusItemGUI implements ARPGStatusGUIElement {
     
     @Override
     public void draw(Canvas canvas, Vector parentAnchor) {
-        Vector anchor = new Vector(0.25f, canvas.getScaledHeight() - 1.75f);
-        gear.setAnchor(parentAnchor.add(anchor));
+        Vector gearAnchor = new Vector(0.25f, canvas.getScaledHeight() - 1.75f);
+        gear.setAnchor(parentAnchor.add(gearAnchor));
         gear.draw(canvas);
         if (itemSprite != null) {
             // Center the item in the gear
-            Vector itemAnchor = anchor.add(gear.getWidth() / 2 - itemSprite.getWidth() / 2,
+            Vector itemAnchor = gearAnchor.add(gear.getWidth() / 2 - itemSprite.getWidth() / 2,
                     gear.getHeight() / 2 - itemSprite.getHeight() / 2);
             itemSprite.setAnchor(parentAnchor.add(itemAnchor));
             itemSprite.draw(canvas);

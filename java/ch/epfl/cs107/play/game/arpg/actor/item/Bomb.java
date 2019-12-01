@@ -22,7 +22,7 @@ import java.util.List;
 
 public class Bomb extends AreaEntity implements Interactor {
     
-    private class BombHandler implements ARPGInteractionVisitor {
+    private static class BombHandler implements ARPGInteractionVisitor {
     
         @Override
         public void interactWith(Grass grass) {

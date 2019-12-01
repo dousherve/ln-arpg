@@ -15,8 +15,6 @@ import ch.epfl.cs107.play.window.Window;
 
 public abstract class ARPGArea extends Area {
     
-    private ARPGBehavior behavior;
-    
     /**
      * Create the area by adding all of its actors
      * Called by the begin() method
@@ -32,8 +30,8 @@ public abstract class ARPGArea extends Area {
     public boolean begin(Window window, FileSystem fileSystem) {
         if (super.begin(window, fileSystem)) {
             // Set the behavior map
-            
-            behavior = new ARPGBehavior(window, getTitle());
+    
+            ARPGBehavior behavior = new ARPGBehavior(window, getTitle());
             setBehavior(behavior);
             
             createArea();
