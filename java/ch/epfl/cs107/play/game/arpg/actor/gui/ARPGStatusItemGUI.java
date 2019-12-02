@@ -10,7 +10,7 @@ import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
 public class ARPGStatusItemGUI implements ARPGStatusGUIElement {
-    
+
     private ImageGraphics gear;
     private Sprite itemSprite;
     
@@ -37,11 +37,13 @@ public class ARPGStatusItemGUI implements ARPGStatusGUIElement {
             itemSprite.setAnchor(parentAnchor.add(itemAnchor));
             itemSprite.draw(canvas);
         }
+
+
     }
     
     public void setItem(ARPGItem item) {
         this.itemSprite = item.getSprite();
-        itemSprite.setDepth(Float.MAX_VALUE);
+        this.itemSprite.setDepth(Float.MAX_VALUE);
     }
     
 }

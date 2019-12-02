@@ -174,9 +174,9 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             currentItemIndex = (currentItemIndex + 1) % inventory.getItems().length;
             // TODO: find a way not to cast the Item, since we're in a specific context
             currentItem = (ARPGItem) inventory.getItems()[currentItemIndex];
-            
+
             statusGui.updateItem(currentItem);
-    
+
             // TODO: Remove debug sysout
             System.out.println("Current item: " + currentItem.getName() +
                     " (" + inventory.getQuantity(currentItem) + ")");
@@ -209,6 +209,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
      */
     public void harm(float hp) {
         this.hp = Math.max(this.hp - hp, 0);
+        statusGui.updateHp(this.hp);
         // TODO: remove debug sysout
         System.out.println("Damage (" + this.hp + ")");
     }
