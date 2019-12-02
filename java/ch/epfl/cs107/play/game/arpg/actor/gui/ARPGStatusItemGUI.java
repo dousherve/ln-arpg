@@ -43,7 +43,7 @@ public class ARPGStatusItemGUI implements ARPGStatusGUIElement {
     
     public void setItem(ARPGItem item) {
         this.itemSprite = item.getSprite();
-        this.itemSprite.setDepth(Float.MAX_VALUE);
+        this.itemSprite.setDepth(DEPTH);
     }
     
 }
