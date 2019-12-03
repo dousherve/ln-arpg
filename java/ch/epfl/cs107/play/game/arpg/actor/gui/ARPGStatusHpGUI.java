@@ -10,62 +10,56 @@ import java.util.ArrayList;
 
 public class ARPGStatusHpGUI implements ARPGStatusGUIElement {
 
-    private String hearthsDisplayImage;
-    private ArrayList<ImageGraphics> hearths;
-    private RegionOfInterest fullHearthRoi;
-    private RegionOfInterest halfHearthRoi;
-    private RegionOfInterest emptyHeartRoi;
+    /// The resource name of the Heart
+    private static final String heartResourceName = "zelda/heartDisplay";
+    
+    /// The three different possible ROI for the heart Sprite 
+    private static final RegionOfInterest FULL_HEART_ROI = new RegionOfInterest(32,0,16,16);
+    private static final RegionOfInterest HALF_HEART_ROI = new RegionOfInterest(16,0,16,16);
+    private static final RegionOfInterest EMPTY_HEART_ROI = new RegionOfInterest(0,0,16,16);
+    
+    private ArrayList<ImageGraphics> hearts;
 
+    public ARPGStatusHpGUI(float maxHp) {
+        hearts = new ArrayList<>();
 
-    public ARPGStatusHpGUI(float max_hp){
-        hearthsDisplayImage = "zelda/heartDisplay";
-
-        //three different stats of the hearts
-        fullHearthRoi = new RegionOfInterest(32,0,16,16);
-        halfHearthRoi = new RegionOfInterest(16,0,16,16);
-        emptyHeartRoi = new RegionOfInterest(0,0,16,16);
-
-        hearths = new ArrayList<>();
-
-        for (int i = 0; i < max_hp; ++i) {
-            hearths.add(i, new ImageGraphics(ResourcePath.getSprite(hearthsDisplayImage),1.5f, 1.5f, fullHearthRoi));
+        for (int i = 0; i < maxHp; ++i) {
+            hearts.add(i, new ImageGraphics(ResourcePath.getSprite(heartResourceName),1.5f, 1.5f, FULL_HEART_ROI));
         }
 
-        updateHearts(max_hp);
+        updateHearts(maxHp);
     }
 
     @Override
     public void draw(Canvas canvas, Vector parentAnchor) {
-        parentAnchor = parentAnchor.add(new Vector(2f, canvas.getScaledHeight()-1.75f));
+        parentAnchor = parentAnchor.add(new Vector(2f, canvas.getScaledHeight() - 1.75f));
         Vector deltaAnchor = new Vector(2f, 0);
 
-        for (int i = 0; i < hearths.size(); ++i) {
-            hearths.get(i).setAnchor(parentAnchor.add(deltaAnchor.mul((float) i)));
-            hearths.get(i).draw(canvas);
+        for (int i = 0; i < hearts.size(); ++i) {
+            hearts.get(i).setAnchor(parentAnchor.add(deltaAnchor.mul((float) i)));
+            hearts.get(i).draw(canvas);
         }
-
     }
 
     /**
-     * update appearance of each heart of the hp GUI
-     * @param currentHp (float) current health of the player
+     * Update the appearance of each heart of the HP GUI
+     * @param hp (float) The HP of the player
      */
-    public void updateHearts(float currentHp){
+    public void updateHearts(float hp){
         RegionOfInterest roi;
 
-        //set the appearance for each heart, depending of his position (i) and the current health of the player (currentHp)
-        for (int i = 0; i < hearths.size(); ++i) {
-            if(currentHp-i <= 0){
-                roi = emptyHeartRoi;
-            }else if(currentHp - i < 1){
-                roi = halfHearthRoi;
-            }else{
-                roi = fullHearthRoi;
+        // Set the appearance for each heart, depending of its position (i) and the current health of the player (hp)
+        for (int i = 0; i < hearts.size(); ++i) {
+            if (hp-i <= 0) {
+                roi = EMPTY_HEART_ROI;
+            } else if(hp - i < 1){
+                roi = HALF_HEART_ROI;
+            } else{
+                roi = FULL_HEART_ROI;
             }
 
-            hearths.set(i, new ImageGraphics(ResourcePath.getSprite(hearthsDisplayImage),1.5f, 1.5f, roi));
-            hearths.get(i).setDepth(DEPTH);
-
+            hearts.set(i, new ImageGraphics(ResourcePath.getSprite(heartResourceName),1.5f, 1.5f, roi));
+            hearts.get(i).setDepth(DEPTH);
         }
     }
 

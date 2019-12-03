@@ -1,6 +1,5 @@
 package ch.epfl.cs107.play.game.arpg.actor.gui;
 
-
 import ch.epfl.cs107.play.game.actor.ImageGraphics;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.io.ResourcePath;

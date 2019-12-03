@@ -74,10 +74,11 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         
         handler = new ARPGPlayerHandler();
         inventory = new ARPGInventory(5000);
-        
-        inventory.add(ARPGItem.BOMB, 3);
-        inventory.add(ARPGItem.STAFF, 1);
-        inventory.add(ARPGItem.CASTLE_KEY, 1);
+    
+        // TODO: remove debug stuff
+        for (ARPGItem item : ARPGItem.values()) {
+            inventory.add(item, 5);
+        }
         
         Sprite[][] sprites = RPGSprite.extractSprites("zelda/player", 4,
                 1, 2, this, 16, 32,
@@ -103,7 +104,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         
         handleKeyboardEvents();
         
-        if (currentItem == null) {
+        if (currentItem == null || !possess(currentItem)) {
             switchCurrentItem();
         }
     }
@@ -144,6 +145,13 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         
         if (keyboard.get(Keyboard.SPACE).isPressed()) {
             handleItemUse();
+        }
+        
+        // TODO: remove debug stuff
+        if (keyboard.get(Keyboard.Z).isPressed()) {
+            for (ARPGItem item : ARPGItem.values()) {
+                inventory.add(item, 5);
+            }
         }
     }
     
