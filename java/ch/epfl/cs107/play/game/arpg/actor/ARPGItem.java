@@ -32,7 +32,7 @@ public enum ARPGItem implements InventoryItem {
                 return "CastleKey";
         }
         
-        return "TO_IMPLEMENT";
+        return "ERROR";
     }
     
     public Sprite getSprite() {
@@ -40,6 +40,7 @@ public enum ARPGItem implements InventoryItem {
     }
     
     @Override
+    // TODO: implement weights for the items
     public float getWeight() {
         return 0;
     }
@@ -61,6 +62,7 @@ public enum ARPGItem implements InventoryItem {
                 return 80;
         }
         
+        // ERROR
         return -1;
     }
     

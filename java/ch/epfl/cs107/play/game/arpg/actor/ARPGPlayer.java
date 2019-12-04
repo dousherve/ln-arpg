@@ -38,9 +38,6 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
 
     }
     
-    /// The status GUI
-    private ARPGStatusGUI statusGui;
-    
     /// The maximum Health Points of the player
     private static final float MAX_HP = 5.f;
     /// Health points
@@ -61,6 +58,9 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     /// InteractionVisitor handler
     private final ARPGPlayerHandler handler;
     
+    /// The status GUI
+    private ARPGStatusGUI statusGui;
+    
     /**
      * Default ARPGPlayer constructor
      * @param owner (Area): Owner Area, not null
@@ -75,7 +75,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         handler = new ARPGPlayerHandler();
         inventory = new ARPGInventory(5000);
     
-        // TODO: remove debug stuff
+        // TODO: remove debug default inventory items
         for (ARPGItem item : ARPGItem.values()) {
             inventory.add(item, 5);
         }
@@ -111,8 +111,10 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     
     @Override
     public void draw(Canvas canvas) {
+        // Animate the player
         playerAnimations[playerAnimationIndex].draw(canvas);
 
+        // Draw the GUI
         statusGui.draw(canvas);
     }
     
@@ -183,7 +185,8 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             // TODO: find a way not to cast the Item, since we're in a specific context
             currentItem = (ARPGItem) inventory.getItems()[currentItemIndex];
 
-            statusGui.updateItem(currentItem);
+            // Update the GUI
+            statusGui.updateCurrentItem(currentItem);
 
             // TODO: Remove debug sysout
             System.out.println("Current item: " + currentItem.getName() +
@@ -195,7 +198,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     
     /**
      * Set a Bomb on the floor (if possible) and removes it from the inventory
-     * @return (boolean) A flag indicating if the Bomb has successfully been set
+     * @return (boolean) A boolean flag indicating if the Bomb has successfully been set
      */
     private boolean useBomb() {
         if (possess(ARPGItem.BOMB)) {
