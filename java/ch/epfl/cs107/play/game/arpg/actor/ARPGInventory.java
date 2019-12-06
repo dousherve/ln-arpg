@@ -24,6 +24,7 @@ public class ARPGInventory extends Inventory {
      */
     protected void addMoney(int money) {
         this.money += money;
+        this.fortune += money;
     }
     
     /**
