@@ -43,6 +43,7 @@ public class Bomb extends AreaEntity implements Interactor {
     /// Keep track of the current state of the Bomb
     private boolean isExploding, hasExploded, ignited;
     
+    /// The Interaction Handler
     private final BombHandler handler;
     
     private Sprite sprite;
@@ -65,7 +66,7 @@ public class Bomb extends AreaEntity implements Interactor {
     
         Sprite[] explosionSprites = new Sprite[7];
         for (int i = 0; i < explosionSprites.length; ++i) {
-            explosionSprites[i] = new Sprite("zelda/explosion", 2, 2, this,
+            explosionSprites[i] = new RPGSprite("zelda/explosion", 2, 2, this,
                     new RegionOfInterest(i * 32, 0, 32, 32),
                     new Vector(-0.5f, -0.5f));
         }

@@ -6,7 +6,9 @@ import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.arpg.actor.item.ARPGCollectableAreaEntity;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
+import ch.epfl.cs107.play.game.arpg.actor.item.Coin;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.Inventory;
@@ -35,7 +37,13 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         public void interactWith(Grass grass) {
             grass.cut();
         }
-
+    
+        @Override
+        public void interactWith(Coin coin) {
+            coin.setCollected();
+            collectCoin(coin);
+        }
+        
     }
     
     /// The maximum Health Points of the player
@@ -209,6 +217,10 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     
         // Update the GUI
         statusGui.updateCurrentItem(currentItem);
+    }
+    
+    public void collectCoin(Coin coin) {
+        inventory.addMoney(coin.getAmount());
     }
     
     // MARK:- Handle items usage
