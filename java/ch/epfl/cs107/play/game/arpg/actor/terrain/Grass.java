@@ -6,9 +6,12 @@ import ch.epfl.cs107.play.game.areagame.actor.AreaEntity;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.arpg.actor.item.Coin;
+import ch.epfl.cs107.play.game.arpg.actor.item.Heart;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.math.RandomGenerator;
 import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
@@ -24,6 +27,9 @@ public class Grass extends AreaEntity {
     private Sprite sprite;
     private Animation cutAnimation;
     private static final int ANIMATION_DURATION = 4;
+    
+    private static final double PROBABILITY_TO_DROP_ITEM = 0.5;
+    private static final double PROBABILITY_TO_DROP_HEART = 0.5;
     
     /**
      * Default Grass constructor
@@ -80,6 +86,17 @@ public class Grass extends AreaEntity {
      */
     public void cut() {
         isCut = true;
+        
+        // TODO: make tests
+        if (RandomGenerator.getInstance().nextDouble() < PROBABILITY_TO_DROP_ITEM) {
+            if (RandomGenerator.getInstance().nextDouble() < PROBABILITY_TO_DROP_HEART) {
+                getOwnerArea().registerActor(new Heart(getOwnerArea(), Orientation.DOWN,
+                        getCurrentMainCellCoordinates()));
+            } else {
+                getOwnerArea().registerActor(new Coin(getOwnerArea(), Orientation.DOWN,
+                        getCurrentMainCellCoordinates()));
+            }
+        }
     }
     
     // MARK:- Interactable

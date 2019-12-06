@@ -51,6 +51,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             heart.setCollected();
             collectHeart(heart);
         }
+        
     }
     
     /// The maximum Health Points of the player
@@ -226,11 +227,11 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         statusGui.updateCurrentItem(currentItem);
     }
     
-    public void collectCoin(Coin coin) {
+    private void collectCoin(Coin coin) {
         inventory.addMoney(coin.getAmount());
     }
 
-    public void collectHeart(Heart heart) {
+    private void collectHeart(Heart heart) {
         heal(heart.getHp());
     }
     
@@ -262,7 +263,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         this.hp = Math.min(Math.max(this.hp - hp, 0), MAX_HP);
         statusGui.updateHp(this.hp);
         // TODO: remove debug sysout
-        System.out.println("Damage (" + this.hp + ")");
+        System.out.println("HP (" + this.hp + ")");
     }
 
     /**
