@@ -48,6 +48,9 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     private ARPGItem currentItem;
     private int currentItemIndex = -1;
     
+    /// Keeps track if we are displaying the fortune or the money
+    private boolean isDisplayingMoney;
+    
     /// Animations array
     private Animation[] playerAnimations;
     /// Index of the current animation in the above-mentioned array
@@ -73,12 +76,10 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         statusGui = new ARPGStatusGUI();
         
         handler = new ARPGPlayerHandler();
-        inventory = new ARPGInventory(5000);
+        inventory = new ARPGInventory(2);
     
         // TODO: remove debug default inventory items
-        for (ARPGItem item : ARPGItem.values()) {
-            inventory.add(item, 5);
-        }
+        inventory.add(ARPGItem.BOMB, 5);
         
         Sprite[][] sprites = RPGSprite.extractSprites("zelda/player", 4,
                 1, 2, this, 16, 32,
@@ -87,6 +88,8 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         playerAnimationIndex = getOrientation().ordinal();
         
         hp = MAX_HP;
+        
+        isDisplayingMoney = true;
     
         resetMotion();
     }
@@ -107,6 +110,8 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         if (currentItem == null || !possess(currentItem)) {
             switchCurrentItem();
         }
+        
+        statusGui.updateMoney(isDisplayingMoney ? inventory.getMoney() : inventory.getFortune());
     }
     
     @Override
@@ -155,6 +160,16 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
                 inventory.add(item, 5);
             }
         }
+        
+        // TODO: remove debug money
+        if (keyboard.get(Keyboard.M).isPressed()) {
+            inventory.addMoney(10);
+        }
+        
+        if (keyboard.get(Keyboard.F).isPressed()) {
+            // Switch between fortune and money display
+            isDisplayingMoney = !isDisplayingMoney;
+        }
     }
     
     private void handleItemUse() {
@@ -185,13 +200,15 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             // TODO: find a way not to cast the Item, since we're in a specific context
             currentItem = (ARPGItem) inventory.getItems()[currentItemIndex];
 
-            // Update the GUI
-            statusGui.updateCurrentItem(currentItem);
-
             // TODO: Remove debug sysout
             System.out.println("Current item: " + currentItem.getName() +
                     " (" + inventory.getQuantity(currentItem) + ")");
+        } else {
+            currentItem = null;
         }
+    
+        // Update the GUI
+        statusGui.updateCurrentItem(currentItem);
     }
     
     // MARK:- Handle items usage

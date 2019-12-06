@@ -56,4 +56,13 @@ public class ARPGStatusGUI implements Graphics {
     protected void updateHp(float hp) {
         hpGUI.updateHearts(hp);
     }
+    
+    /**
+     * Update the money in the Money GUI
+     * @param money (int) The new amount of money to display
+     */
+    protected void updateMoney(int money) {
+        moneyGUI.setMoney(money);
+    }
+    
 }

@@ -37,8 +37,11 @@ public class ARPGStatusMoneyGUI implements ARPGStatusGUIElement {
         Vector digitAnchor = coinsDisplay.getAnchor().add((4f/11f) * WIDTH, 0f);
         final float SPACING = 0.75f;
         for (int i = 0; i < 3; ++i) {
+            // Since the getDigit() function takes an index from right to left,
+            // and that we have at most 3 digits, we pass 2 - i to the function.
+            // 2 - i and not 3 - i because the index starts at 0
             digits[i] = new ImageGraphics(ResourcePath.getSprite(DIGITS_RESOURCE_NAME),
-                    DIGITS_SIZE, DIGITS_SIZE, getDigitRoi(i));
+                    DIGITS_SIZE, DIGITS_SIZE, getDigitRoi(getDigit(money, 2 - i)));
             digits[i].setAnchor(digitAnchor.add(i * SPACING, .65f));
             digits[i].setDepth(DEPTH);
             digits[i].draw(canvas);
@@ -52,8 +55,9 @@ public class ARPGStatusMoneyGUI implements ARPGStatusGUIElement {
         
         if (digit >= 1) {
             // 1...9
-            int y = (digit <= 4) ? 0 : (digit <= 8) ? 16 : 32;
-            return new RegionOfInterest((digit - 1) * 16, y, 16, 16);
+            int x = (digit - 1) % 4;
+            int y = (digit - 1) / 4;
+            return new RegionOfInterest(x * 16, y * 16, 16, 16);
         } else {
             // 0
             return new RegionOfInterest(16, 32, 16, 16);
@@ -70,15 +74,13 @@ public class ARPGStatusMoneyGUI implements ARPGStatusGUIElement {
     }
     
     /**
-     * Return the digit of a number at a certain position
+     * Return the digit of a number at a certain position (position is the index from right to left)
      * @param number
      * @param pos (int)
      * @return (int) The requested digit
      */
     private int getDigit(int number, int pos) {
-        int digit = 0;
-        
-        return digit;
+        return (number % (int) Math.pow(10, pos + 1)) / (int) Math.pow(10, pos);
     }
     
 }
