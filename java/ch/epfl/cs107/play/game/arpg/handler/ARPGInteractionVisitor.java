@@ -5,6 +5,7 @@ import ch.epfl.cs107.play.game.arpg.actor.ARPGPlayer;
 import ch.epfl.cs107.play.game.arpg.actor.item.ARPGCollectableAreaEntity;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
 import ch.epfl.cs107.play.game.arpg.actor.item.Coin;
+import ch.epfl.cs107.play.game.arpg.actor.item.Heart;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
 import ch.epfl.cs107.play.game.rpg.handler.RPGInteractionVisitor;
 
@@ -50,6 +51,14 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
      * @param coin (Coin), not null
      */
     default void interactWith(Coin coin) {
+        // by default the interaction is empty
+    }
+
+    /**
+     * Simulate an interaction between RPG Interactor and a Heart
+     * @param heart (Heart), not null
+     */
+    default void interactWith(Heart heart) {
         // by default the interaction is empty
     }
     

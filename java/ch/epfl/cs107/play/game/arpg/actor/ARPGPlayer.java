@@ -6,9 +6,11 @@ import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.arpg.ARPGBehavior;
 import ch.epfl.cs107.play.game.arpg.actor.item.ARPGCollectableAreaEntity;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
 import ch.epfl.cs107.play.game.arpg.actor.item.Coin;
+import ch.epfl.cs107.play.game.arpg.actor.item.Heart;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.Inventory;
@@ -43,7 +45,12 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             coin.setCollected();
             collectCoin(coin);
         }
-        
+
+        @Override
+        public void interactWith(Heart heart) {
+            heart.setCollected();
+            collectHeart(heart);
+        }
     }
     
     /// The maximum Health Points of the player
@@ -222,6 +229,10 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     public void collectCoin(Coin coin) {
         inventory.addMoney(coin.getAmount());
     }
+
+    public void collectHeart(Heart heart) {
+        heal(heart.getHp());
+    }
     
     // MARK:- Handle items usage
     
@@ -248,10 +259,18 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
      * @param hp (float) The amount of Health Points to remove from the ARPGPlayer
      */
     public void harm(float hp) {
-        this.hp = Math.max(this.hp - hp, 0);
+        this.hp = Math.min(Math.max(this.hp - hp, 0), MAX_HP);
         statusGui.updateHp(this.hp);
         // TODO: remove debug sysout
         System.out.println("Damage (" + this.hp + ")");
+    }
+
+    /**
+     * Heal the player.
+     * @param hp (float) The amount of Health Points to add from the ARPGPlayer
+     */
+    public void heal(float hp) {
+        harm(-hp);
     }
     
     // MARK:- Inventory.Holder
