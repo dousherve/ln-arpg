@@ -2,8 +2,10 @@ package ch.epfl.cs107.play.game.arpg;
 
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.arpg.actor.ARPGPlayer;
+import ch.epfl.cs107.play.game.arpg.area.Chateau;
 import ch.epfl.cs107.play.game.arpg.area.Ferme;
 import ch.epfl.cs107.play.game.arpg.area.Route;
+import ch.epfl.cs107.play.game.arpg.area.RouteChateau;
 import ch.epfl.cs107.play.game.arpg.area.Village;
 import ch.epfl.cs107.play.game.rpg.RPG;
 import ch.epfl.cs107.play.io.FileSystem;
@@ -18,6 +20,8 @@ public class ARPG extends RPG {
         addArea(new Ferme());
         addArea(new Village());
         addArea(new Route());
+        addArea(new RouteChateau());
+        addArea(new Chateau());
     }
     
     @Override

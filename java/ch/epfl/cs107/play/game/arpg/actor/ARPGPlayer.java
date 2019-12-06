@@ -9,6 +9,7 @@ import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.arpg.ARPGBehavior;
 import ch.epfl.cs107.play.game.arpg.actor.item.ARPGCollectableAreaEntity;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
+import ch.epfl.cs107.play.game.arpg.actor.item.CastleKey;
 import ch.epfl.cs107.play.game.arpg.actor.item.Coin;
 import ch.epfl.cs107.play.game.arpg.actor.item.Heart;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
@@ -43,17 +44,22 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         @Override
         public void interactWith(Coin coin) {
             coin.setCollected();
-            collectCoin(coin);
+            collectItem(coin);
         }
 
         @Override
         public void interactWith(Heart heart) {
             heart.setCollected();
-            collectHeart(heart);
+            collectItem(heart);
         }
-        
+
+        public void interactWith(CastleKey key) {
+            key.setCollected();
+            collectItem(key);
+        }
     }
-    
+
+
     /// The maximum Health Points of the player
     private static final float MAX_HP = 5.f;
     /// Health points
@@ -226,14 +232,14 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         // Update the GUI
         statusGui.updateCurrentItem(currentItem);
     }
-    
-    private void collectCoin(Coin coin) {
-        inventory.addMoney(coin.getAmount());
-    }
 
-    private void collectHeart(Heart heart) {
+    private void collectItem(Coin coin){inventory.addMoney(coin.getAmount());}
+
+    private void collectItem(Heart heart) {
         heal(heart.getHp());
     }
+
+    private void collectItem(CastleKey key) { inventory.add(ARPGItem.CASTLE_KEY, 1); }
     
     // MARK:- Handle items usage
     
