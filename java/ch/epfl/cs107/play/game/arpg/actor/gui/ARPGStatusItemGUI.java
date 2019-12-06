@@ -10,12 +10,14 @@ import ch.epfl.cs107.play.window.Canvas;
 
 public class ARPGStatusItemGUI implements ARPGStatusGUIElement {
 
+    private static final float SIZE = 1.75f;
+    
     private ImageGraphics gear;
     private Sprite itemSprite;
     
     public ARPGStatusItemGUI() {
         gear = new ImageGraphics(ResourcePath.getSprite("zelda/gearDisplay"),
-                1.5f, 1.5f, new RegionOfInterest(0, 0, 32, 32));
+                SIZE, SIZE, new RegionOfInterest(0, 0, 32, 32));
         gear.setDepth(DEPTH);
     }
     
@@ -26,23 +28,26 @@ public class ARPGStatusItemGUI implements ARPGStatusGUIElement {
     
     @Override
     public void draw(Canvas canvas, Vector parentAnchor) {
-        Vector gearAnchor = new Vector(0.25f, canvas.getScaledHeight() - 1.75f);
+        Vector gearAnchor = new Vector(PADDING, canvas.getScaledHeight() - SIZE - PADDING);
         gear.setAnchor(parentAnchor.add(gearAnchor));
         gear.draw(canvas);
+        
         if (itemSprite != null) {
             // Center the item in the gear
-            Vector itemAnchor = gearAnchor.add(gear.getWidth() / 2 - itemSprite.getWidth() / 2,
-                    gear.getHeight() / 2 - itemSprite.getHeight() / 2);
+            Vector itemAnchor = gearAnchor.add(gear.getWidth() / 2f - itemSprite.getWidth() / 2f,
+                    gear.getHeight() / 2f - itemSprite.getHeight() / 2f);
             itemSprite.setAnchor(parentAnchor.add(itemAnchor));
             itemSprite.draw(canvas);
         }
-
-
     }
     
     public void setItem(ARPGItem item) {
         this.itemSprite = item.getSprite();
         this.itemSprite.setDepth(DEPTH);
+    }
+    
+    public Vector getRightAnchor() {
+        return gear.getAnchor().add(gear.getWidth(), 0f);
     }
     
 }

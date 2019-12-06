@@ -22,7 +22,7 @@ public class ARPGStatusHpGUI implements ARPGStatusGUIElement {
             new RegionOfInterest(0,0,16,16);
     
     /// The size of the hearts we want to display
-    private static final float WIDTH = 1f, HEIGHT = 1f;
+    private static final float SIZE = 1f;
     
     private ImageGraphics[] hearts;
     
@@ -38,12 +38,12 @@ public class ARPGStatusHpGUI implements ARPGStatusGUIElement {
 
     @Override
     public void draw(Canvas canvas, Vector parentAnchor) {
-        parentAnchor = parentAnchor.add(new Vector(2f,
-                canvas.getScaledHeight() - 1.75f + HEIGHT / 4));
-        Vector deltaAnchor = new Vector(1f, 0);
-
+        /// The spacing between the hearts
+        final float SPACING = 1f;
         for (int i = 0; i < hearts.length; ++i) {
-            hearts[i].setAnchor(parentAnchor.add(deltaAnchor.mul((float) i)));
+            hearts[i].setAnchor(
+                    parentAnchor.add(PADDING, SIZE / 2f).add(new Vector(i * SPACING, 0))
+            );
             hearts[i].draw(canvas);
         }
     }
@@ -65,7 +65,7 @@ public class ARPGStatusHpGUI implements ARPGStatusGUIElement {
                 roi = FULL_HEART_ROI;
             }
 
-            hearts[i] = new ImageGraphics(ResourcePath.getSprite(heartResourceName), WIDTH, HEIGHT, roi);
+            hearts[i] = new ImageGraphics(ResourcePath.getSprite(heartResourceName), SIZE, SIZE, roi);
             hearts[i].setDepth(DEPTH);
         }
     }

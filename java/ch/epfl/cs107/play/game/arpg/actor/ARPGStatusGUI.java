@@ -4,6 +4,7 @@ import ch.epfl.cs107.play.game.actor.Graphics;
 import ch.epfl.cs107.play.game.arpg.actor.gui.ARPGStatusGUIElement;
 import ch.epfl.cs107.play.game.arpg.actor.gui.ARPGStatusHpGUI;
 import ch.epfl.cs107.play.game.arpg.actor.gui.ARPGStatusItemGUI;
+import ch.epfl.cs107.play.game.arpg.actor.gui.ARPGStatusMoneyGUI;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
@@ -16,34 +17,35 @@ public class ARPGStatusGUI implements Graphics {
     
     private ARPGStatusItemGUI itemGUI;
     private ARPGStatusHpGUI hpGUI;
-    
-    private List<ARPGStatusGUIElement> guiElements;
+    private ARPGStatusMoneyGUI moneyGUI;
     
     protected ARPGStatusGUI() {
-        guiElements = new ArrayList<>();
-        
         /// Current Item
-        guiElements.add(itemGUI = new ARPGStatusItemGUI());
+        itemGUI = new ARPGStatusItemGUI();
         
         // Health Points display
         // TODO: 02/12/2019 change magic number "5"
-        guiElements.add(hpGUI = new ARPGStatusHpGUI(5));
+        hpGUI = new ARPGStatusHpGUI(5);
+        
+        /// Money display
+        moneyGUI = new ARPGStatusMoneyGUI();
     }
     
     @Override
     public void draw(Canvas canvas) {
-        Vector anchor = canvas.getTransform().getOrigin().sub(new Vector(canvas.getScaledWidth() / 2, canvas.getScaledHeight() / 2));
+        Vector bottomLeftAnchor = canvas.getTransform().getOrigin().sub(new Vector(canvas.getScaledWidth() / 2, canvas.getScaledHeight() / 2));
         
-        for (ARPGStatusGUIElement element : guiElements) {
-            element.draw(canvas, anchor);
-        }
+        itemGUI.draw(canvas, bottomLeftAnchor);
+        hpGUI.draw(canvas, itemGUI.getRightAnchor());
+        
+        moneyGUI.draw(canvas, bottomLeftAnchor);
     }
     
     /**
      * Update the GUI to display the Item which is currently held by the Player.
      * @param item (ARPGItem) The new Item to display
      */
-    public void updateCurrentItem(ARPGItem item) {
+    protected void updateCurrentItem(ARPGItem item) {
         itemGUI.setItem(item);
     }
     
@@ -51,7 +53,7 @@ public class ARPGStatusGUI implements Graphics {
      * Update the GUI to show the correct heart display.
      * @param hp (float) The Health Points of the Player
      */
-    public void updateHp(float hp) {
+    protected void updateHp(float hp) {
         hpGUI.updateHearts(hp);
     }
 }

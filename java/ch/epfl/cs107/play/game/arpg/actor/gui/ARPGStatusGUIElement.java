@@ -8,6 +8,7 @@ import ch.epfl.cs107.play.window.Canvas;
 public interface ARPGStatusGUIElement {
     
     float DEPTH = Float.MAX_VALUE;
+    float PADDING = 0.25f;
     
     /**
      * Draw the current GUI element on the canvas, with the given anchor.
