@@ -47,8 +47,8 @@ public class Ferme extends ARPGArea {
         // Doors
         registerDoors(areaKeys, destinationCoords, orientations, positions, otherCells);
         
+        // TODO: debug
         registerActor(new CastleKey(this, Orientation.DOWN, new DiscreteCoordinates(7, 7)));
-
     }
     
 }

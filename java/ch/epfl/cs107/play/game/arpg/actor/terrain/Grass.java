@@ -6,6 +6,7 @@ import ch.epfl.cs107.play.game.areagame.actor.AreaEntity;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.arpg.actor.item.ARPGCollectableAreaEntity;
 import ch.epfl.cs107.play.game.arpg.actor.item.Coin;
 import ch.epfl.cs107.play.game.arpg.actor.item.Heart;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
@@ -28,7 +29,9 @@ public class Grass extends AreaEntity {
     private Animation cutAnimation;
     private static final int ANIMATION_DURATION = 4;
     
+    /// 33% chance to drop an item
     private static final double PROBABILITY_TO_DROP_ITEM = 0.3;
+    /// 50% chance that the dropped item is a heart
     private static final double PROBABILITY_TO_DROP_HEART = 0.5;
     
     /**
@@ -38,7 +41,6 @@ public class Grass extends AreaEntity {
      * @param position    (DiscreteCoordinate): Initial position of the entity in the Area. Not null
      */
     public Grass(Area area, DiscreteCoordinates position) {
-        // TODO: see if there is a way not to take into account the orientation, because it's pointless here
         super(area, Orientation.DOWN, position);
         
         sprite = new RPGSprite("zelda/grass", 1, 1, this,
@@ -82,11 +84,13 @@ public class Grass extends AreaEntity {
     // MARK:- Specific Grass method
     
     /**
-     * Cut the current Grass
+     * Cut the current Grass, if not already
      */
     public void cut() {
-        isCut = true;
-        generateCollectableItem();
+        if (!isCut) {
+            isCut = true;
+            generateCollectableItem();
+        }
     }
     
     /**
@@ -94,17 +98,17 @@ public class Grass extends AreaEntity {
      */
     private void generateCollectableItem() {
         if (RandomGenerator.getInstance().nextDouble() < PROBABILITY_TO_DROP_ITEM) {
+            ARPGCollectableAreaEntity entityToDrop;
+            
             if (RandomGenerator.getInstance().nextDouble() < PROBABILITY_TO_DROP_HEART) {
-                getOwnerArea().registerActor(new Heart(getOwnerArea(), Orientation.DOWN,
-                        getCurrentMainCellCoordinates()));
-                // TODO: remove debug sout
-                System.out.println("Generated Heart");
+                entityToDrop = new Heart(getOwnerArea(), Orientation.DOWN,
+                        getCurrentMainCellCoordinates());
             } else {
-                getOwnerArea().registerActor(new Coin(getOwnerArea(), Orientation.DOWN,
-                        getCurrentMainCellCoordinates()));
-                // TODO: remove debug sout
-                System.out.println("Generated Coin");
+                entityToDrop = new Coin(getOwnerArea(), Orientation.DOWN,
+                        getCurrentMainCellCoordinates());
             }
+            
+            getOwnerArea().registerActor(entityToDrop);
         }
     }
     

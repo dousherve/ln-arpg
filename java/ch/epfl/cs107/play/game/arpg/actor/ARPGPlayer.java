@@ -8,6 +8,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.arpg.actor.item.ARPGCollectableAreaEntity;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
+import ch.epfl.cs107.play.game.arpg.actor.item.CastleKey;
 import ch.epfl.cs107.play.game.arpg.actor.item.Coin;
 import ch.epfl.cs107.play.game.arpg.actor.item.Heart;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
@@ -46,13 +47,19 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         @Override
         public void interactWith(Coin coin) {
             coin.setCollected();
-            collectCoin(coin);
+            collectItem(coin);
         }
 
         @Override
         public void interactWith(Heart heart) {
             heart.setCollected();
-            collectHeart(heart);
+            collectItem(heart);
+        }
+    
+        @Override
+        public void interactWith(CastleKey key) {
+            key.setCollected();
+            collectItem(key);
         }
         
     }
@@ -75,7 +82,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     /// Index of the current animation in the above-mentioned array
     private int playerAnimationIndex;
     /// Animation duration in number of frames
-    private static final int ANIMATION_DURATION = 6;
+    private static final int ANIMATION_DURATION = 2;
     
     /// InteractionVisitor handler
     private final ARPGPlayerHandler handler;
@@ -230,11 +237,13 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         statusGui.updateCurrentItem(currentItem);
     }
     
+    // MARK:- Item collect
+    
     /**
      * Handle coin collection
      * @param coin (Coin) A coin
      */
-    private void collectCoin(Coin coin) {
+    private void collectItem(Coin coin){
         inventory.addMoney(coin.getValue());
     }
     
@@ -242,8 +251,16 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
      * Handle heart collection
      * @param heart (Heart) A heart
      */
-    private void collectHeart(Heart heart) {
+    private void collectItem(Heart heart) {
         heal(heart.getHp());
+    }
+    
+    /**
+     * Handle CastleKey collection
+     * @param key (CastleKey) A CastleKey
+     */
+    private void collectItem(CastleKey key) {
+        inventory.add(ARPGItem.CASTLE_KEY, 1);
     }
     
     // MARK:- Handle items usage

@@ -4,7 +4,7 @@ import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.AreaEntity;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
-import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
+import ch.epfl.cs107.play.game.rpg.handler.RPGInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Polyline;
 import ch.epfl.cs107.play.math.Transform;
@@ -21,19 +21,19 @@ import java.util.List;
 public class Door extends AreaEntity{
 
     /// Door Debug flag. Door is an invisible Entity. When debug, we draw something visible
-    protected static final boolean DEBUG_DOOR = true;
+    private static final boolean DEBUG_DOOR = false;
 
     /// Debug variable : useful only for drawing door debug shape
-    protected Polyline debugSquare;
-    protected final List<DiscreteCoordinates> currentCells;
+    private Polyline debugSquare;
+    private final List<DiscreteCoordinates> currentCells;
 
     /// Name of the destination area
-    protected final String destination;
+    private final String destination;
     /// Coordinates of the other side
-    protected final DiscreteCoordinates otherSideCoordinates;
+    private final DiscreteCoordinates otherSideCoordinates;
     /// Signal conditioning the door
     // private final Logic signal; // set non final in 2019 project
-    protected Logic signal;
+    private Logic signal;
 
     /**
      * Default Door constructor
@@ -150,6 +150,7 @@ public class Door extends AreaEntity{
 
     @Override
     public void acceptInteraction(AreaInteractionVisitor v) {
-        ((ARPGInteractionVisitor) v).interactWith(this);
+        ((RPGInteractionVisitor)v).interactWith(this);
     }
+    
 }

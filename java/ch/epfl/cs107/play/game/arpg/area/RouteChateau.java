@@ -36,14 +36,13 @@ public class RouteChateau extends ARPGArea {
                 Logic.TRUE,
                 this,
                 Orientation.DOWN,
-                new DiscreteCoordinates(9,13),
-                new DiscreteCoordinates(10,13)));
-
-
+                new DiscreteCoordinates(9, 13),
+                new DiscreteCoordinates(10, 13)));
     }
 
     @Override
     public String getTitle() {
         return "zelda/RouteChateau";
     }
+    
 }

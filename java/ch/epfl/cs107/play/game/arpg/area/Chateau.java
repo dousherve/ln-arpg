@@ -26,12 +26,11 @@ public class Chateau extends ARPGArea {
 
         // Doors
         registerDoors(areaKeys, destinationCoords, orientations, positions, otherCells);
-
-
     }
 
     @Override
     public String getTitle() {
         return "zelda/Chateau";
     }
+    
 }
