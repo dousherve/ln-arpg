@@ -236,8 +236,8 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     
             currentItemIndex = (currentItemIndex + 1) % inventory.getItems().length;
             ARPGItem item = inventory.getItems()[currentItemIndex];
-            while (item == currentItem) {
-                // We loop until we find an item which is different from the current one
+            if (item == currentItem) {
+                // We try again if we find an item which is different from the current one
                 // We have to do this beacause the swicthing is not done properly
                 // if we just picked up an Item
                 currentItemIndex = (currentItemIndex + 1) % inventory.getItems().length;
@@ -257,6 +257,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     }
     
     // MARK:- Specific ARPGPlayer methods
+    
     
     
     // MARK:- Item collect
