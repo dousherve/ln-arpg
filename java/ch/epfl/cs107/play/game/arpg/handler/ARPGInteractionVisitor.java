@@ -4,6 +4,7 @@ import ch.epfl.cs107.play.game.arpg.ARPGBehavior;
 import ch.epfl.cs107.play.game.arpg.actor.ARPGPlayer;
 import ch.epfl.cs107.play.game.arpg.actor.item.ARPGCollectableAreaEntity;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
+import ch.epfl.cs107.play.game.arpg.actor.item.CastleKey;
 import ch.epfl.cs107.play.game.arpg.actor.item.Coin;
 import ch.epfl.cs107.play.game.arpg.actor.item.Heart;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
@@ -59,6 +60,14 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
      * @param heart (Heart), not null
      */
     default void interactWith(Heart heart) {
+        // by default the interaction is empty
+    }
+
+    /**
+     * Simulate an interaction between RPG Interactor and a CastleKey
+     * @param key (CastleKey), not null
+     */
+    default void interactWith(CastleKey key) {
         // by default the interaction is empty
     }
     

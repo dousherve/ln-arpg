@@ -101,7 +101,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         inventory = new ARPGInventory(2);
     
         // TODO: remove debug default inventory items
-        inventory.add(ARPGItem.BOMB, 5);
+        //inventory.add(ARPGItem.BOMB, 5);
         
         Sprite[][] sprites = RPGSprite.extractSprites("zelda/player", 4,
                 1, 2, this, 16, 32,

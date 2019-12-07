@@ -12,20 +12,46 @@ import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.signal.logic.Logic;
 import ch.epfl.cs107.play.window.Canvas;
 
+import java.util.Arrays;
+
 public class CastleDoor extends Door {
 
     private Sprite sprite;
 
-    private String openImage = ResourcePath.getSprite("zelda/castledDoor.open");
-    private String closeImage = ResourcePath.getSprite("zelda/castleDoor.open");
+    private String openImage = "zelda/castleDoor.open";
+    private String closeImage = "zelda/castleDoor.open";
 
 
+    /**
+     * Default CastleDoor constructor
+     * @param destination        (String): Name of the destination area, not null
+     * @param otherSideCoordinates (DiscreteCoordinate):Coordinates of the other side, not null
+     * @param signal (Logic): LogicGate signal opening the door, may be null
+     * @param area        (Area): Owner area, not null
+     * @param orientation (Orientation): Initial orientation of the entity, not null
+     * @param position    (DiscreteCoordinate): Initial position of the entity, not null
+     */
     public CastleDoor(String destination, DiscreteCoordinates otherSideCoordinates, Logic signal, Area area, Orientation orientation, DiscreteCoordinates position) {
         super(destination, otherSideCoordinates, signal, area, orientation, position);
 
-        sprite = new RPGSprite(openImage, 1.5f,1.5f, this,
+        sprite = new RPGSprite(openImage, 2f,2f, this,
                 new RegionOfInterest(0,0,32,32));
 
+    }
+
+    /**
+     * Complementary CastleDoor constructor
+     * @param destination        (String): Name of the destination area, not null
+     * @param otherSideCoordinates (DiscreteCoordinate):Coordinates of the other side, not null
+     * @param signal (Logic): LogicGate signal opening the door, may be null
+     * @param area        (Area): Owner area, not null
+     * @param position    (DiscreteCoordinate): Initial position of the entity, not null
+     * @param orientation (Orientation): Initial orientation of the entity, not null
+     * @param otherCells (DiscreteCoordinates...): Other cells occupied by the AreaEntity if any. Assume absolute coordinates, not null
+     */
+    public CastleDoor(String destination, DiscreteCoordinates otherSideCoordinates, Logic signal, Area area, Orientation orientation, DiscreteCoordinates position, DiscreteCoordinates ... otherCells){
+        this(destination, otherSideCoordinates, signal, area, orientation, position);
+        this.currentCells.addAll(Arrays.asList(otherCells));
     }
 
     @Override
