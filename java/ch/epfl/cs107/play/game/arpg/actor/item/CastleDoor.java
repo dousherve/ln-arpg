@@ -1,9 +1,10 @@
-package ch.epfl.cs107.play.game.arpg.actor.terrain;
+package ch.epfl.cs107.play.game.arpg.actor.item;
 
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.areagame.io.ResourcePath;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.actor.Door;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
@@ -16,8 +17,6 @@ public class CastleDoor extends Door {
     
     private static final String OPEN_IMAGE_NAME = "zelda/castleDoor.open";
     private static final String CLOSE_IMAGE_NAME = "zelda/castleDoor.close";
-    
-    private final Sprite OPEN_SPRITE, CLOSED_SPRITE;
     
     private Sprite sprite;
 
@@ -43,20 +42,17 @@ public class CastleDoor extends Door {
      * @param orientation (Orientation): Initial orientation of the entity, not null
      * @param otherCells (DiscreteCoordinates...): Other cells occupied by the AreaEntity if any. Assume absolute coordinates, not null
      */
-    public CastleDoor(String destination, DiscreteCoordinates otherSideCoordinates, Area area, Orientation orientation, DiscreteCoordinates position, DiscreteCoordinates ... otherCells){
+    public CastleDoor(String destination, DiscreteCoordinates otherSideCoordinates, Area area, Orientation orientation, DiscreteCoordinates position, DiscreteCoordinates ... otherCells) {
         super(destination, otherSideCoordinates, Logic.FALSE, area, orientation, position, otherCells);
     
-        OPEN_SPRITE = new RPGSprite(OPEN_IMAGE_NAME, 2f, 2f, this,
+        sprite = new RPGSprite(CLOSE_IMAGE_NAME, 2f, 2f, this,
                 new RegionOfInterest(0, 0, 32, 32));
-        CLOSED_SPRITE = new RPGSprite(CLOSE_IMAGE_NAME, 2f, 2f, this,
-                new RegionOfInterest(0, 0, 32, 32));
-        
-        sprite = CLOSED_SPRITE;
     }
 
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
+        
         sprite.draw(canvas);
     }
     
@@ -78,7 +74,7 @@ public class CastleDoor extends Door {
     protected void setSignal(Logic signal) {
         super.setSignal(signal);
      
-        sprite = isOpen() ? OPEN_SPRITE : CLOSED_SPRITE;
+        sprite.setName(ResourcePath.getSprite(isOpen() ? OPEN_IMAGE_NAME : CLOSE_IMAGE_NAME));
     }
     
     @Override

@@ -1,14 +1,8 @@
 package ch.epfl.cs107.play.game.arpg.area;
 
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
-import ch.epfl.cs107.play.game.arpg.actor.item.ARPGCollectableAreaEntity;
-import ch.epfl.cs107.play.game.arpg.actor.item.CastleKey;
-import ch.epfl.cs107.play.game.arpg.actor.item.Coin;
-import ch.epfl.cs107.play.game.arpg.actor.item.Heart;
+import ch.epfl.cs107.play.game.arpg.actor.item.collectable.CastleKey;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
-import ch.epfl.cs107.play.window.Canvas;
-
-import java.util.List;
 
 public class Ferme extends ARPGArea {
     

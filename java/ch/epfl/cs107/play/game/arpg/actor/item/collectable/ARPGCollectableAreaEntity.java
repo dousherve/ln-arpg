@@ -1,4 +1,4 @@
-package ch.epfl.cs107.play.game.arpg.actor.item;
+package ch.epfl.cs107.play.game.arpg.actor.item.collectable;
 
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.CollectableAreaEntity;

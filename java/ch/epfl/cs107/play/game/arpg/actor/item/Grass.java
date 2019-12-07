@@ -1,4 +1,4 @@
-package ch.epfl.cs107.play.game.arpg.actor.terrain;
+package ch.epfl.cs107.play.game.arpg.actor.item;
 
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Animation;
@@ -6,9 +6,9 @@ import ch.epfl.cs107.play.game.areagame.actor.AreaEntity;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
-import ch.epfl.cs107.play.game.arpg.actor.item.ARPGCollectableAreaEntity;
-import ch.epfl.cs107.play.game.arpg.actor.item.Coin;
-import ch.epfl.cs107.play.game.arpg.actor.item.Heart;
+import ch.epfl.cs107.play.game.arpg.actor.item.collectable.ARPGCollectableAreaEntity;
+import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Coin;
+import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Heart;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;

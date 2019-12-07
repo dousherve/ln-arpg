@@ -1,4 +1,4 @@
-package ch.epfl.cs107.play.game.arpg.actor.item;
+package ch.epfl.cs107.play.game.arpg.actor.item.collectable;
 
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Animation;
@@ -14,62 +14,60 @@ import ch.epfl.cs107.play.window.Canvas;
 import java.util.Collections;
 import java.util.List;
 
-public class Coin extends ARPGCollectableAreaEntity {
-    
-    /// The amount of money the coin represents
-    private final static int VALUE = 50;
-    
+public class Heart extends ARPGCollectableAreaEntity {
+
     private Animation animation;
     private static final int ANIMATION_DURATION = 4;
-    
-    /// The size of the Coin
+
+    /// The amount of Health Points the heart gives
+    private static final float HP = 1f;
+
     private static final float SIZE = 1f;
     
     /**
-     * Default Coin constructor
+     * Default Heart constructor
      *
      * @param area        (Area): Owner area. Not null
      * @param orientation (Orientation): Initial orientation of the entity in the Area. Not null
      * @param position    (DiscreteCoordinate): Initial position of the entity in the Area. Not null
      */
-    public Coin(Area area, Orientation orientation, DiscreteCoordinates position) {
+    public Heart(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
-    
-        Sprite[] sprites = new RPGSprite[4];
+
+        Sprite[] sprites = new Sprite[4];
         for (int i = 0; i < sprites.length; ++i) {
-            sprites[i] = new RPGSprite("zelda/coin", SIZE, SIZE, this,
+            sprites[i] = new RPGSprite("zelda/heart", SIZE, SIZE, this,
                     new RegionOfInterest(16 * i, 0, 16, 16));
         }
-        
+
         animation = new Animation(ANIMATION_DURATION, sprites, true);
     }
     
     /**
-     * Return the amount of money given by the Coin
-     * @return (int)
+     * Return the amount of HP the heart gives
+     * @return (float) HP
      */
-    public int getValue() {
-        return VALUE;
+    public float getHp() {
+        return HP;
     }
-    
+
     @Override
     public void draw(Canvas canvas) {
         animation.draw(canvas);
     }
-    
+
     @Override
     public void update(float deltaTime) {
         animation.update(deltaTime);
     }
-    
+
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {
         return Collections.singletonList(getCurrentMainCellCoordinates());
     }
-    
+
     @Override
     public void acceptInteraction(AreaInteractionVisitor v) {
         ((ARPGInteractionVisitor) v).interactWith(this);
     }
-    
 }

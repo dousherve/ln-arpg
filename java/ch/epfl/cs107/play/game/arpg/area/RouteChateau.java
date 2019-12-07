@@ -1,9 +1,8 @@
 package ch.epfl.cs107.play.game.arpg.area;
 
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
-import ch.epfl.cs107.play.game.arpg.actor.terrain.CastleDoor;
+import ch.epfl.cs107.play.game.arpg.actor.item.CastleDoor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
-import ch.epfl.cs107.play.signal.logic.Logic;
 
 public class RouteChateau extends ARPGArea {
 
@@ -18,7 +17,7 @@ public class RouteChateau extends ARPGArea {
             new DiscreteCoordinates(9, 0)
     };
     private DiscreteCoordinates[][] otherCells = {
-            {new DiscreteCoordinates(10,0)}
+            {new DiscreteCoordinates(10, 0)}
     };
 
     @Override

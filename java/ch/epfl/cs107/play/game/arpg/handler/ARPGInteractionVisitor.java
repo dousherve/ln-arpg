@@ -2,13 +2,12 @@ package ch.epfl.cs107.play.game.arpg.handler;
 
 import ch.epfl.cs107.play.game.arpg.ARPGBehavior;
 import ch.epfl.cs107.play.game.arpg.actor.ARPGPlayer;
-import ch.epfl.cs107.play.game.arpg.actor.item.ARPGCollectableAreaEntity;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
-import ch.epfl.cs107.play.game.arpg.actor.item.CastleKey;
-import ch.epfl.cs107.play.game.arpg.actor.item.Coin;
-import ch.epfl.cs107.play.game.arpg.actor.item.Heart;
-import ch.epfl.cs107.play.game.arpg.actor.terrain.CastleDoor;
-import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
+import ch.epfl.cs107.play.game.arpg.actor.item.collectable.CastleKey;
+import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Coin;
+import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Heart;
+import ch.epfl.cs107.play.game.arpg.actor.item.CastleDoor;
+import ch.epfl.cs107.play.game.arpg.actor.item.Grass;
 import ch.epfl.cs107.play.game.rpg.handler.RPGInteractionVisitor;
 
 public interface ARPGInteractionVisitor extends RPGInteractionVisitor {

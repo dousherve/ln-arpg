@@ -2,7 +2,7 @@ package ch.epfl.cs107.play.game.arpg.area;
 
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
-import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
+import ch.epfl.cs107.play.game.arpg.actor.item.Grass;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 public class Route extends ARPGArea {

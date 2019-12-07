@@ -6,13 +6,13 @@ import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
-import ch.epfl.cs107.play.game.arpg.actor.item.ARPGCollectableAreaEntity;
+import ch.epfl.cs107.play.game.arpg.actor.item.collectable.ARPGCollectableAreaEntity;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
-import ch.epfl.cs107.play.game.arpg.actor.item.CastleKey;
-import ch.epfl.cs107.play.game.arpg.actor.item.Coin;
-import ch.epfl.cs107.play.game.arpg.actor.item.Heart;
-import ch.epfl.cs107.play.game.arpg.actor.terrain.CastleDoor;
-import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
+import ch.epfl.cs107.play.game.arpg.actor.item.collectable.CastleKey;
+import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Coin;
+import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Heart;
+import ch.epfl.cs107.play.game.arpg.actor.item.CastleDoor;
+import ch.epfl.cs107.play.game.arpg.actor.item.Grass;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.Inventory;
 import ch.epfl.cs107.play.game.rpg.InventoryItem;
@@ -205,7 +205,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         }
         
         if (keyboard.get(Keyboard.F).isPressed()) {
-            // Switch between fortune and money display
+            // Switch between fortune and money display by pressing 'F'
             isDisplayingMoney = !isDisplayingMoney;
         }
     }
@@ -255,6 +255,9 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         // Update the GUI
         statusGui.updateCurrentItem(currentItem);
     }
+    
+    // MARK:- Specific ARPGPlayer methods
+    
     
     // MARK:- Item collect
     
