@@ -16,12 +16,13 @@ import java.util.List;
 
 public class Coin extends ARPGCollectableAreaEntity {
     
+    /// The amount of money the coin represents
+    private final static int VALUE = 50;
+    
     private Animation animation;
-    
-    private final static int AMOUNT = 50;
-    
     private static final int ANIMATION_DURATION = 4;
     
+    /// The size of the Coin
     private static final float SIZE = 1f;
     
     /**
@@ -47,8 +48,8 @@ public class Coin extends ARPGCollectableAreaEntity {
      * Return the amount of money given by the Coin
      * @return (int)
      */
-    public int getAmount() {
-        return AMOUNT;
+    public int getValue() {
+        return VALUE;
     }
     
     @Override

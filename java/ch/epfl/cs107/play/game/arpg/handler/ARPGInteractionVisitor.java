@@ -71,6 +71,6 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
         // by default the interaction is empty
     }
     
-    // TODO: see if we can solve the problem of the "automatic pick-up"
+    // TODO: see if we can solve the problem of the "automatic pick-up" for a ARPGCollectableAreaEntity
     
 }

@@ -3,6 +3,7 @@ package ch.epfl.cs107.play.game.arpg.actor.item;
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.CollectableAreaEntity;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
+import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 abstract public class ARPGCollectableAreaEntity extends CollectableAreaEntity {
@@ -26,6 +27,11 @@ abstract public class ARPGCollectableAreaEntity extends CollectableAreaEntity {
     @Override
     public boolean isViewInteractable() {
         return false;
+    }
+    
+    @Override
+    public void acceptInteraction(AreaInteractionVisitor v) {
+        getOwnerArea().unregisterActor(this);
     }
     
 }

@@ -17,15 +17,15 @@ import java.util.List;
 public class Heart extends ARPGCollectableAreaEntity {
 
     private Animation animation;
+    private static final int ANIMATION_DURATION = 4;
 
+    /// The amount of Health Points the heart gives
     private static final float HP = 1;
 
     private static final float SIZE = 1f;
-
-    private static final int ANIMATION_DURATION = 4;
-
+    
     /**
-     * Default ARPGCollectableAreaEntity constructor
+     * Default Heart constructor
      *
      * @param area        (Area): Owner area. Not null
      * @param orientation (Orientation): Initial orientation of the entity in the Area. Not null
@@ -37,13 +37,17 @@ public class Heart extends ARPGCollectableAreaEntity {
         Sprite[] sprites = new Sprite[4];
         for (int i = 0; i < sprites.length; ++i) {
             sprites[i] = new RPGSprite("zelda/heart", SIZE, SIZE, this,
-                    new RegionOfInterest(16*i, 0, 16, 16));
+                    new RegionOfInterest(16 * i, 0, 16, 16));
         }
 
         animation = new Animation(ANIMATION_DURATION, sprites, true);
     }
-
-    public float getHp(){
+    
+    /**
+     * Return the amount of HP the heart gives
+     * @return (float) HP
+     */
+    public float getHp() {
         return HP;
     }
 

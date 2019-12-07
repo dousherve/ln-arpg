@@ -6,10 +6,8 @@ import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
-import ch.epfl.cs107.play.game.arpg.ARPGBehavior;
 import ch.epfl.cs107.play.game.arpg.actor.item.ARPGCollectableAreaEntity;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
-import ch.epfl.cs107.play.game.arpg.actor.item.CastleKey;
 import ch.epfl.cs107.play.game.arpg.actor.item.Coin;
 import ch.epfl.cs107.play.game.arpg.actor.item.Heart;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
@@ -40,26 +38,25 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         public void interactWith(Grass grass) {
             grass.cut();
         }
+        
+        public void interactWith(ARPGCollectableAreaEntity collectableEntity) {
+            collectableEntity.setCollected();
+        }
     
         @Override
         public void interactWith(Coin coin) {
             coin.setCollected();
-            collectItem(coin);
+            collectCoin(coin);
         }
 
         @Override
         public void interactWith(Heart heart) {
             heart.setCollected();
-            collectItem(heart);
+            collectHeart(heart);
         }
-
-        public void interactWith(CastleKey key) {
-            key.setCollected();
-            collectItem(key);
-        }
+        
     }
-
-
+    
     /// The maximum Health Points of the player
     private static final float MAX_HP = 5.f;
     /// Health points
@@ -78,7 +75,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     /// Index of the current animation in the above-mentioned array
     private int playerAnimationIndex;
     /// Animation duration in number of frames
-    private static final int ANIMATION_DURATION = 2;
+    private static final int ANIMATION_DURATION = 6;
     
     /// InteractionVisitor handler
     private final ARPGPlayerHandler handler;
@@ -98,10 +95,10 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         statusGui = new ARPGStatusGUI();
         
         handler = new ARPGPlayerHandler();
-        inventory = new ARPGInventory(2);
+        inventory = new ARPGInventory(165);
     
         // TODO: remove debug default inventory items
-        //inventory.add(ARPGItem.BOMB, 5);
+        inventory.add(ARPGItem.BOMB, 5);
         
         Sprite[][] sprites = RPGSprite.extractSprites("zelda/player", 4,
                 1, 2, this, 16, 32,
@@ -133,6 +130,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             switchCurrentItem();
         }
         
+        // TODO: move that into a function only called when money or fortune changes when debug money is removed
         statusGui.updateMoney(isDisplayingMoney ? inventory.getMoney() : inventory.getFortune());
     }
     
@@ -219,8 +217,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             }
             
             currentItemIndex = (currentItemIndex + 1) % inventory.getItems().length;
-            // TODO: find a way not to cast the Item, since we're in a specific context
-            currentItem = (ARPGItem) inventory.getItems()[currentItemIndex];
+            currentItem = inventory.getItems()[currentItemIndex];
 
             // TODO: Remove debug sysout
             System.out.println("Current item: " + currentItem.getName() +
@@ -232,14 +229,22 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         // Update the GUI
         statusGui.updateCurrentItem(currentItem);
     }
-
-    private void collectItem(Coin coin){inventory.addMoney(coin.getAmount());}
-
-    private void collectItem(Heart heart) {
+    
+    /**
+     * Handle coin collection
+     * @param coin (Coin) A coin
+     */
+    private void collectCoin(Coin coin) {
+        inventory.addMoney(coin.getValue());
+    }
+    
+    /**
+     * Handle heart collection
+     * @param heart (Heart) A heart
+     */
+    private void collectHeart(Heart heart) {
         heal(heart.getHp());
     }
-
-    private void collectItem(CastleKey key) { inventory.add(ARPGItem.CASTLE_KEY, 1); }
     
     // MARK:- Handle items usage
     
@@ -262,7 +267,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     }
     
     /**
-     * Harm the player. Make sure that the HP level does not go below 0.
+     * Harm the player. Make sure that the HP level does not go below 0 or over MAX_HP.
      * @param hp (float) The amount of Health Points to remove from the ARPGPlayer
      */
     public void harm(float hp) {
@@ -281,6 +286,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     }
     
     // MARK:- Inventory.Holder
+    
     @Override
     public boolean possess(InventoryItem item) {
         return inventory.contains(item);

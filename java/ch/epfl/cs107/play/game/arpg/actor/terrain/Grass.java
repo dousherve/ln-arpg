@@ -28,7 +28,7 @@ public class Grass extends AreaEntity {
     private Animation cutAnimation;
     private static final int ANIMATION_DURATION = 4;
     
-    private static final double PROBABILITY_TO_DROP_ITEM = 0.5;
+    private static final double PROBABILITY_TO_DROP_ITEM = 0.3;
     private static final double PROBABILITY_TO_DROP_HEART = 0.5;
     
     /**
@@ -86,15 +86,24 @@ public class Grass extends AreaEntity {
      */
     public void cut() {
         isCut = true;
-        
-        // TODO: make tests
+        generateCollectableItem();
+    }
+    
+    /**
+     * Randomly spawn a collectable Item or not (Heart or Coin)
+     */
+    private void generateCollectableItem() {
         if (RandomGenerator.getInstance().nextDouble() < PROBABILITY_TO_DROP_ITEM) {
             if (RandomGenerator.getInstance().nextDouble() < PROBABILITY_TO_DROP_HEART) {
                 getOwnerArea().registerActor(new Heart(getOwnerArea(), Orientation.DOWN,
                         getCurrentMainCellCoordinates()));
+                // TODO: remove debug sout
+                System.out.println("Generated Heart");
             } else {
                 getOwnerArea().registerActor(new Coin(getOwnerArea(), Orientation.DOWN,
                         getCurrentMainCellCoordinates()));
+                // TODO: remove debug sout
+                System.out.println("Generated Coin");
             }
         }
     }
