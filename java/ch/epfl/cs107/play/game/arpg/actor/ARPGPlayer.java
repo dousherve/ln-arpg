@@ -11,6 +11,7 @@ import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
 import ch.epfl.cs107.play.game.arpg.actor.item.CastleKey;
 import ch.epfl.cs107.play.game.arpg.actor.item.Coin;
 import ch.epfl.cs107.play.game.arpg.actor.item.Heart;
+import ch.epfl.cs107.play.game.arpg.actor.terrain.CastleDoor;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.Inventory;
@@ -60,6 +61,16 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         public void interactWith(CastleKey key) {
             key.setCollected();
             collectItem(key);
+        }
+    
+        @Override
+        public void interactWith(CastleDoor door) {
+            if (door.isOpen()) {
+                setIsPassingADoor(door);
+                door.close();
+            } else if (possess(ARPGItem.CASTLE_KEY)) {
+                door.open();
+            }
         }
         
     }
@@ -222,9 +233,17 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             if (currentItemIndex == -1) {
                 currentItemIndex = 0;
             }
-            
+    
             currentItemIndex = (currentItemIndex + 1) % inventory.getItems().length;
-            currentItem = inventory.getItems()[currentItemIndex];
+            ARPGItem item = inventory.getItems()[currentItemIndex];
+            while (item == currentItem) {
+                // We loop until we find an item which is different from the current one
+                // We have to do this beacause the swicthing is not done properly
+                // if we just picked up an Item
+                currentItemIndex = (currentItemIndex + 1) % inventory.getItems().length;
+                item = inventory.getItems()[currentItemIndex];
+            }
+            currentItem = item;
 
             // TODO: Remove debug sysout
             System.out.println("Current item: " + currentItem.getName() +

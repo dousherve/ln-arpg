@@ -12,16 +12,14 @@ public class RouteChateau extends ARPGArea {
             new DiscreteCoordinates(9, 18)
     };
     private Orientation[] orientations = {
-            Orientation.UP
+            Orientation.DOWN
     };
     private DiscreteCoordinates[] positions = {
-            new DiscreteCoordinates(9,0)
+            new DiscreteCoordinates(9, 0)
     };
     private DiscreteCoordinates[][] otherCells = {
             {new DiscreteCoordinates(10,0)}
     };
-
-
 
     @Override
     protected void createArea() {
@@ -33,7 +31,6 @@ public class RouteChateau extends ARPGArea {
 
         registerActor(new CastleDoor("zelda/Chateau",
                 new DiscreteCoordinates(7, 1),
-                Logic.TRUE,
                 this,
                 Orientation.DOWN,
                 new DiscreteCoordinates(9, 13),

@@ -126,7 +126,7 @@ public class Door extends AreaEntity{
     	return signal.isOn();
     }
     
-    protected void setSignal(Logic signal){
+    protected void setSignal(Logic signal) {
     	this.signal = signal;
     }
     
@@ -144,7 +144,7 @@ public class Door extends AreaEntity{
     }
 
     @Override
-    public boolean isViewInteractable(){
+    public boolean isViewInteractable() {
         return false;
     }
 

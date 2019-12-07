@@ -3,6 +3,8 @@ package ch.epfl.cs107.play.game.arpg.actor.terrain;
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
+import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.actor.Door;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -12,8 +14,10 @@ import ch.epfl.cs107.play.window.Canvas;
 
 public class CastleDoor extends Door {
     
-    private static final String OPEN_IMAGE = "zelda/castleDoor.open";
-    private static final String CLOSE_IMAGE = "zelda/castleDoor.open";
+    private static final String OPEN_IMAGE_NAME = "zelda/castleDoor.open";
+    private static final String CLOSE_IMAGE_NAME = "zelda/castleDoor.close";
+    
+    private final Sprite OPEN_SPRITE, CLOSED_SPRITE;
     
     private Sprite sprite;
 
@@ -21,32 +25,33 @@ public class CastleDoor extends Door {
      * Default CastleDoor constructor
      * @param destination        (String): Name of the destination area, not null
      * @param otherSideCoordinates (DiscreteCoordinate):Coordinates of the other side, not null
-     * @param signal (Logic): LogicGate signal opening the door, may be null
      * @param area        (Area): Owner area, not null
      * @param orientation (Orientation): Initial orientation of the entity, not null
      * @param position    (DiscreteCoordinate): Initial position of the entity, not null
      */
-    public CastleDoor(String destination, DiscreteCoordinates otherSideCoordinates, Logic signal, Area area, Orientation orientation, DiscreteCoordinates position) {
-        this(destination, otherSideCoordinates, signal, area, orientation, position,
-                new DiscreteCoordinates[0]);
-        // We pass an empty array for the otherCells, and we call the constructor below
+    public CastleDoor(String destination, DiscreteCoordinates otherSideCoordinates, Area area, Orientation orientation, DiscreteCoordinates position) {
+        // We pass an empty array for the otherCells to the constructor below
+        this(destination, otherSideCoordinates, area, orientation, position, new DiscreteCoordinates[0]);
     }
 
     /**
      * Complementary CastleDoor constructor
      * @param destination        (String): Name of the destination area, not null
      * @param otherSideCoordinates (DiscreteCoordinate):Coordinates of the other side, not null
-     * @param signal (Logic): LogicGate signal opening the door, may be null
      * @param area        (Area): Owner area, not null
      * @param position    (DiscreteCoordinate): Initial position of the entity, not null
      * @param orientation (Orientation): Initial orientation of the entity, not null
      * @param otherCells (DiscreteCoordinates...): Other cells occupied by the AreaEntity if any. Assume absolute coordinates, not null
      */
-    public CastleDoor(String destination, DiscreteCoordinates otherSideCoordinates, Logic signal, Area area, Orientation orientation, DiscreteCoordinates position, DiscreteCoordinates ... otherCells){
-        super(destination, otherSideCoordinates, signal, area, orientation, position, otherCells);
-        
-        sprite = new RPGSprite(OPEN_IMAGE, 2f, 2f, this,
+    public CastleDoor(String destination, DiscreteCoordinates otherSideCoordinates, Area area, Orientation orientation, DiscreteCoordinates position, DiscreteCoordinates ... otherCells){
+        super(destination, otherSideCoordinates, Logic.FALSE, area, orientation, position, otherCells);
+    
+        OPEN_SPRITE = new RPGSprite(OPEN_IMAGE_NAME, 2f, 2f, this,
                 new RegionOfInterest(0, 0, 32, 32));
+        CLOSED_SPRITE = new RPGSprite(CLOSE_IMAGE_NAME, 2f, 2f, this,
+                new RegionOfInterest(0, 0, 32, 32));
+        
+        sprite = CLOSED_SPRITE;
     }
 
     @Override
@@ -55,4 +60,39 @@ public class CastleDoor extends Door {
         sprite.draw(canvas);
     }
     
+    /**
+     * Open the door.
+     */
+    public void open() {
+        setSignal(Logic.TRUE);
+    }
+    
+    /**
+     * Close the door.
+     */
+    public void close() {
+        setSignal(Logic.FALSE);
+    }
+    
+    @Override
+    protected void setSignal(Logic signal) {
+        super.setSignal(signal);
+     
+        sprite = isOpen() ? OPEN_SPRITE : CLOSED_SPRITE;
+    }
+    
+    @Override
+    public boolean takeCellSpace() {
+        return !isOpen();
+    }
+    
+    @Override
+    public boolean isViewInteractable() {
+        return !isOpen();
+    }
+    
+    @Override
+    public void acceptInteraction(AreaInteractionVisitor v) {
+        ((ARPGInteractionVisitor) v).interactWith(this);
+    }
 }
