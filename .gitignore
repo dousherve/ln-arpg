@@ -24,10 +24,12 @@ hs_err_pid*
 
 # Custom
 
-.idea/
 .DS_Store
-notes.txt
 
+.idea/
+bin/
+
+notes.txt
 rpg-game.pdf
 tuto-maquette.pdf
 ZeldICDemo.mp4
