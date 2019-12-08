@@ -133,7 +133,7 @@ public class FlameSkull extends Monster implements FlyableEntity {
      * in order not to do it multiple times.
      * @return (boolean) a boolean indicating if we changed cell since the last damage
      */
-    private boolean hasChangedCell() {
+    private boolean hasChangedCellSinceLastDamage() {
         if (lastCellDamagedCoordinates == null) {
             return true;
         }
@@ -201,7 +201,7 @@ public class FlameSkull extends Monster implements FlyableEntity {
     @Override
     public boolean wantsCellInteraction() {
         // We check if the monster has changed cell, in order not to deal the damage mutliple times
-        return (getState() == State.ALIVE && hasChangedCell());
+        return (getState() == State.ALIVE && hasChangedCellSinceLastDamage());
     }
     
     @Override
