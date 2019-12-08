@@ -59,9 +59,9 @@ public class ARPGStatusHpGUI implements ARPGStatusGUIElement {
         for (int i = 0; i < hearts.length; ++i) {
             if (hp - i <= 0) {
                 roi = EMPTY_HEART_ROI;
-            } else if(hp - i < 1){
+            } else if (hp - i < 1) {
                 roi = HALF_HEART_ROI;
-            } else{
+            } else {
                 roi = FULL_HEART_ROI;
             }
 
