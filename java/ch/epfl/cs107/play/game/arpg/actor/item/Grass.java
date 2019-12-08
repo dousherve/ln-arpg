@@ -29,10 +29,12 @@ public class Grass extends AreaEntity {
     private Animation cutAnimation;
     private static final int ANIMATION_DURATION = 4;
     
-    /// 33% chance to drop an item
-    private static final double PROBABILITY_TO_DROP_ITEM = 0.3;
+    /// 50% chance to drop an item
+    private static final double PROBABILITY_TO_DROP_ITEM = 0.5;
     /// 50% chance that the dropped item is a heart
     private static final double PROBABILITY_TO_DROP_HEART = 0.5;
+    
+    private static final float SIZE = 1f, SLICE_SIZE = 2f;
     
     /**
      * Default Grass constructor
@@ -43,12 +45,13 @@ public class Grass extends AreaEntity {
     public Grass(Area area, DiscreteCoordinates position) {
         super(area, Orientation.DOWN, position);
         
-        sprite = new RPGSprite("zelda/grass", 1, 1, this,
+        sprite = new RPGSprite("zelda/grass", SIZE, SIZE, this,
                 new RegionOfInterest(0, 0, 16, 16));
         
         Sprite[] cutSprites = new Sprite[4];
         for (int i = 0; i < cutSprites.length; ++i) {
-            cutSprites[i] = new Sprite("zelda/grass.sliced", 2, 2, this,
+            cutSprites[i] = new Sprite("zelda/grass.sliced", SLICE_SIZE, SLICE_SIZE,
+                    this,
                     new RegionOfInterest(i * 32, 0, 32, 32),
                     new Vector(-0.5f, 0));
         }
@@ -61,9 +64,7 @@ public class Grass extends AreaEntity {
     public void draw(Canvas canvas) {
         if (!isCut) {
             sprite.draw(canvas);
-        }
-        
-        if (isCut && !cutAnimation.isCompleted()) {
+        } else if (!cutAnimation.isCompleted()) {
             cutAnimation.draw(canvas);
         }
     }
@@ -72,7 +73,7 @@ public class Grass extends AreaEntity {
     public void update(float deltaTime) {
         if (isCut) {
             if (cutAnimation.isCompleted()) {
-                // Unregister if the slicing animation after the cut is done
+                // Unregister the grass if the animation is completed
                 getOwnerArea().unregisterActor(this);
             } else {
                 // If not, animate
@@ -87,6 +88,7 @@ public class Grass extends AreaEntity {
      * Cut the current Grass, if not already
      */
     public void cut() {
+        System.out.println("Cut");
         if (!isCut) {
             isCut = true;
             generateCollectableItem();

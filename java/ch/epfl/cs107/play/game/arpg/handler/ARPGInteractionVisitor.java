@@ -8,6 +8,7 @@ import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Coin;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Heart;
 import ch.epfl.cs107.play.game.arpg.actor.item.CastleDoor;
 import ch.epfl.cs107.play.game.arpg.actor.item.Grass;
+import ch.epfl.cs107.play.game.arpg.actor.monster.FlameSkull;
 import ch.epfl.cs107.play.game.rpg.handler.RPGInteractionVisitor;
 
 public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
@@ -79,6 +80,14 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
         // by default the interaction is empty
     }
     
-    // TODO: see if we can solve the problem of the "automatic pick-up" for a ARPGCollectableAreaEntity
+    /**
+     * Simulate an interaction between RPG Interactor and a FlameSkull
+     * @param skull (FlameSkull), not null
+     */
+    default void interactWith(FlameSkull skull) {
+        // by default the interaction is empty
+    }
+    
+    // TODO: see if we can solve the problem of the "automatic pick-up" for an ARPGCollectableAreaEntity
     
 }

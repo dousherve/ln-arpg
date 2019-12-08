@@ -26,6 +26,8 @@ public abstract class MovableAreaEntity extends AreaEntity {
     // The cells the entity entered
     private List<DiscreteCoordinates> enteredCells;
 
+    private Vector targetPosition;
+    private Vector originPosition;
 
     /**
      * Default MovableAreaEntity constructor
@@ -88,6 +90,9 @@ public abstract class MovableAreaEntity extends AreaEntity {
                 startingFrame = Math.min(startingFrame, frameForMove);
                 remainingFramesForCurrentMove = framesForCurrentMove - startingFrame;
 
+                originPosition = getPosition();
+                targetPosition = getPosition().add(getOrientation().toVector());
+
                 increasePositionOf(startingFrame);
                 
                 return true;
@@ -111,6 +116,14 @@ public abstract class MovableAreaEntity extends AreaEntity {
                 
                 remainingFramesForCurrentMove = framesForCurrentMove - remainingFramesForCurrentMove;
                 
+                Vector tempPos = originPosition;
+                originPosition = targetPosition;
+                targetPosition = tempPos;
+                
+            	List<DiscreteCoordinates> tempCells = leftCells;
+            	leftCells = enteredCells;
+            	enteredCells = tempCells;
+
                 return true;
             }
         }
@@ -203,6 +216,7 @@ public abstract class MovableAreaEntity extends AreaEntity {
             if (!isTargetReached()) {
             	increasePositionOf(1);
             } else {
+                setCurrentPosition(targetPosition);
                 resetMotion();
             }
         }

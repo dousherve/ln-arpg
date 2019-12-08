@@ -192,6 +192,11 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             handleItemUse();
         }
         
+        if (keyboard.get(Keyboard.F).isPressed()) {
+            // Switch between fortune and money display by pressing 'F'
+            isDisplayingMoney = !isDisplayingMoney;
+        }
+        
         // TODO: remove debug stuff
         if (keyboard.get(Keyboard.Z).isPressed()) {
             for (ARPGItem item : ARPGItem.values()) {
@@ -204,9 +209,9 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             inventory.addMoney(10);
         }
         
-        if (keyboard.get(Keyboard.F).isPressed()) {
-            // Switch between fortune and money display by pressing 'F'
-            isDisplayingMoney = !isDisplayingMoney;
+        // TODO: remove debug display pos
+        if (keyboard.get(Keyboard.P).isPressed()) {
+            System.out.println(getCurrentMainCellCoordinates().toString());
         }
     }
     

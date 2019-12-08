@@ -27,18 +27,11 @@ public abstract class Player extends MovableAreaEntity implements Interactor {
     }
 
     /**
-     * Leave an area by unregister this player
-     */
-    public void leaveArea(){
-        getOwnerArea().unregisterActor(this);
-    }
-
-    /**
      *
      * @param area (Area): initial area, not null
      * @param position (DiscreteCoordinates): initial position, not null
      */
-    public void enterArea(Area area, DiscreteCoordinates position){
+    public void enterArea(Area area, DiscreteCoordinates position) {
         area.registerActor(this);
         area.setViewCandidate(this);
 
@@ -46,6 +39,13 @@ public abstract class Player extends MovableAreaEntity implements Interactor {
         setCurrentPosition(position.toVector());
         resetDoorStates();
         resetMotion();
+    }
+    
+    /**
+     * Leave area by uneregistering this Player
+     */
+    public void leaveArea() {
+        getOwnerArea().unregisterActor(this);
     }
 
     /**

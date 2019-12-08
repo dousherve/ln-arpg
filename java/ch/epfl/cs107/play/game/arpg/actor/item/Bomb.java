@@ -9,6 +9,8 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.arpg.actor.ARPGPlayer;
+import ch.epfl.cs107.play.game.arpg.actor.monster.FlameSkull;
+import ch.epfl.cs107.play.game.arpg.actor.monster.Monster;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -30,20 +32,34 @@ public class Bomb extends AreaEntity implements Interactor {
 
         @Override
         public void interactWith(ARPGPlayer player) {
-            player.harm(2.f);
+            player.harm(DAMAGE);
+        }
+    
+        @Override
+        public void interactWith(FlameSkull skull) {
+            skull.harm(Monster.Vulnerability.PHYSICAL, DAMAGE);
         }
         
     }
     
+    private enum State {
+        READY, EXPLODING, HAS_EXPLODED
+    }
+    
+    private static final float DAMAGE = 2f;
+    
     /// The default remaining time before the Bomb explodes
-    private static final int DEFAULT_TIMER_VALUE = 30;
+    private static final int DEFAULT_TIMER_VALUE = 100;
     /// The remaining time before the Bomb explodes
     private int timer;
-    /// Keep track of the current state of the Bomb
-    private boolean isExploding, hasExploded, ignited;
+    /// Whether the bomb has already dealt damage or not
+    private boolean hasDealtCellDamage, hasDealtViewDamage;
     
     /// The Interaction Handler
     private final BombHandler handler;
+    
+    /// The current state of the Bomb
+    private State state;
     
     private Sprite sprite;
     private Animation explosionAnimation;
@@ -72,46 +88,58 @@ public class Bomb extends AreaEntity implements Interactor {
         explosionAnimation = new Animation(ANIMATION_DURATION / 2, explosionSprites, false);
     
         timer = DEFAULT_TIMER_VALUE;
-        hasExploded = false;
-        isExploding = false;
+        hasDealtCellDamage = false;
+        hasDealtViewDamage = false;
+        
+        state = State.READY;
     }
     
     @Override
     public void draw(Canvas canvas) {
-        if (!isExploding && !hasExploded) {
-            sprite.draw(canvas);
-        }
-        
-        if (isExploding && !explosionAnimation.isCompleted()) {
-            explosionAnimation.draw(canvas);
+        switch (state) {
+            case READY:
+                sprite.draw(canvas);
+                break;
+            case EXPLODING:
+                if (!explosionAnimation.isCompleted()) {
+                    explosionAnimation.draw(canvas);
+                } else {
+                    state = State.HAS_EXPLODED;
+                }
+                break;
+            default:
+                break;
         }
     }
     
     @Override
     public void update(float deltaTime) {
-        timer = Math.max(0, timer - 1);
-        
-        if (ignited) {
-            ignited = false;
+        switch (state) {
+            case READY:
+                --timer;
+                if (timer <= 0) {
+                    explode();
+                }
+                break;
+            case EXPLODING:
+                explosionAnimation.update(deltaTime);
+    
+                if (explosionAnimation.isCompleted()) {
+                    state = State.HAS_EXPLODED;
+                }
+                break;
+            case HAS_EXPLODED:
+                // Unregister the bomb
+                getOwnerArea().unregisterActor(this);
+                break;
         }
-        
-        if (timer == 0 && !isExploding && !hasExploded) {
-            ignited = true;
-            isExploding = true;
-        }
-        
-        if (isExploding) {
-            explosionAnimation.update(deltaTime);
-            if (explosionAnimation.isCompleted()) {
-                isExploding = false;
-                hasExploded = true;
-            }
-        }
-        
-        if (hasExploded) {
-            // Unregister the bomb if it has exploded
-            getOwnerArea().unregisterActor(this);
-        }
+    }
+    
+    /**
+     * BOOOOOM.
+     */
+    public void explode() {
+        state = State.EXPLODING;
     }
     
     @Override
@@ -128,12 +156,22 @@ public class Bomb extends AreaEntity implements Interactor {
     
     @Override
     public boolean wantsCellInteraction() {
-        return ignited;
+        if (!hasDealtCellDamage && state == State.EXPLODING) {
+            hasDealtCellDamage = true;
+            return true;
+        }
+        
+        return false;
     }
     
     @Override
     public boolean wantsViewInteraction() {
-        return ignited;
+        if (!hasDealtViewDamage && state == State.EXPLODING) {
+            hasDealtViewDamage = true;
+            return true;
+        }
+    
+        return false;
     }
     
     @Override
@@ -150,7 +188,7 @@ public class Bomb extends AreaEntity implements Interactor {
     
     @Override
     public boolean isCellInteractable() {
-        return false;
+        return true;
     }
     
     @Override
