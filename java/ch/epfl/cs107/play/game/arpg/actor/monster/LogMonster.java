@@ -29,8 +29,12 @@ public class LogMonster extends Monster {
         public void interactWith(ARPGPlayer player) {
             if (state == LogMonsterState.IDLE) {
                 state = LogMonsterState.ATTACKING;
+                System.out.println(state);
             } else if (state == LogMonsterState.ATTACKING) {
                 player.harm(DAMAGE);
+                hasReachedTarget = true;
+                state = LogMonsterState.FALLING_ASLEEP;
+                System.out.println(state);
             }
         }
         
@@ -53,6 +57,7 @@ public class LogMonster extends Monster {
     
     /// The damage the LogMonster deals
     private static final float DAMAGE = 2f;
+    private boolean hasReachedTarget;
     
     /// The size of the LogMonster
     private static final float SIZE = 2f;
@@ -97,6 +102,8 @@ public class LogMonster extends Monster {
         handler = new LogMonsterHandler();
         state = LogMonsterState.IDLE;
         inactivityDuration = 0f;
+        
+        hasReachedTarget = false;
     
         setupAnimations();
     }
@@ -110,6 +117,24 @@ public class LogMonster extends Monster {
         }
         
         inactivityDuration = Math.max(inactivityDuration - deltaTime, 0);
+    
+        switch (state)  {
+            case SLEEPING:
+                sleepingAnimation.update(deltaTime);
+                break;
+        
+            case WAKING_UP:
+                wakingUpAnimation.update(deltaTime);
+                break;
+        
+            default:
+                movingAnimationIndex = getOrientation().ordinal();
+                if (isDisplacementOccurs()) {
+                    movingAnimations[movingAnimationIndex].update(deltaTime);
+                } else {
+                    movingAnimations[movingAnimationIndex].reset();
+                }
+        }
         
         if (inactivityDuration <= 0) {
             switch (state) {
@@ -121,12 +146,12 @@ public class LogMonster extends Monster {
                     break;
                     
                 case ATTACKING:
+                    inactivityDuration = 0;
                     move(MOVING_ANIMATION_DURATION);
-                    if (
-                            !isDisplacementOccurs() && 
-                            !getOwnerArea().canEnterAreaCells(this, getNextCurrentCells())
-                    ) {
+                    if (!isDisplacementOccurs() && hasReachedTarget) {
                         state = LogMonsterState.FALLING_ASLEEP;
+                        hasReachedTarget = false;
+                        System.out.println(state);
                     }
                     break;
                     
@@ -134,40 +159,28 @@ public class LogMonster extends Monster {
                     inactivityDuration = MIN_SLEEPING_DURATION +
                             (MAX_SLEEPING_DURATION - MIN_SLEEPING_DURATION) * RandomGenerator.getInstance().nextFloat();
                     state = LogMonsterState.SLEEPING;
+                    System.out.println(state);
                     break;
                     
                 case SLEEPING:
-                    state = LogMonsterState.WAKING_UP;
-                    wakingUpAnimation.reset();
+                    if (inactivityDuration <= 0) {
+                        state = LogMonsterState.WAKING_UP;
+                        System.out.println(state);
+                        wakingUpAnimation.reset();
+                    }
                     break;
                     
                 case WAKING_UP:
                     if (wakingUpAnimation.isCompleted()) {
                         state = LogMonsterState.IDLE;
+                        System.out.println(state);
+                        wakingUpAnimation.reset();
                     }
                     break;
                     
                 default:
                     break;
             }
-        }
-        
-        switch (state)  {
-            case SLEEPING:
-                sleepingAnimation.update(deltaTime);
-                break;
-                
-            case WAKING_UP:
-                wakingUpAnimation.update(deltaTime);
-                break;
-                
-            default:
-                movingAnimationIndex = getOrientation().ordinal();
-                if (isDisplacementOccurs()) {
-                    movingAnimations[movingAnimationIndex].update(deltaTime);
-                } else {
-                    movingAnimations[movingAnimationIndex].reset();
-                }
         }
     }
     
@@ -203,6 +216,7 @@ public class LogMonster extends Monster {
         // Moving Animation
         Sprite[][] movingSprites = RPGSprite.extractSprites("zelda/logMonster", 4,
                 SIZE, SIZE, this, 32, 32,
+                new Vector(-0.5f, 0),
                 new Orientation[] {Orientation.DOWN, Orientation.UP, Orientation.RIGHT, Orientation.LEFT});
         movingAnimations = RPGSprite.createAnimations(MOVING_ANIMATION_DURATION, movingSprites);
         movingAnimationIndex = getOrientation().ordinal();
@@ -211,7 +225,8 @@ public class LogMonster extends Monster {
         Sprite[] sleepingSprites = new Sprite[4];
         for (int i = 0; i < sleepingSprites.length; ++i) {
             sleepingSprites[i] = new RPGSprite("zelda/logMonster.sleeping", SIZE, SIZE, this,
-                    new RegionOfInterest(0, 32 * i, 32, 32));
+                    new RegionOfInterest(0, 32 * i, 32, 32),
+                    new Vector(-0.5f, 0));
         }
         sleepingAnimation = new Animation(SLEEPING_ANIMATION_DURATION, sleepingSprites);
         
@@ -219,7 +234,8 @@ public class LogMonster extends Monster {
         Sprite[] wakingUpSprites = new Sprite[3];
         for (int i = 0; i < wakingUpSprites.length; ++i) {
             wakingUpSprites[i] = new RPGSprite("zelda/logMonster.wakingUp", SIZE, SIZE, this,
-                    new RegionOfInterest(0, 32 * i, 32, 32));
+                    new RegionOfInterest(0, 32 * i, 32, 32),
+                    new Vector(-0.5f, 0));
         }
         wakingUpAnimation = new Animation(WAKING_ANIMATION_DURATION, wakingUpSprites, false);
     }
@@ -278,7 +294,6 @@ public class LogMonster extends Monster {
                     getCurrentMainCellCoordinates().jump(getOrientation().toVector())
             );
         } else {
-            // TODO: "ensemble constant de cellules en face de lui": "constant" ??????
             List<DiscreteCoordinates> coords = new ArrayList<>();
             
             // We add a constant number of facing cells to the FOV
@@ -286,9 +301,6 @@ public class LogMonster extends Monster {
                 coords.add(getCurrentMainCellCoordinates().jump(
                         getOrientation().toVector().mul(i)
                 ));
-    
-                System.out.println(getCurrentMainCellCoordinates().jump(
-                        getOrientation().toVector().mul(i)));
             }
             
             return coords;

@@ -63,8 +63,7 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
         Sprite[] vanishSprites = new Sprite[7];
         for (int i = 0; i < vanishSprites.length; ++i) {
             vanishSprites[i] = new RPGSprite("zelda/vanish", 2f, 2f, this,
-                    new RegionOfInterest(32 * i, 0, 32, 32),
-                    new Vector(-0.5f, -0.5f));
+                    new RegionOfInterest(32 * i, 0, 32, 32));
         }
     
         vanishAnimation = new Animation(VANISH_ANIMATION_DURATION, vanishSprites, false);
