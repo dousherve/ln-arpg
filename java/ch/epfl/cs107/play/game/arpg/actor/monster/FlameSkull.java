@@ -186,5 +186,8 @@ public class FlameSkull extends Monster implements FlyableEntity {
         
         other.acceptInteraction(handler);
     }
+
+
+
     
 }

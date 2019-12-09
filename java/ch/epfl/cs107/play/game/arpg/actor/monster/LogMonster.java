@@ -31,9 +31,11 @@ public class LogMonster extends Monster {
                 state = LogMonsterState.ATTACKING;
                 inactivityDuration = 0;
                 System.out.println(state);
+
             } else if (state == LogMonsterState.ATTACKING) {
                 player.harm(DAMAGE);
-                hasHarmedTarget = true;
+                state = LogMonsterState.FALLING_ASLEEP;
+                isBlocked = false;
                 System.out.println(state);
             }
         }
@@ -90,6 +92,8 @@ public class LogMonster extends Monster {
     
     private Animation wakingUpAnimation;
     private static final int WAKING_ANIMATION_DURATION = 16;
+
+    private boolean isBlocked = false;
     
     /**
      * Default LogMonster constructor
@@ -148,11 +152,15 @@ public class LogMonster extends Monster {
                     break;
                     
                 case ATTACKING:
-                    move(MOVING_ANIMATION_DURATION);
-                    if (!isDisplacementOccurs() && !canGoToNextCell() && hasHarmedTarget) {
-                        hasHarmedTarget = false;
+                    if(isBlocked){
+                        isBlocked = false;
                         state = LogMonsterState.FALLING_ASLEEP;
                     }
+
+                    if(!move(MOVING_ANIMATION_DURATION) && !isDisplacementOccurs()){
+                        isBlocked = true;
+                    }
+
                     break;
                     
                 case FALLING_ASLEEP:
