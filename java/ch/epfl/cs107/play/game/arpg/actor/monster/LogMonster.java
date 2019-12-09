@@ -47,15 +47,13 @@ public class LogMonster extends Monster {
     }
     
     /// The maximum Health Points
-    private static final float MAX_HP = 2f;
+    private static final float MAX_HP = 5f;
     
     /// The minimum and maximum sleeping durations, respectively
     private static final float MIN_SLEEPING_DURATION = 5f, MAX_SLEEPING_DURATION = 10f;
     
     /// The actual lifetime of the LogMonster
     private float lifetime;
-    
-    private boolean hasHarmedTarget;
     
     private static final float PROBABILITY_TO_CHANGE_ORIENTATION = 0.3f;
     
@@ -77,6 +75,9 @@ public class LogMonster extends Monster {
     /// The maximum inactivity durations
     private static final float MAX_INACTIVITY_DURATION = 24f;
     private float inactivityDuration;
+
+    //To check if the monster is blocked by an non-walkable cell while attacking
+    private boolean isBlocked = false;
     
     // MARK:- Animations
     
@@ -93,7 +94,6 @@ public class LogMonster extends Monster {
     private Animation wakingUpAnimation;
     private static final int WAKING_ANIMATION_DURATION = 16;
 
-    private boolean isBlocked = false;
     
     /**
      * Default LogMonster constructor
@@ -110,8 +110,7 @@ public class LogMonster extends Monster {
         
         setupAnimations();
         randomlyOrientate();
-    
-        hasHarmedTarget = false;
+
     }
     
     @Override
@@ -284,7 +283,7 @@ public class LogMonster extends Monster {
     
     @Override
     float getMaxHp() {
-        return 5f;
+        return MAX_HP;
     }
     
     @Override

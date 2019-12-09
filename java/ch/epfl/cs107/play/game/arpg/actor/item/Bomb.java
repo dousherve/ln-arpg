@@ -8,8 +8,10 @@ import ch.epfl.cs107.play.game.areagame.actor.Interactor;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.arpg.ARPGBehavior;
 import ch.epfl.cs107.play.game.arpg.actor.ARPGPlayer;
 import ch.epfl.cs107.play.game.arpg.actor.monster.FlameSkull;
+import ch.epfl.cs107.play.game.arpg.actor.monster.LogMonster;
 import ch.epfl.cs107.play.game.arpg.actor.monster.Monster;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
@@ -34,7 +36,12 @@ public class Bomb extends AreaEntity implements Interactor {
         public void interactWith(ARPGPlayer player) {
             player.harm(DAMAGE);
         }
-    
+
+        @Override
+        public void interactWith(LogMonster monster) {
+            monster.harm(Monster.Vulnerability.FIRE, DAMAGE);
+        }
+
         @Override
         public void interactWith(FlameSkull skull) {
             skull.harm(Monster.Vulnerability.PHYSICAL, DAMAGE);
