@@ -2,6 +2,7 @@ package ch.epfl.cs107.play.game.arpg.actor.monster;
 
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Animation;
+import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Interactor;
 import ch.epfl.cs107.play.game.areagame.actor.MovableAreaEntity;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
@@ -26,7 +27,7 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
         PHYSICAL, FIRE, MAGIC
     }
     
-    enum State {
+    enum MonsterState {
         ALIVE, VANISHING, DEAD
     }
     
@@ -36,7 +37,10 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
     private float hp;
     
     /// Keep track of the state of the Monster
-    private State state;
+    private MonsterState monsterState;
+    
+    /// The coordinates of the last Cell where damage has been dealt
+    private DiscreteCoordinates lastCellDamagedCoordinates;
     
     /// The vanish Animation
     private Animation vanishAnimation;
@@ -48,8 +52,9 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
      * @param area        (Area): Owner area. Not null
      * @param orientation (Orientation): Initial orientation of the entity. Not null
      * @param position    (Coordinate): Initial position of the entity. Not null
+     * @param vulnerabilities (Vulnerability...) The vulnerabilities of the Monster
      */
-    public Monster(Area area, Orientation orientation, DiscreteCoordinates position, Vulnerability... vulnerabilities) {
+    Monster(Area area, Orientation orientation, DiscreteCoordinates position, Vulnerability... vulnerabilities) {
         super(area, orientation, position);
         
         this.vulnerabilities = vulnerabilities;
@@ -64,7 +69,7 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
     
         vanishAnimation = new Animation(VANISH_ANIMATION_DURATION, vanishSprites, false);
         
-        state = State.ALIVE;
+        monsterState = MonsterState.ALIVE;
         
         enterArea(area, position);
     }
@@ -73,18 +78,25 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
     public void update(float deltaTime) {
         super.update(deltaTime);
         
-        if (state == State.VANISHING) {
+        if (monsterState == MonsterState.VANISHING) {
             if (!vanishAnimation.isCompleted()) {
                 vanishAnimation.update(deltaTime);
             } else {
-                state = State.DEAD;
+                monsterState = MonsterState.DEAD;
+    
+                // Drop the items to drop at death
+                for (ARPGCollectableAreaEntity entity : getItemsToDropAtDeath()) {
+                    getOwnerArea().registerActor(entity);
+                }
+                
+                leaveArea();
             }
         }
     }
     
     @Override
     public void draw(Canvas canvas) {
-        if (state == State.VANISHING) {
+        if (monsterState == MonsterState.VANISHING) {
             vanishAnimation.draw(canvas);
         }
     }
@@ -131,19 +143,18 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
      * @param damage (float) The damage to
      */
     public void harm(Vulnerability vulnerability, float damage) {
-        if (state == State.DEAD) {
+        if (monsterState == MonsterState.DEAD) {
             return;
         }
         
         if (isVulnerableTo(vulnerability)) {
             hp = Math.max(hp - damage, 0);
             // TODO: remove debug sout
-            System.out.println(getClass().getSimpleName() + "harmed: " + vulnerability.name() +
-                    " ; HP: " + damage);
-        }
-        
-        if (hp <= 0) {
-            die();
+            System.out.println(getClass().getSimpleName() + 
+                    " harmed: " + vulnerability.name() + " ; new HP: " + hp);
+            if (hp <= 0) {
+                die();
+            }
         }
     }
     
@@ -151,21 +162,31 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
      * The actions to be executed when the Monster dies.
      */
     void die() {
-        state = State.VANISHING;
+        monsterState = MonsterState.VANISHING;
         
         leaveArea();
-        
-        for (ARPGCollectableAreaEntity entity : getItemsToDropAtDeath()) {
-            getOwnerArea().registerActor(entity);
-        }
     }
     
     /**
      *
      * @return (State) The current state of the Monster
      */
-    State getState() {
-        return state;
+    MonsterState getMonsterState() {
+        return monsterState;
+    }
+    
+    /**
+     * This function helps to make sure that we haven't already dealt damage to the current cell,
+     * in order not to do it multiple times.
+     * @return (boolean) a boolean indicating if we changed cell since the last damage
+     */
+    boolean hasChangedCellSinceLastDamage() {
+        if (lastCellDamagedCoordinates == null) {
+            return true;
+        }
+        
+        return lastCellDamagedCoordinates.x != getCurrentMainCellCoordinates().x ||
+                lastCellDamagedCoordinates.y != getCurrentMainCellCoordinates().y;
     }
     
     /**
@@ -180,8 +201,13 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
     // MARK:- Interactable
     
     @Override
+    public List<DiscreteCoordinates> getCurrentCells() {
+        return Collections.singletonList(getCurrentMainCellCoordinates());
+    }
+    
+    @Override
     public boolean takeCellSpace() {
-        return (state == State.ALIVE);
+        return (monsterState == MonsterState.ALIVE);
     }
     
     @Override
@@ -195,6 +221,22 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
     }
     
     // MARK:- Interactor
+    
+    
+    @Override
+    public void interactWith(Interactable other) {
+        lastCellDamagedCoordinates = getCurrentMainCellCoordinates();
+    }
+    
+    @Override
+    public boolean wantsCellInteraction() {
+        return false;
+    }
+    
+    @Override
+    public boolean wantsViewInteraction() {
+        return false;
+    }
     
     @Override
     public List<DiscreteCoordinates> getFieldOfViewCells() {

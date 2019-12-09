@@ -88,7 +88,6 @@ public class Grass extends AreaEntity {
      * Cut the current Grass, if not already
      */
     public void cut() {
-        System.out.println("Cut");
         if (!isCut) {
             isCut = true;
             generateCollectableItem();

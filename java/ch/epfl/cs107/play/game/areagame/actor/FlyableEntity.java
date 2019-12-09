@@ -1,4 +1,4 @@
-package ch.epfl.cs107.play.game.arpg.actor.monster;
+package ch.epfl.cs107.play.game.areagame.actor;
 
 public interface FlyableEntity {
     

@@ -213,6 +213,11 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         if (keyboard.get(Keyboard.P).isPressed()) {
             System.out.println(getCurrentMainCellCoordinates().toString());
         }
+        
+        // TODO: remove debug heal
+        if (keyboard.get(Keyboard.H).isPressed()) {
+            heal(MAX_HP);
+        }
     }
     
     private void handleItemUse() {

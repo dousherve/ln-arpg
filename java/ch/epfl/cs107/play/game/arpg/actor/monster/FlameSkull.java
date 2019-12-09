@@ -7,6 +7,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.arpg.actor.ARPGPlayer;
+import ch.epfl.cs107.play.game.areagame.actor.FlyableEntity;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
 import ch.epfl.cs107.play.game.arpg.actor.item.Grass;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
@@ -16,8 +17,11 @@ import ch.epfl.cs107.play.math.RandomGenerator;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+// TODO : not dealing damage properly if Player is moving
 
 public class FlameSkull extends Monster implements FlyableEntity {
     
@@ -57,10 +61,8 @@ public class FlameSkull extends Monster implements FlyableEntity {
     /// The damage the FlameSkull deals
     private static final float DAMAGE = 1.5f;
     
+    /// The size of the FlameSkull
     private static final float SIZE = 2f;
-    
-    /// The coordinates of the last Cell where damage has been dealt
-    private DiscreteCoordinates lastCellDamagedCoordinates;
     
     /// The Interaction handler
     private FlameSkullHandler handler;
@@ -80,27 +82,26 @@ public class FlameSkull extends Monster implements FlyableEntity {
      */
     public FlameSkull(Area area, DiscreteCoordinates position) {
         super(area, Orientation.DOWN, position, Vulnerability.PHYSICAL, Vulnerability.MAGIC);
-        randomlyOrientate();
-        
-        handler = new FlameSkullHandler();
     
+        randomlyOrientate();
+        handler = new FlameSkullHandler();
+        // We choose a random value between MIN_LIFE_TIME and MAX_LIFE_TIME
+        lifetime = MIN_LIFE_TIME +
+                (MAX_LIFE_TIME - MIN_LIFE_TIME) * RandomGenerator.getInstance().nextFloat();
+        
         Sprite[][] sprites = RPGSprite.extractSprites("zelda/flameSkull", 3,
                 SIZE, SIZE, this, 32, 32,
                 new Vector(-SIZE/4, -SIZE/4),
                 new Orientation[] {Orientation.UP, Orientation.LEFT, Orientation.DOWN, Orientation.RIGHT});
         animations = RPGSprite.createAnimations(ANIMATION_DURATION, sprites);
         animationIndex = getOrientation().ordinal();
-     
-        // We choose a random value between MIN_LIFE_TIME and MAX_LIFE_TIME
-        lifetime = MIN_LIFE_TIME +
-                ((MAX_LIFE_TIME - MIN_LIFE_TIME) * RandomGenerator.getInstance().nextFloat());
     }
     
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
         
-        if (getState() == State.ALIVE) {
+        if (getMonsterState() == MonsterState.ALIVE) {
             lifetime -= deltaTime;
             if (lifetime <= 0) {
                 die();
@@ -123,23 +124,9 @@ public class FlameSkull extends Monster implements FlyableEntity {
     public void draw(Canvas canvas) {
         super.draw(canvas);
         
-        if (getState() == State.ALIVE) {
+        if (getMonsterState() == MonsterState.ALIVE) {
             animations[animationIndex].draw(canvas);
         }
-    }
-    
-    /**
-     * This function helps to make sure that we haven't already dealt damage to the current cell,
-     * in order not to do it multiple times.
-     * @return (boolean) a boolean indicating if we changed cell since the last damage
-     */
-    private boolean hasChangedCellSinceLastDamage() {
-        if (lastCellDamagedCoordinates == null) {
-            return true;
-        }
-        
-        return lastCellDamagedCoordinates.x != getCurrentMainCellCoordinates().x ||
-                lastCellDamagedCoordinates.y != getCurrentMainCellCoordinates().y;
     }
     
     /**
@@ -176,11 +163,6 @@ public class FlameSkull extends Monster implements FlyableEntity {
     // MARK:- Interactable
     
     @Override
-    public List<DiscreteCoordinates> getCurrentCells() {
-        return Collections.singletonList(getCurrentMainCellCoordinates());
-    }
-    
-    @Override
     public boolean takeCellSpace() {
         return false;
     }
@@ -193,20 +175,16 @@ public class FlameSkull extends Monster implements FlyableEntity {
     // MARK:- Interactor
     
     @Override
-    public void interactWith(Interactable other) {
-        lastCellDamagedCoordinates = getCurrentMainCellCoordinates();
-        other.acceptInteraction(handler);
-    }
-    
-    @Override
     public boolean wantsCellInteraction() {
         // We check if the monster has changed cell, in order not to deal the damage mutliple times
-        return (getState() == State.ALIVE && hasChangedCellSinceLastDamage());
+        return (getMonsterState() == MonsterState.ALIVE && hasChangedCellSinceLastDamage());
     }
     
     @Override
-    public boolean wantsViewInteraction() {
-        return false;
+    public void interactWith(Interactable other) {
+        super.interactWith(other);
+        
+        other.acceptInteraction(handler);
     }
     
 }

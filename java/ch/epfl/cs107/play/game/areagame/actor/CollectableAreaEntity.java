@@ -25,8 +25,6 @@ abstract public class CollectableAreaEntity extends AreaEntity {
     public void setCollected() {
         if (!isCollected) {
             isCollected = true;
-            // TODO: remove debug sout
-            System.out.println("Collected");
             getOwnerArea().unregisterActor(this);
         }
     }

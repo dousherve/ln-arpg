@@ -5,6 +5,7 @@ import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
 import ch.epfl.cs107.play.game.arpg.actor.item.CastleDoor;
 import ch.epfl.cs107.play.game.arpg.actor.item.Grass;
 import ch.epfl.cs107.play.game.arpg.actor.monster.FlameSkull;
+import ch.epfl.cs107.play.game.arpg.actor.monster.LogMonster;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Keyboard;
 
@@ -60,8 +61,13 @@ public class RouteChateau extends ARPGArea {
         super.update(deltaTime);
         
         // TODO: see if we must remove these key actions
+        
         if (getKeyboard().get(Keyboard.S).isPressed()) {
             registerActor(new FlameSkull(this, new DiscreteCoordinates(8, 10)));
+        }
+    
+        if (getKeyboard().get(Keyboard.L).isPressed()) {
+            registerActor(new LogMonster(this, new DiscreteCoordinates(9, 9)));
         }
     
         if (getKeyboard().get(Keyboard.B).isPressed()) {

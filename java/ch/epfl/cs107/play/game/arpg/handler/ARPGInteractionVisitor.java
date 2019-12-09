@@ -9,6 +9,7 @@ import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Heart;
 import ch.epfl.cs107.play.game.arpg.actor.item.CastleDoor;
 import ch.epfl.cs107.play.game.arpg.actor.item.Grass;
 import ch.epfl.cs107.play.game.arpg.actor.monster.FlameSkull;
+import ch.epfl.cs107.play.game.arpg.actor.monster.LogMonster;
 import ch.epfl.cs107.play.game.rpg.handler.RPGInteractionVisitor;
 
 public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
@@ -85,6 +86,14 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
      * @param skull (FlameSkull), not null
      */
     default void interactWith(FlameSkull skull) {
+        // by default the interaction is empty
+    }
+    
+    /**
+     * Simulate an interaction between RPG Interactor and a LogMonster
+     * @param logMonster (LogMonster), not null
+     */
+    default void interactWith(LogMonster logMonster) {
         // by default the interaction is empty
     }
     
