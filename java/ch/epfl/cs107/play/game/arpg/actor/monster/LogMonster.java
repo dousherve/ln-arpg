@@ -30,9 +30,8 @@ public class LogMonster extends Monster {
             if (state == LogMonsterState.IDLE) {
                 state = LogMonsterState.ATTACKING;
                 System.out.println(state);
-            } else if (state == LogMonsterState.ATTACKING) {
+            } else if (state == LogMonsterState.ATTACKING || !hasReachedTarget) {
                 player.harm(DAMAGE);
-                hasReachedTarget = true;
                 state = LogMonsterState.FALLING_ASLEEP;
                 System.out.println(state);
             }
@@ -141,18 +140,13 @@ public class LogMonster extends Monster {
                 case IDLE:
                     if (!isDisplacementOccurs()) {
                         randomlyMove();
-                        inactivityDuration = RandomGenerator.getInstance().nextFloat() * MAX_INACTIVITY_DURATION;
+                        // inactivityDuration = RandomGenerator.getInstance().nextFloat() * MAX_INACTIVITY_DURATION;
+                        inactivityDuration = 0;
                     }
                     break;
                     
                 case ATTACKING:
-                    inactivityDuration = 0;
-                    move(MOVING_ANIMATION_DURATION);
-                    if (!isDisplacementOccurs() && hasReachedTarget) {
-                        state = LogMonsterState.FALLING_ASLEEP;
-                        hasReachedTarget = false;
-                        System.out.println(state);
-                    }
+                    hasReachedTarget = move(MOVING_ANIMATION_DURATION);
                     break;
                     
                 case FALLING_ASLEEP:
