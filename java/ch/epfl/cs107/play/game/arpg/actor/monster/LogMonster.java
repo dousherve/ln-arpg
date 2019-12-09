@@ -29,10 +29,11 @@ public class LogMonster extends Monster {
         public void interactWith(ARPGPlayer player) {
             if (state == LogMonsterState.IDLE) {
                 state = LogMonsterState.ATTACKING;
+                inactivityDuration = 0;
                 System.out.println(state);
-            } else if (state == LogMonsterState.ATTACKING || !hasReachedTarget) {
+            } else if (state == LogMonsterState.ATTACKING) {
                 player.harm(DAMAGE);
-                state = LogMonsterState.FALLING_ASLEEP;
+                hasHarmedTarget = true;
                 System.out.println(state);
             }
         }
@@ -52,11 +53,12 @@ public class LogMonster extends Monster {
     /// The actual lifetime of the LogMonster
     private float lifetime;
     
+    private boolean hasHarmedTarget;
+    
     private static final float PROBABILITY_TO_CHANGE_ORIENTATION = 0.3f;
     
     /// The damage the LogMonster deals
     private static final float DAMAGE = 2f;
-    private boolean hasReachedTarget;
     
     /// The size of the LogMonster
     private static final float SIZE = 2f;
@@ -102,9 +104,10 @@ public class LogMonster extends Monster {
         state = LogMonsterState.IDLE;
         inactivityDuration = 0f;
         
-        hasReachedTarget = false;
-    
         setupAnimations();
+        randomlyOrientate();
+    
+        hasHarmedTarget = false;
     }
     
     @Override
@@ -140,13 +143,16 @@ public class LogMonster extends Monster {
                 case IDLE:
                     if (!isDisplacementOccurs()) {
                         randomlyMove();
-                        // inactivityDuration = RandomGenerator.getInstance().nextFloat() * MAX_INACTIVITY_DURATION;
-                        inactivityDuration = 0;
+                        inactivityDuration = RandomGenerator.getInstance().nextFloat() * MAX_INACTIVITY_DURATION;
                     }
                     break;
                     
                 case ATTACKING:
-                    hasReachedTarget = move(MOVING_ANIMATION_DURATION);
+                    move(MOVING_ANIMATION_DURATION);
+                    if (!isDisplacementOccurs() && !canGoToNextCell() && hasHarmedTarget) {
+                        hasHarmedTarget = false;
+                        state = LogMonsterState.FALLING_ASLEEP;
+                    }
                     break;
                     
                 case FALLING_ASLEEP:
@@ -256,6 +262,14 @@ public class LogMonster extends Monster {
             
             move(MOVING_ANIMATION_DURATION);
         }
+    }
+    
+    private boolean canGoToNextCell() {
+        return getOwnerArea().canEnterAreaCells(this,
+                Collections.singletonList(
+                        getCurrentMainCellCoordinates().jump(getOrientation().toVector())
+                )
+        );
     }
     
     // MARK:- Monster
