@@ -2,6 +2,7 @@ package ch.epfl.cs107.play.game.arpg.area;
 
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.CastleKey;
+import ch.epfl.cs107.play.game.arpg.actor.monster.FireSpell;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 public class Ferme extends ARPGArea {
@@ -42,6 +43,8 @@ public class Ferme extends ARPGArea {
         registerDoors(areaKeys, destinationCoords, orientations, positions, otherCells);
         
         // TODO: debug
+        registerActor(new FireSpell(this, Orientation.DOWN, new DiscreteCoordinates(5, 7), 1));
+        registerActor(new FireSpell(this, Orientation.DOWN, new DiscreteCoordinates(5, 9), 1));
         registerActor(new CastleKey(this, Orientation.DOWN, new DiscreteCoordinates(7, 7)));
     }
     

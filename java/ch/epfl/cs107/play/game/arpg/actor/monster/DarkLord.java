@@ -40,7 +40,12 @@ public class DarkLord extends Monster {
     /// Moving animation duration in number of frames
     private static final int MOVING_ANIMATION_DURATION = 16;
 
-
+    /// Attacking animations array
+    private Animation[] attackingAnimations;
+    ///Index of the current animation in the above-mentioned array
+    private int attackingAnimationIndex;
+    /// Moving animation duration in number of frames
+    private static final int ATTACKING_ANIMATION_DURATION = 16;
 
 
 
@@ -75,6 +80,8 @@ public class DarkLord extends Monster {
                 SIZE, SIZE, this, 32, 32,
                 new Vector(-0.5f,0),
                 new Orientation[] {Orientation.UP, Orientation.LEFT, Orientation.DOWN, Orientation.RIGHT});
+        attackingAnimations = RPGSprite.createAnimations(ATTACKING_ANIMATION_DURATION, attackingSprites);
+        attackingAnimationIndex = getOrientation().ordinal();
 
     }
 
