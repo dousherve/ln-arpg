@@ -107,17 +107,12 @@ public class LogMonster extends Monster {
         inactivityDuration = 0f;
         
         setupAnimations();
-        // TODO: READD
-        // randomlyOrientate();
+        randomlyOrientate();
     }
     
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        
-        if (getMonsterState() != MonsterState.ALIVE) {
-            return;
-        }
         
         inactivityDuration = Math.max(inactivityDuration - deltaTime, 0);
     
@@ -246,15 +241,12 @@ public class LogMonster extends Monster {
      * Randomly orientate the Monster
      */
     private void randomlyOrientate() {
-        // TODO: contradiction in the subject; choose among the 4 orientations, or CHANGE the orientation ?
-        // For now, we just choose among the 4 orientations... that means, including the current one
-        // Thus, it is not ALWAYS a real 'change'
         int randomIndex = RandomGenerator.getInstance().nextInt(4);
         orientate(Orientation.fromInt(randomIndex));
     }
     
     /**
-     * Randomly move the monster, and keep track if we changed moved from a Cell
+     * Randomly move the monster
      */
     private void randomlyMove() {
         if (!isDisplacementOccurs()) {

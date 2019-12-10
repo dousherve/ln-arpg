@@ -91,6 +91,7 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
                 monsterState = MonsterState.DEAD;
     
                 // Drop the items to drop at death
+                // TODO: maybe there's no need for it to be a list : we can only drop a single Collectable I think
                 for (ARPGCollectableAreaEntity entity : getItemsToDropAtDeath()) {
                     getOwnerArea().registerActor(entity);
                 }

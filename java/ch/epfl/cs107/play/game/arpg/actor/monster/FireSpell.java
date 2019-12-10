@@ -107,6 +107,7 @@ public class FireSpell extends AreaEntity implements Interactor {
     public void update(float deltaTime) {
         lifetime -= deltaTime;
         if (lifetime <= 0) {
+            lifetime = 0;
             getOwnerArea().unregisterActor(this);
             animation.reset();
             return;
@@ -116,14 +117,14 @@ public class FireSpell extends AreaEntity implements Interactor {
         if (cycleCount >= PROPAGATION_TIME_FIRE) {
             cycleCount = 0;
             if (strength > 0) {
-                DiscreteCoordinates facingPos = getCurrentMainCellCoordinates().jump(
+                DiscreteCoordinates newFlamePos = getCurrentMainCellCoordinates().jump(
                         getOrientation().toVector()
                 );
+                FireSpell flame = new FireSpell(getOwnerArea(), getOrientation(),
+                        newFlamePos, strength - 1);
                 if (getOwnerArea().canEnterAreaCells(
-                        this, Collections.singletonList(facingPos))
+                        flame, Collections.singletonList(newFlamePos))
                 ) {
-                    FireSpell flame = new FireSpell(getOwnerArea(), getOrientation(),
-                            facingPos, strength - 1);
                     getOwnerArea().registerActor(flame);
                 }
             }

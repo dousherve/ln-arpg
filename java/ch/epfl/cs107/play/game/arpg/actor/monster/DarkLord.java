@@ -73,7 +73,7 @@ public class DarkLord extends Monster {
     /**
      * Setup the animations.
      */
-    private void setupAnimations(){
+    private void setupAnimations() {
         //Moving Animation
         Sprite[][] movingSprites = RPGSprite.extractSprites("zelda/darkLord", 3,
                 SIZE, SIZE, this, 32,32,

@@ -197,7 +197,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         }
         
         if (keyboard.get(Keyboard.SPACE).isPressed()) {
-            handleItemUse();
+            handleItemUsage();
         }
         
         if (keyboard.get(Keyboard.F).isPressed()) {
@@ -228,22 +228,8 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         }
     }
     
-    private void handleItemUse() {
-        if (currentItem == null) {
-            return;
-        }
-        
-        switch (currentItem) {
-            case BOMB:
-                if (useBomb())  inventory.remove(currentItem, 1);
-                break;
-            default:
-                break;
-        }
-    }
-    
     /**
-     * Switch between items by looping through the Inventory
+     * Switch between items by looping through the content of the Inventory
      */
     private void switchCurrentItem() {
         if (!inventory.isEmpty()) {
@@ -305,6 +291,23 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     }
     
     // MARK:- Handle items usage
+    
+    /**
+     * Handle the usage of the current held Item.
+     */
+    private void handleItemUsage() {
+        if (currentItem == null) {
+            return;
+        }
+        
+        switch (currentItem) {
+            case BOMB:
+                if (useBomb())  inventory.remove(currentItem, 1);
+                break;
+            default:
+                break;
+        }
+    }
     
     /**
      * Set a Bomb on the floor (if possible) and removes it from the inventory

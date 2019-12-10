@@ -17,8 +17,6 @@ import ch.epfl.cs107.play.math.RandomGenerator;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
-// TODO : not dealing damage properly if Player is moving
-
 public class FlameSkull extends Monster implements FlyableEntity {
     
     private static class FlameSkullHandler implements ARPGInteractionVisitor {
@@ -126,6 +124,8 @@ public class FlameSkull extends Monster implements FlyableEntity {
         }
     }
     
+    // TODO: make helper methods somewhere to randomly move and orientate a MovableAreaEntity
+    
     /**
      * Randomly orientate the Monster
      */
@@ -138,7 +138,7 @@ public class FlameSkull extends Monster implements FlyableEntity {
     }
     
     /**
-     * Randomly move the monster, and keep track if we changed moved from a Cell
+     * Randomly move the monster
      */
     private void randomlyMove() {
         if (!isDisplacementOccurs()) {
