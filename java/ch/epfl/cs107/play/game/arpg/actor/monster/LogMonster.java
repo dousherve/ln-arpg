@@ -30,13 +30,11 @@ public class LogMonster extends Monster {
             if (state == LogMonsterState.IDLE) {
                 state = LogMonsterState.ATTACKING;
                 inactivityDuration = 0;
-                System.out.println(state);
 
             } else if (state == LogMonsterState.ATTACKING) {
                 player.harm(DAMAGE);
                 state = LogMonsterState.FALLING_ASLEEP;
                 isBlocked = false;
-                System.out.println(state);
             }
         }
         
@@ -76,7 +74,7 @@ public class LogMonster extends Monster {
     private static final float MAX_INACTIVITY_DURATION = 24f;
     private float inactivityDuration;
 
-    //To check if the monster is blocked by an non-walkable cell while attacking
+    /// To check if the monster is blocked by an non-walkable cell while attacking
     private boolean isBlocked = false;
     
     // MARK:- Animations
@@ -110,7 +108,6 @@ public class LogMonster extends Monster {
         
         setupAnimations();
         randomlyOrientate();
-
     }
     
     @Override
@@ -166,13 +163,11 @@ public class LogMonster extends Monster {
                     inactivityDuration = MIN_SLEEPING_DURATION +
                             (MAX_SLEEPING_DURATION - MIN_SLEEPING_DURATION) * RandomGenerator.getInstance().nextFloat();
                     state = LogMonsterState.SLEEPING;
-                    System.out.println(state);
                     break;
                     
                 case SLEEPING:
                     if (inactivityDuration <= 0) {
                         state = LogMonsterState.WAKING_UP;
-                        System.out.println(state);
                         wakingUpAnimation.reset();
                     }
                     break;
@@ -180,7 +175,6 @@ public class LogMonster extends Monster {
                 case WAKING_UP:
                     if (wakingUpAnimation.isCompleted()) {
                         state = LogMonsterState.IDLE;
-                        System.out.println(state);
                         wakingUpAnimation.reset();
                     }
                     break;
@@ -329,8 +323,6 @@ public class LogMonster extends Monster {
     
     @Override
     public void interactWith(Interactable other) {
-        super.interactWith(other);
-        
         other.acceptInteraction(handler);
     }
     

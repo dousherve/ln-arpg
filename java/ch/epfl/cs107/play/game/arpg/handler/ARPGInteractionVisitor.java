@@ -8,6 +8,7 @@ import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Coin;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Heart;
 import ch.epfl.cs107.play.game.arpg.actor.item.CastleDoor;
 import ch.epfl.cs107.play.game.arpg.actor.item.Grass;
+import ch.epfl.cs107.play.game.arpg.actor.monster.DarkLord;
 import ch.epfl.cs107.play.game.arpg.actor.monster.FlameSkull;
 import ch.epfl.cs107.play.game.arpg.actor.monster.LogMonster;
 import ch.epfl.cs107.play.game.rpg.handler.RPGInteractionVisitor;
@@ -94,6 +95,14 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
      * @param logMonster (LogMonster), not null
      */
     default void interactWith(LogMonster logMonster) {
+        // by default the interaction is empty
+    }
+    
+    /**
+     * Simulate an interaction between RPG Interactor and a DarkLord
+     * @param lord (DarkLord), not null
+     */
+    default void interactWith(DarkLord lord) {
         // by default the interaction is empty
     }
     

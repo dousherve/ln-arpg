@@ -17,10 +17,6 @@ import ch.epfl.cs107.play.math.RandomGenerator;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 // TODO : not dealing damage properly if Player is moving
 
 public class FlameSkull extends Monster implements FlyableEntity {
@@ -42,7 +38,8 @@ public class FlameSkull extends Monster implements FlyableEntity {
             bomb.explode();
         }
         
-        public void interactWith(Monster monster) {
+        @Override
+        public void interactWith(LogMonster monster) {
             monster.harm(Vulnerability.FIRE, DAMAGE);
         }
         
@@ -60,6 +57,9 @@ public class FlameSkull extends Monster implements FlyableEntity {
     
     /// The damage the FlameSkull deals
     private static final float DAMAGE = 1.5f;
+    
+    /// The coordinates of the last Cell where damage has been dealt
+    private DiscreteCoordinates lastCellDamagedCoordinates;
     
     /// The size of the FlameSkull
     private static final float SIZE = 2f;
@@ -153,6 +153,20 @@ public class FlameSkull extends Monster implements FlyableEntity {
         }
     }
     
+    /**
+     * This function helps to make sure that we haven't already dealt damage to the current cell,
+     * in order not to do it multiple times.
+     * @return (boolean) a boolean indicating if we changed cell since the last damage
+     */
+    private boolean hasChangedCellSinceLastDamage() {
+        if (lastCellDamagedCoordinates == null) {
+            return true;
+        }
+        
+        return lastCellDamagedCoordinates.x != getCurrentMainCellCoordinates().x ||
+                lastCellDamagedCoordinates.y != getCurrentMainCellCoordinates().y;
+    }
+    
     // MARK:- Monster
     
     @Override
@@ -182,12 +196,9 @@ public class FlameSkull extends Monster implements FlyableEntity {
     
     @Override
     public void interactWith(Interactable other) {
-        super.interactWith(other);
-        
+        // We update the last damaged cell
+        lastCellDamagedCoordinates = getCurrentMainCellCoordinates();
         other.acceptInteraction(handler);
     }
-
-
-
     
 }

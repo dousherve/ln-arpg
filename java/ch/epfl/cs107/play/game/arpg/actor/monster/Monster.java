@@ -11,7 +11,6 @@ import ch.epfl.cs107.play.game.arpg.actor.item.collectable.ARPGCollectableAreaEn
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RegionOfInterest;
-import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
 import java.util.Arrays;
@@ -38,9 +37,6 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
     
     /// Keep track of the state of the Monster
     private MonsterState monsterState;
-    
-    /// The coordinates of the last Cell where damage has been dealt
-    private DiscreteCoordinates lastCellDamagedCoordinates;
     
     /// The vanish Animation
     private Animation vanishAnimation;
@@ -175,20 +171,6 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
     }
     
     /**
-     * This function helps to make sure that we haven't already dealt damage to the current cell,
-     * in order not to do it multiple times.
-     * @return (boolean) a boolean indicating if we changed cell since the last damage
-     */
-    boolean hasChangedCellSinceLastDamage() {
-        if (lastCellDamagedCoordinates == null) {
-            return true;
-        }
-        
-        return lastCellDamagedCoordinates.x != getCurrentMainCellCoordinates().x ||
-                lastCellDamagedCoordinates.y != getCurrentMainCellCoordinates().y;
-    }
-    
-    /**
      *
      * @param vulnerability (Vulnerability) The vulnerability to check
      * @return (boolean) a boolean indicating if the monster is vulnerable to the given vulnerability
@@ -220,12 +202,6 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
     }
     
     // MARK:- Interactor
-    
-    
-    @Override
-    public void interactWith(Interactable other) {
-        lastCellDamagedCoordinates = getCurrentMainCellCoordinates();
-    }
     
     @Override
     public boolean wantsCellInteraction() {

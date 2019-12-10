@@ -101,11 +101,9 @@ public class DarkLord extends Monster {
 
     // MARK:- Interactor
 
-
     @Override
     public void interactWith(Interactable other) {
-        super.interactWith(other);
-
         other.acceptInteraction(handler);
     }
+    
 }
