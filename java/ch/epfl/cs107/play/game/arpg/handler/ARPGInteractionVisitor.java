@@ -84,11 +84,19 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
     }
     
     /**
+     * Simulate an interaction between RPG Interactor and a Monster
+     * @param monster (Monster), not null
+     */
+    default void interactWith(Monster monster) {
+        // by default the interaction is empty
+    }
+    
+    /**
      * Simulate an interaction between RPG Interactor and a FlameSkull
      * @param skull (FlameSkull), not null
      */
     default void interactWith(FlameSkull skull) {
-        // by default the interaction is empty
+        interactWith((Monster) skull);
     }
     
     /**
@@ -96,15 +104,15 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
      * @param logMonster (LogMonster), not null
      */
     default void interactWith(LogMonster logMonster) {
-        // by default the interaction is empty
+        interactWith((Monster) logMonster);
     }
     
     /**
      * Simulate an interaction between RPG Interactor and a DarkLord
-     * @param lord (DarkLord), not null
+     * @param darkLord (DarkLord), not null
      */
-    default void interactWith(DarkLord lord) {
-        // by default the interaction is empty
+    default void interactWith(DarkLord darkLord) {
+        interactWith((Monster) darkLord);
     }
     
     // TODO: see if we can solve the problem of the "automatic pick-up" for an ARPGCollectableAreaEntity

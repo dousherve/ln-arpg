@@ -45,6 +45,7 @@ public class Ferme extends ARPGArea {
         // TODO: debug
         registerActor(new FireSpell(this, Orientation.DOWN, new DiscreteCoordinates(5, 7), 1));
         registerActor(new FireSpell(this, Orientation.DOWN, new DiscreteCoordinates(5, 9), 1));
+        
         registerActor(new CastleKey(this, Orientation.DOWN, new DiscreteCoordinates(7, 7)));
     }
     

@@ -107,7 +107,8 @@ public class LogMonster extends Monster {
         inactivityDuration = 0f;
         
         setupAnimations();
-        randomlyOrientate();
+        // TODO: READD
+        // randomlyOrientate();
     }
     
     @Override

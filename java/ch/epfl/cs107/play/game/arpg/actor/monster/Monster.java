@@ -6,7 +6,9 @@ import ch.epfl.cs107.play.game.areagame.actor.Interactor;
 import ch.epfl.cs107.play.game.areagame.actor.MovableAreaEntity;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
+import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.ARPGCollectableAreaEntity;
+import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RegionOfInterest;
@@ -33,6 +35,11 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
     private Vulnerability[] vulnerabilities;
     /// The Health Points of the Monster
     private float hp;
+    
+    /// The timeout after which we can take damage again
+    private final static float TIMEOUT_RECOVERY = .75f;
+    /// The recovery timer
+    private float recoveryTimer;
     
     /// Keep track of the state of the Monster
     private MonsterState monsterState;
@@ -66,12 +73,16 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
         
         monsterState = MonsterState.ALIVE;
         
+        recoveryTimer = 0f;
+        
         enterArea(area, position);
     }
     
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
+        
+        recoveryTimer = Math.max(recoveryTimer - deltaTime, 0);
         
         if (monsterState == MonsterState.VANISHING) {
             if (!vanishAnimation.isCompleted()) {
@@ -132,12 +143,13 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
      * @param damage (float) The damage to
      */
     public void harm(Vulnerability vulnerability, float damage) {
-        if (monsterState == MonsterState.DEAD) {
+        if (monsterState == MonsterState.DEAD || recoveryTimer > 0) {
             return;
         }
         
         if (isVulnerableTo(vulnerability)) {
             hp = Math.max(hp - damage, 0);
+            recoveryTimer = TIMEOUT_RECOVERY;
             // TODO: remove debug sout
             System.out.println(getClass().getSimpleName() + 
                     " harmed: " + vulnerability.name() + " ; new HP: " + hp);
@@ -193,6 +205,11 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
     @Override
     public boolean isViewInteractable() {
         return true;
+    }
+    
+    @Override
+    public void acceptInteraction(AreaInteractionVisitor v) {
+        ((ARPGInteractionVisitor) v).interactWith(this);
     }
     
     // MARK:- Interactor

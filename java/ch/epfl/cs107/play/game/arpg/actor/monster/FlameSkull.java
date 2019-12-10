@@ -39,7 +39,7 @@ public class FlameSkull extends Monster implements FlyableEntity {
         }
         
         @Override
-        public void interactWith(LogMonster monster) {
+        public void interactWith(Monster monster) {
             monster.harm(Vulnerability.FIRE, DAMAGE);
         }
         
@@ -57,9 +57,6 @@ public class FlameSkull extends Monster implements FlyableEntity {
     
     /// The damage the FlameSkull deals
     private static final float DAMAGE = 1.5f;
-    
-    /// The coordinates of the last Cell where damage has been dealt
-    private DiscreteCoordinates lastCellDamagedCoordinates;
     
     /// The size of the FlameSkull
     private static final float SIZE = 2f;
@@ -153,20 +150,6 @@ public class FlameSkull extends Monster implements FlyableEntity {
         }
     }
     
-    /**
-     * This function helps to make sure that we haven't already dealt damage to the current cell,
-     * in order not to do it multiple times.
-     * @return (boolean) a boolean indicating if we changed cell since the last damage
-     */
-    private boolean hasChangedCellSinceLastDamage() {
-        if (lastCellDamagedCoordinates == null) {
-            return true;
-        }
-        
-        return lastCellDamagedCoordinates.x != getCurrentMainCellCoordinates().x ||
-                lastCellDamagedCoordinates.y != getCurrentMainCellCoordinates().y;
-    }
-    
     // MARK:- Interactable
     
     @Override
@@ -184,13 +167,11 @@ public class FlameSkull extends Monster implements FlyableEntity {
     @Override
     public boolean wantsCellInteraction() {
         // We check if the monster has changed cell, in order not to deal the damage mutliple times
-        return (getMonsterState() == MonsterState.ALIVE && hasChangedCellSinceLastDamage());
+        return (getMonsterState() == MonsterState.ALIVE);
     }
     
     @Override
     public void interactWith(Interactable other) {
-        // We update the last damaged cell
-        lastCellDamagedCoordinates = getCurrentMainCellCoordinates();
         other.acceptInteraction(handler);
     }
     

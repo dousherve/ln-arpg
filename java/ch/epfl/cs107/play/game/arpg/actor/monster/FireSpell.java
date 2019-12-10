@@ -9,6 +9,8 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.arpg.actor.ARPGPlayer;
+import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
+import ch.epfl.cs107.play.game.arpg.actor.item.Grass;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -25,22 +27,38 @@ public class FireSpell extends AreaEntity implements Interactor {
     
     private static class FireSpellHandler implements ARPGInteractionVisitor {
     
+        @Override
+        public void interactWith(ARPGPlayer player) {
+            player.harm(DAMAGE);
+        }
+    
+        @Override
+        public void interactWith(Bomb bomb) {
+            bomb.explode();
+        }
+    
+        @Override
+        public void interactWith(Grass grass) {
+            grass.cut();
+        }
+    
+        @Override
         public void interactWith(Monster monster) {
-            System.out.println("Called");
+            monster.harm(Monster.Vulnerability.FIRE, DAMAGE);
         }
         
     }
 
     /// Lifetime in simulation frames
-    private int lifetime;
+    private float lifetime;
     
     /// Interaction handler
     private FireSpellHandler handler;
 
-    private static final int MIN_LIFE_TIME = 120;
-    private static final int MAX_LIFE_TIME = 240;
-
-    private static final int PROPAGATION_TIME_FIRE = 150;
+    private static final float MIN_LIFE_TIME = 5f, MAX_LIFE_TIME = 10f;
+    
+    private static final int PROPAGATION_TIME_FIRE = 100;
+    
     private int cycleCount;
 
     private static final float SIZE = 1f;
@@ -60,6 +78,7 @@ public class FireSpell extends AreaEntity implements Interactor {
      * @param area        (Area): Owner area. Not null
      * @param orientation (Orientation): Initial orientation of the entity in the Area. Not null
      * @param position    (DiscreteCoordinate): Initial position of the entity in the Area. Not null
+     * @param strength    (int) The strength of the spell
      */
     public FireSpell(Area area, Orientation orientation, DiscreteCoordinates position, int strength) {
         super(area, orientation, position);
@@ -69,7 +88,7 @@ public class FireSpell extends AreaEntity implements Interactor {
         cycleCount = 0;
         
         lifetime = MIN_LIFE_TIME +
-                (MAX_LIFE_TIME - MIN_LIFE_TIME) * RandomGenerator.getInstance().nextInt();
+                (MAX_LIFE_TIME - MIN_LIFE_TIME) * RandomGenerator.getInstance().nextFloat();
 
         Sprite[] sprites = new Sprite[7];
         for (int i = 0; i < sprites.length; ++i) {
@@ -86,6 +105,30 @@ public class FireSpell extends AreaEntity implements Interactor {
 
     @Override
     public void update(float deltaTime) {
+        lifetime -= deltaTime;
+        if (lifetime <= 0) {
+            getOwnerArea().unregisterActor(this);
+            animation.reset();
+            return;
+        }
+        
+        ++cycleCount;
+        if (cycleCount >= PROPAGATION_TIME_FIRE) {
+            cycleCount = 0;
+            if (strength > 0) {
+                DiscreteCoordinates facingPos = getCurrentMainCellCoordinates().jump(
+                        getOrientation().toVector()
+                );
+                if (getOwnerArea().canEnterAreaCells(
+                        this, Collections.singletonList(facingPos))
+                ) {
+                    FireSpell flame = new FireSpell(getOwnerArea(), getOrientation(),
+                            facingPos, strength - 1);
+                    getOwnerArea().registerActor(flame);
+                }
+            }
+        }
+        
         animation.update(deltaTime);
     }
 
@@ -102,7 +145,7 @@ public class FireSpell extends AreaEntity implements Interactor {
         orientate(Orientation.fromInt(randomIndex));
     }
 
-    // MARK- Interactable
+    // MARK:- Interactable
     
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {

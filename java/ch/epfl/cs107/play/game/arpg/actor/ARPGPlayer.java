@@ -76,9 +76,14 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     }
     
     /// The maximum Health Points of the player
-    private static final float MAX_HP = 5.f;
+    private static final float MAX_HP = 5f;
     /// Health points
     private float hp;
+    
+    /// The timeout after which we can take damage again
+    private final static float TIMEOUT_RECOVERY = .5f;
+    /// The recovery timer
+    private float recoveryTimer;
     
     /// The Inventory of the Player
     private final ARPGInventory inventory;
@@ -127,6 +132,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         hp = MAX_HP;
         
         isDisplayingMoney = true;
+        recoveryTimer = 0f;
     
         resetMotion();
     }
@@ -134,6 +140,8 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
+        
+        recoveryTimer = Math.max(recoveryTimer - deltaTime, 0);
         
         playerAnimationIndex = getOrientation().ordinal();
         if (isDisplacementOccurs()) {
@@ -321,7 +329,13 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
      * @param hp (float) The amount of Health Points to remove from the ARPGPlayer
      */
     public void harm(float hp) {
+        if (recoveryTimer > 0) {
+            // If we're still recovering, don't take damage
+            return;
+        }
+        
         this.hp = Math.min(Math.max(this.hp - hp, 0), MAX_HP);
+        recoveryTimer = TIMEOUT_RECOVERY;
         statusGui.updateHp(this.hp);
         // TODO: remove debug sysout
         System.out.println("HP (" + this.hp + ")");

@@ -35,15 +35,10 @@ public class Bomb extends AreaEntity implements Interactor {
         public void interactWith(ARPGPlayer player) {
             player.harm(DAMAGE);
         }
-
+    
         @Override
-        public void interactWith(LogMonster monster) {
+        public void interactWith(Monster monster) {
             monster.harm(Monster.Vulnerability.PHYSICAL, DAMAGE);
-        }
-
-        @Override
-        public void interactWith(FlameSkull skull) {
-            skull.harm(Monster.Vulnerability.PHYSICAL, DAMAGE);
         }
         
     }
