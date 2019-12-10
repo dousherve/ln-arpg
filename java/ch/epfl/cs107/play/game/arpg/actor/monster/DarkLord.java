@@ -11,6 +11,7 @@ import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.signal.logic.Or;
+import ch.epfl.cs107.play.window.Canvas;
 
 public class DarkLord extends Monster {
 
@@ -19,7 +20,7 @@ public class DarkLord extends Monster {
     }
 
     private enum DarkLordState {
-        IDLE, ATTACKING, SUMMONING, CASTING_SPELL, TELEPORTING
+        IDLE, ATTACKING, SUMMONING, CASTING_TELEPORT_SPELL, TELEPORTING
     }
 
     /// The maximum Health Points
@@ -47,18 +48,18 @@ public class DarkLord extends Monster {
     /// Moving animation duration in number of frames
     private static final int ATTACKING_ANIMATION_DURATION = 16;
 
-
-
     /**
-     * Default Monster constructor
+     * Default DarkLord constructor
      *
      * @param area            (Area): Owner area. Not null
      * @param orientation     (Orientation): Initial orientation of the entity. Not null
      * @param position        (Coordinate): Initial position of the entity. Not null
-     * @param vulnerabilities (Vulnerability...) The vulnerabilities of the Monster
      */
-    DarkLord(Area area, Orientation orientation, DiscreteCoordinates position, Vulnerability... vulnerabilities) {
-        super(area, orientation, position, vulnerabilities);
+    DarkLord(Area area, Orientation orientation, DiscreteCoordinates position) {
+        super(area, orientation, position, MAX_HP, Vulnerability.MAGIC);
+        
+        handler = new DarkLordHandler();
+        setupAnimations();
     }
 
     // MARK:- Specific DarkLord methods
@@ -82,16 +83,20 @@ public class DarkLord extends Monster {
                 new Orientation[] {Orientation.UP, Orientation.LEFT, Orientation.DOWN, Orientation.RIGHT});
         attackingAnimations = RPGSprite.createAnimations(ATTACKING_ANIMATION_DURATION, attackingSprites);
         attackingAnimationIndex = getOrientation().ordinal();
-
     }
-
-    // MARK:- Monster
-
+    
     @Override
-    float getMaxHp() {
-        return 0;
+    public void update(float deltaTime) {
+        super.update(deltaTime);
+        
     }
-
+    
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+        
+    }
+    
     // MARK:- Interactable
 
     @Override

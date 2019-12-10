@@ -81,7 +81,7 @@ public class FlameSkull extends Monster implements FlyableEntity {
      * @param position        (Coordinate): Initial position of the entity. Not null
      */
     public FlameSkull(Area area, DiscreteCoordinates position) {
-        super(area, Orientation.DOWN, position, Vulnerability.PHYSICAL, Vulnerability.MAGIC);
+        super(area, Orientation.DOWN, position, MAX_HP, Vulnerability.PHYSICAL, Vulnerability.MAGIC);
     
         randomlyOrientate();
         handler = new FlameSkullHandler();
@@ -165,13 +165,6 @@ public class FlameSkull extends Monster implements FlyableEntity {
         
         return lastCellDamagedCoordinates.x != getCurrentMainCellCoordinates().x ||
                 lastCellDamagedCoordinates.y != getCurrentMainCellCoordinates().y;
-    }
-    
-    // MARK:- Monster
-    
-    @Override
-    float getMaxHp() {
-        return MAX_HP;
     }
     
     // MARK:- Interactable

@@ -11,6 +11,7 @@ import ch.epfl.cs107.play.game.arpg.actor.item.Grass;
 import ch.epfl.cs107.play.game.arpg.actor.monster.DarkLord;
 import ch.epfl.cs107.play.game.arpg.actor.monster.FlameSkull;
 import ch.epfl.cs107.play.game.arpg.actor.monster.LogMonster;
+import ch.epfl.cs107.play.game.arpg.actor.monster.Monster;
 import ch.epfl.cs107.play.game.rpg.handler.RPGInteractionVisitor;
 
 public interface ARPGInteractionVisitor extends RPGInteractionVisitor {

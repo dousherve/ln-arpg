@@ -100,7 +100,7 @@ public class LogMonster extends Monster {
      * @param position        (Coordinate): Initial position of the entity. Not null
      */
     public LogMonster(Area area, DiscreteCoordinates position) {
-        super(area, Orientation.DOWN, position, Vulnerability.PHYSICAL, Vulnerability.FIRE);
+        super(area, Orientation.DOWN, position, MAX_HP, Vulnerability.PHYSICAL, Vulnerability.FIRE);
         
         handler = new LogMonsterHandler();
         state = LogMonsterState.IDLE;
@@ -274,11 +274,6 @@ public class LogMonster extends Monster {
     }
     
     // MARK:- Monster
-    
-    @Override
-    float getMaxHp() {
-        return MAX_HP;
-    }
     
     @Override
     protected List<ARPGCollectableAreaEntity> getItemsToDropAtDeath() {

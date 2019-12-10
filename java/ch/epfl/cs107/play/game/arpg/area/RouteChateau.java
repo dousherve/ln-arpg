@@ -4,6 +4,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
 import ch.epfl.cs107.play.game.arpg.actor.item.CastleDoor;
 import ch.epfl.cs107.play.game.arpg.actor.item.Grass;
+import ch.epfl.cs107.play.game.arpg.actor.monster.FireSpell;
 import ch.epfl.cs107.play.game.arpg.actor.monster.FlameSkull;
 import ch.epfl.cs107.play.game.arpg.actor.monster.LogMonster;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -54,6 +55,8 @@ public class RouteChateau extends ARPGArea {
                 registerActor(new Grass(this, new DiscreteCoordinates(i, j)));
             }
         }
+        
+        registerActor(new FireSpell(this, Orientation.DOWN, new DiscreteCoordinates(9, 8), 2));
     }
     
     @Override
