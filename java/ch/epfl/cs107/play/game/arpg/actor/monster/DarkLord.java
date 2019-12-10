@@ -13,6 +13,9 @@ import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.signal.logic.Or;
 import ch.epfl.cs107.play.window.Canvas;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DarkLord extends Monster {
 
     private class DarkLordHandler implements ARPGInteractionVisitor {
@@ -25,6 +28,9 @@ public class DarkLord extends Monster {
 
     /// The maximum Health Points
     private static final float MAX_HP = 5f;
+    
+    /// The radius of its action field
+    private static final int ACTION_RADIUS = 3;
 
     /// The size of the DarkLord
     private static final float SIZE = 3f;
@@ -98,7 +104,32 @@ public class DarkLord extends Monster {
     }
     
     // MARK:- Interactable
-
+    
+    @Override
+    public List<DiscreteCoordinates> getFieldOfViewCells() {
+        List<DiscreteCoordinates> coords = new ArrayList<>();
+        final DiscreteCoordinates CURRENT_COORDS = getCurrentMainCellCoordinates();
+        final int BOTTOM_LEFT = -ACTION_RADIUS * CURRENT_COORDS.x;
+        final int END_COORD = CURRENT_COORDS.x + ACTION_RADIUS;
+    
+        for (int i = BOTTOM_LEFT; i < END_COORD; ++i) {
+            for (int j = BOTTOM_LEFT; j < END_COORD; ++j) {
+                if (
+                    i >= 0 && i < getOwnerArea().getWidth() &&
+                    j >= 0 && j < getOwnerArea().getHeight() &&
+                    i != CURRENT_COORDS.x && j != CURRENT_COORDS.y
+                ) {
+                    coords.add(new DiscreteCoordinates(i, j));
+                }
+            }
+        }
+        
+        // TODO: remove debug sout
+        System.out.println(coords.size());
+        
+        return coords;
+    }
+    
     @Override
     public void acceptInteraction(AreaInteractionVisitor v) {
         ((ARPGInteractionVisitor) v).interactWith(this);
@@ -111,4 +142,8 @@ public class DarkLord extends Monster {
         other.acceptInteraction(handler);
     }
     
+    @Override
+    public boolean wantsViewInteraction() {
+        return getMonsterState() == MonsterState.ALIVE;
+    }
 }
