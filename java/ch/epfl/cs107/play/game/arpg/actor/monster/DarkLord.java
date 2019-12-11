@@ -33,7 +33,7 @@ public class DarkLord extends Monster {
     private static final int ACTION_RADIUS = 3;
 
     /// The size of the DarkLord
-    private static final float SIZE = 3f;
+    private static final float SIZE = 2f;
 
     /// The Interaction handler
     private DarkLordHandler handler;
@@ -170,24 +170,18 @@ public class DarkLord extends Monster {
     public List<DiscreteCoordinates> getFieldOfViewCells() {
         List<DiscreteCoordinates> coords = new ArrayList<>();
         final DiscreteCoordinates CURRENT_COORDS = getCurrentMainCellCoordinates();
-        final int BOTTOM_LEFT = CURRENT_COORDS.x - ACTION_RADIUS;
-        final int END_COORD = CURRENT_COORDS.x + ACTION_RADIUS;
     
-        for (int i = BOTTOM_LEFT; i < END_COORD; ++i) {
-            for (int j = BOTTOM_LEFT; j < END_COORD; ++j) {
+        for (int i = CURRENT_COORDS.x - ACTION_RADIUS; i <= CURRENT_COORDS.x + ACTION_RADIUS; ++i) {
+            for (int j = CURRENT_COORDS.y - ACTION_RADIUS; j <= CURRENT_COORDS.y + ACTION_RADIUS; ++j) {
                 if (
                     i >= 0 && i < getOwnerArea().getWidth() &&
-                    j >= 0 && j < getOwnerArea().getHeight() &&
-                    i != CURRENT_COORDS.x && j != CURRENT_COORDS.y
+                    j >= 0 && j < getOwnerArea().getHeight() && !(i == CURRENT_COORDS.x && j == CURRENT_COORDS.y)
                 ) {
                     coords.add(new DiscreteCoordinates(i, j));
                 }
             }
         }
-        
-        // TODO: remove debug sout
-        System.out.println(coords.size());
-        
+
         return coords;
     }
     
