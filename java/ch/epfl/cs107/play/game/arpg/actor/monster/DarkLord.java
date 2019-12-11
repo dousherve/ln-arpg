@@ -6,6 +6,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.arpg.actor.ARPGPlayer;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -20,6 +21,12 @@ public class DarkLord extends Monster {
 
     private class DarkLordHandler implements ARPGInteractionVisitor {
 
+        @Override
+        public void interactWith(ARPGPlayer player) {
+            if (state != DarkLordState.TELEPORTING) {
+                state = DarkLordState.CASTING_TELEPORT_SPELL;
+            }
+        }
     }
 
     private enum DarkLordState {
@@ -45,6 +52,16 @@ public class DarkLord extends Monster {
     private static final float MAX_INACTIVITY_DURATION = 24f;
     private float inactivityDuration;
 
+    // MARK:- Attack
+
+    private static final float PROBABILITY_TO_ATTACK = .3f;
+
+    private static final int MIN_SPELL_WAIT_DURATION = 120;
+    private static final int MAX_SPELL_WAIT_DURATION = 240;
+    //counter for number of cycle
+    private int cycleCount;
+    // spell reloading time in cycle of simulation
+    private int spellWaitDuration;
 
     // MARK:- Animations
 
@@ -75,13 +92,24 @@ public class DarkLord extends Monster {
         super(area, orientation, position, MAX_HP, Vulnerability.MAGIC);
 
         handler = new DarkLordHandler();
+
         state = DarkLordState.IDLE;
+
+        cycleCount = 0;
+        randomizeSpellWaitDuration();
         inactivityDuration = 0f;
 
         setupAnimations();
     }
 
     // MARK:- Specific DarkLord methods
+
+    /**
+     * set spellWaitDuration to random valute between MIN_SPELL_WAIT_DURATION and MAX_SPELL_WAIT_DURATION
+     */
+    private void randomizeSpellWaitDuration(){
+        spellWaitDuration = MIN_SPELL_WAIT_DURATION + (int)((MAX_SPELL_WAIT_DURATION - MIN_SPELL_WAIT_DURATION)*RandomGenerator.getInstance().nextFloat());
+    }
 
     /**
      * Setup the animations.
@@ -109,6 +137,18 @@ public class DarkLord extends Monster {
         super.update(deltaTime);
 
         inactivityDuration = Math.max(inactivityDuration - deltaTime, 0);
+
+
+        ++cycleCount;
+        if(cycleCount >= spellWaitDuration){
+            cycleCount = 0;
+            randomizeSpellWaitDuration();
+            if(RandomGenerator.getInstance().nextFloat()>PROBABILITY_TO_ATTACK){
+                state = DarkLordState.ATTACKING;
+            }else{
+                state = DarkLordState.SUMMONING;
+            }
+        }
 
         switch (state){
             case CASTING_TELEPORT_SPELL:

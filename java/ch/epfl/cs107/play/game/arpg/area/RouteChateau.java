@@ -66,7 +66,7 @@ public class RouteChateau extends ARPGArea {
         
         // TODO: see if we must remove these key actions
 
-        if (getKeyboard().get(Keyboard.E).isPressed()) {
+        if (getKeyboard().get(Keyboard.D).isPressed()) {
             registerActor(new DarkLord(this, Orientation.DOWN,  new DiscreteCoordinates(8, 10)));
         }
         
