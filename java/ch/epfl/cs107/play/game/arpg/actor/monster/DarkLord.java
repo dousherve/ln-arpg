@@ -58,12 +58,17 @@ public class DarkLord extends Monster {
 
     private static final float PROBABILITY_TO_ATTACK = .7f;
 
-    private static final int MIN_SPELL_WAIT_DURATION = 120;
-    private static final int MAX_SPELL_WAIT_DURATION = 240;
-    //counter for number of cycle
+    private static final int MIN_SPELL_WAIT_DURATION = 240;
+    private static final int MAX_SPELL_WAIT_DURATION = 360;
+    // counter for number of cycle
     private int cycleCount;
     // spell reloading time in cycle of simulation
     private int spellWaitDuration;
+
+    // teleportation
+    private static final int TELEPORTATION_RADIUS = 5;
+    private static final int MAX_TELEPORTATION_ATTEMPTS = 5;
+    private int teleportationAttempts;
 
     // MARK:- Animations
 
@@ -100,6 +105,7 @@ public class DarkLord extends Monster {
         cycleCount = 0;
         randomizeSpellWaitDuration();
         inactivityDuration = 0f;
+        teleportationAttempts = 0;
 
         setupAnimations();
     }
@@ -120,7 +126,7 @@ public class DarkLord extends Monster {
     private Orientation getRandomFreeCellOrientation() {
         List<Orientation> possibleOrientations = new ArrayList<>();
 
-        FireSpell fireSpell = new FireSpell(getOwnerArea(), Orientation.DOWN, getCurrentMainCellCoordinates(), 0);
+        FireSpell fireSpell = new FireSpell(getOwnerArea(), Orientation.DOWN, getCurrentMainCellCoordinates(), 3);
         for (Orientation orientation : Orientation.values()) {
             if (canSummon(fireSpell, getCurrentMainCellCoordinates().jump(orientation.toVector()))) {
 
@@ -208,7 +214,7 @@ public class DarkLord extends Monster {
         }
 
         if(inactivityDuration <= 0) {
-            DiscreteCoordinates coords = getCurrentMainCellCoordinates().jump(getOrientation().toVector());
+            DiscreteCoordinates facingCellCoords = getCurrentMainCellCoordinates().jump(getOrientation().toVector());
 
             switch (state) {
                 case IDLE:
@@ -219,27 +225,51 @@ public class DarkLord extends Monster {
                     break;
 
                 case ATTACKING:
-                    FireSpell fireSpell = new FireSpell(getOwnerArea(), getOrientation(), coords, 0);
+                    FireSpell fireSpell = new FireSpell(getOwnerArea(), getOrientation(), facingCellCoords, 3);
 
-                    if (canSummon(fireSpell, coords)){
+                    if (canSummon(fireSpell, facingCellCoords)){
                         getOwnerArea().registerActor(fireSpell);
                     }
                     state = DarkLordState.IDLE;
                     break;
 
                 case SUMMONING:
-                    FlameSkull skull = new FlameSkull(getOwnerArea(), coords, getOrientation());
+                    FlameSkull skull = new FlameSkull(getOwnerArea(), facingCellCoords, getOrientation());
 
-                    if (canSummon(skull, coords)){
+                    if (canSummon(skull, facingCellCoords)){
                         getOwnerArea().registerActor(skull);
                     }
                     state = DarkLordState.IDLE;
                     break;
 
                 case TELEPORTING:
+                    do{
+                        int dx = RandomGenerator.getInstance().nextInt(TELEPORTATION_RADIUS * 2) - TELEPORTATION_RADIUS;
+                        int dy = RandomGenerator.getInstance().nextInt(TELEPORTATION_RADIUS * 2) - TELEPORTATION_RADIUS;
+
+                        DiscreteCoordinates coords = new DiscreteCoordinates(getCurrentMainCellCoordinates().x + dx, getCurrentMainCellCoordinates().y + dy);
+
+                        if (coords.x >= 0 && coords.x < getOwnerArea().getWidth()
+                            && coords.y >= 0 && coords.y < getOwnerArea().getHeight()
+                            && getOwnerArea().canEnterAreaCells(this, Collections.singletonList(coords)))
+                        {
+                            getOwnerArea().unregisterActor(this);
+                            setCurrentPosition(coords.toVector());
+                            getOwnerArea().registerActor(this);
+
+                            break;
+                        }
+
+                    } while(teleportationAttempts<MAX_TELEPORTATION_ATTEMPTS);
+
+                    state = DarkLordState.IDLE;
+
                     break;
 
                 case CASTING_TELEPORT_SPELL:
+                    if(!isDisplacementOccurs()){
+                        state = DarkLordState.TELEPORTING;
+                    }
                     break;
 
                 default:
