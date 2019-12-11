@@ -53,8 +53,6 @@ public class LogMonster extends Monster {
     /// The actual lifetime of the LogMonster
     private float lifetime;
     
-    private static final float PROBABILITY_TO_CHANGE_ORIENTATION = 0.3f;
-    
     /// The damage the LogMonster deals
     private static final float DAMAGE = 2f;
     
@@ -92,6 +90,8 @@ public class LogMonster extends Monster {
     private Animation wakingUpAnimation;
     private static final int WAKING_ANIMATION_DURATION = 16;
 
+    /// Animation duration in number of frames
+    private static final int ANIMATION_DURATION = 16;
     
     /**
      * Default LogMonster constructor
@@ -138,7 +138,7 @@ public class LogMonster extends Monster {
             switch (state) {
                 case IDLE:
                     if (!isDisplacementOccurs()) {
-                        randomlyMove();
+                        randomlyMove(ANIMATION_DURATION);
                         inactivityDuration = RandomGenerator.getInstance().nextFloat() * MAX_INACTIVITY_DURATION;
                     }
                     break;
@@ -237,26 +237,7 @@ public class LogMonster extends Monster {
         wakingUpAnimation = new Animation(WAKING_ANIMATION_DURATION, wakingUpSprites, false);
     }
     
-    /**
-     * Randomly orientate the Monster
-     */
-    private void randomlyOrientate() {
-        int randomIndex = RandomGenerator.getInstance().nextInt(4);
-        orientate(Orientation.fromInt(randomIndex));
-    }
-    
-    /**
-     * Randomly move the monster
-     */
-    private void randomlyMove() {
-        if (!isDisplacementOccurs()) {
-            if (RandomGenerator.getInstance().nextFloat() < PROBABILITY_TO_CHANGE_ORIENTATION) {
-                randomlyOrientate();
-            }
-            
-            move(MOVING_ANIMATION_DURATION);
-        }
-    }
+
     
     private boolean canGoToNextCell() {
         return getOwnerArea().canEnterAreaCells(this,

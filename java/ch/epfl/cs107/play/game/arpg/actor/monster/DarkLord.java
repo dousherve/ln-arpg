@@ -9,8 +9,8 @@ import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.math.RandomGenerator;
 import ch.epfl.cs107.play.math.Vector;
-import ch.epfl.cs107.play.signal.logic.Or;
 import ch.epfl.cs107.play.window.Canvas;
 
 import java.util.ArrayList;
@@ -38,6 +38,14 @@ public class DarkLord extends Monster {
     /// The Interaction handler
     private DarkLordHandler handler;
 
+    /// The DarkLord state
+    private DarkLordState state;
+
+    /// The maximum inactivity durations
+    private static final float MAX_INACTIVITY_DURATION = 24f;
+    private float inactivityDuration;
+
+
     // MARK:- Animations
 
     /// Moving animations array
@@ -54,6 +62,8 @@ public class DarkLord extends Monster {
     /// Moving animation duration in number of frames
     private static final int ATTACKING_ANIMATION_DURATION = 16;
 
+    private static int ANIMATION_DURATION = 16;
+
     /**
      * Default DarkLord constructor
      *
@@ -61,10 +71,13 @@ public class DarkLord extends Monster {
      * @param orientation     (Orientation): Initial orientation of the entity. Not null
      * @param position        (Coordinate): Initial position of the entity. Not null
      */
-    DarkLord(Area area, Orientation orientation, DiscreteCoordinates position) {
+    public DarkLord(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position, MAX_HP, Vulnerability.MAGIC);
-        
+
         handler = new DarkLordHandler();
+        state = DarkLordState.IDLE;
+        inactivityDuration = 0f;
+
         setupAnimations();
     }
 
@@ -94,13 +107,61 @@ public class DarkLord extends Monster {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        
+
+        inactivityDuration = Math.max(inactivityDuration - deltaTime, 0);
+
+        switch (state){
+            case CASTING_TELEPORT_SPELL:
+                break;
+
+            case SUMMONING:
+                break;
+
+            default:
+                movingAnimationIndex = getOrientation().ordinal();
+                if (isDisplacementOccurs()) {
+                    movingAnimations[movingAnimationIndex].update(deltaTime);
+                } else {
+                    movingAnimations[movingAnimationIndex].reset();
+                }
+        }
+
+        if(inactivityDuration <= 0) {
+            switch (state) {
+                case IDLE:
+                    if (!isDisplacementOccurs()) {
+                        randomlyMove(ANIMATION_DURATION);
+                        inactivityDuration = RandomGenerator.getInstance().nextFloat() * MAX_INACTIVITY_DURATION;
+                    }
+                    break;
+
+                case ATTACKING:
+                    break;
+
+                case SUMMONING:
+                    break;
+
+                case TELEPORTING:
+                    break;
+
+                case CASTING_TELEPORT_SPELL:
+                    break;
+
+                default:
+                    break;
+            }
+        }
     }
     
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        
+
+        switch (state){
+            default:
+                movingAnimations[movingAnimationIndex].draw(canvas);
+        }
+
     }
     
     // MARK:- Interactable
@@ -109,7 +170,7 @@ public class DarkLord extends Monster {
     public List<DiscreteCoordinates> getFieldOfViewCells() {
         List<DiscreteCoordinates> coords = new ArrayList<>();
         final DiscreteCoordinates CURRENT_COORDS = getCurrentMainCellCoordinates();
-        final int BOTTOM_LEFT = -ACTION_RADIUS * CURRENT_COORDS.x;
+        final int BOTTOM_LEFT = CURRENT_COORDS.x - ACTION_RADIUS;
         final int END_COORD = CURRENT_COORDS.x + ACTION_RADIUS;
     
         for (int i = BOTTOM_LEFT; i < END_COORD; ++i) {

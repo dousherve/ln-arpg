@@ -11,6 +11,7 @@ import ch.epfl.cs107.play.game.arpg.actor.item.collectable.ARPGCollectableAreaEn
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.math.RandomGenerator;
 import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.window.Canvas;
 
@@ -30,6 +31,8 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
     enum MonsterState {
         ALIVE, VANISHING, DEAD
     }
+
+    private static final float PROBABILITY_TO_CHANGE_ORIENTATION = 0.3f;
     
     /// The vulnerabilities of the current Monster
     private Vulnerability[] vulnerabilities;
@@ -184,6 +187,27 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
      */
     private boolean isVulnerableTo(Vulnerability vulnerability) {
         return Arrays.asList(vulnerabilities).contains(vulnerability);
+    }
+
+    /**
+     * Randomly orientate the Monster
+     */
+    protected void randomlyOrientate() {
+        int randomIndex = RandomGenerator.getInstance().nextInt(4);
+        orientate(Orientation.fromInt(randomIndex));
+    }
+
+    /**
+     * Randomly move the Monster
+     */
+    protected void randomlyMove(int animationDuration) {
+        if (!isDisplacementOccurs()) {
+            if (RandomGenerator.getInstance().nextFloat() < PROBABILITY_TO_CHANGE_ORIENTATION) {
+                randomlyOrientate();
+            }
+
+            move(animationDuration);
+        }
     }
     
     // MARK:- Interactable

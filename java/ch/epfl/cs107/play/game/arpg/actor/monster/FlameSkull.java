@@ -103,7 +103,7 @@ public class FlameSkull extends Monster implements FlyableEntity {
                 return;
             }
     
-            randomlyMove();
+            randomlyMove(ANIMATION_DURATION);
     
             // Compute the index of the animation to draw
             animationIndex = getOrientation().ordinal();
@@ -126,29 +126,7 @@ public class FlameSkull extends Monster implements FlyableEntity {
     
     // TODO: make helper methods somewhere to randomly move and orientate a MovableAreaEntity
     
-    /**
-     * Randomly orientate the Monster
-     */
-    private void randomlyOrientate() {
-        // TODO: contradiction in the subject; choose among the 4 orientations, or CHANGE the orientation ?
-        // For now, we just choose among the 4 orientations... that means, including the current one
-        // Thus, it is not ALWAYS a real 'change'
-        int randomIndex = RandomGenerator.getInstance().nextInt(4);
-        orientate(Orientation.fromInt(randomIndex));
-    }
-    
-    /**
-     * Randomly move the monster
-     */
-    private void randomlyMove() {
-        if (!isDisplacementOccurs()) {
-            if (RandomGenerator.getInstance().nextFloat() < PROBABILITY_TO_CHANGE_ORIENTATION) {
-                randomlyOrientate();
-            }
-    
-            move(ANIMATION_DURATION);
-        }
-    }
+
     
     // MARK:- Interactable
     
