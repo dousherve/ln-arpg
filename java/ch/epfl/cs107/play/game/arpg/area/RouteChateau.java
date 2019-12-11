@@ -57,7 +57,6 @@ public class RouteChateau extends ARPGArea {
             }
         }
         
-        registerActor(new FireSpell(this, Orientation.DOWN, new DiscreteCoordinates(9, 8), 2));
     }
     
     @Override
@@ -71,7 +70,7 @@ public class RouteChateau extends ARPGArea {
         }
         
         if (getKeyboard().get(Keyboard.S).isPressed()) {
-            registerActor(new FlameSkull(this, new DiscreteCoordinates(8, 10)));
+            registerActor(new FlameSkull(this, new DiscreteCoordinates(8, 10), Orientation.DOWN));
         }
     
         if (getKeyboard().get(Keyboard.L).isPressed()) {

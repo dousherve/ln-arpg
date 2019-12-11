@@ -74,9 +74,10 @@ public class FlameSkull extends Monster implements FlyableEntity {
      *
      * @param area            (Area): Owner area. Not null
      * @param position        (Coordinate): Initial position of the entity. Not null
+     * @param orientation     (Orientation): orientation of the entity
      */
-    public FlameSkull(Area area, DiscreteCoordinates position) {
-        super(area, Orientation.DOWN, position, MAX_HP, Vulnerability.PHYSICAL, Vulnerability.MAGIC);
+    public FlameSkull(Area area, DiscreteCoordinates position, Orientation orientation) {
+        super(area, orientation, position, MAX_HP, Vulnerability.PHYSICAL, Vulnerability.MAGIC);
     
         randomlyOrientate();
         handler = new FlameSkullHandler();

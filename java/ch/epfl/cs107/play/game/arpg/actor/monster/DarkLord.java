@@ -1,5 +1,6 @@
 package ch.epfl.cs107.play.game.arpg.actor.monster;
 
+import ch.epfl.cs107.play.game.actor.Entity;
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Animation;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
@@ -15,6 +16,7 @@ import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DarkLord extends Monster {
@@ -54,7 +56,7 @@ public class DarkLord extends Monster {
 
     // MARK:- Attack
 
-    private static final float PROBABILITY_TO_ATTACK = .3f;
+    private static final float PROBABILITY_TO_ATTACK = .7f;
 
     private static final int MIN_SPELL_WAIT_DURATION = 120;
     private static final int MAX_SPELL_WAIT_DURATION = 240;
@@ -112,6 +114,27 @@ public class DarkLord extends Monster {
     }
 
     /**
+     *
+     * @return random orientation towards which there is an available cell for a FireSpell
+     */
+    private Orientation getRandomFreeCellOrientation() {
+        List<Orientation> possibleOrientations = new ArrayList<>();
+
+        FireSpell fireSpell = new FireSpell(getOwnerArea(), Orientation.DOWN, getCurrentMainCellCoordinates(), 0);
+        for (Orientation orientation : Orientation.values()) {
+            if (canSummon(fireSpell, getCurrentMainCellCoordinates().jump(orientation.toVector()))) {
+
+                possibleOrientations.add(orientation);
+            }
+        }
+        if (possibleOrientations.isEmpty()) {
+            return getOrientation();
+        } else {
+            return possibleOrientations.get(RandomGenerator.getInstance().nextInt(possibleOrientations.size()));
+        }
+    }
+
+    /**
      * Setup the animations.
      */
     private void setupAnimations() {
@@ -131,6 +154,16 @@ public class DarkLord extends Monster {
         attackingAnimations = RPGSprite.createAnimations(ATTACKING_ANIMATION_DURATION, attackingSprites);
         attackingAnimationIndex = getOrientation().ordinal();
     }
+
+    /**
+     *
+     * @param entity to summon
+     * @param coords of target cell
+     * @return true if the entity can be summoned in the cell
+     */
+    private boolean canSummon(Interactable entity, DiscreteCoordinates coords){
+        return getOwnerArea().canEnterAreaCells(entity, Collections.singletonList(coords));
+    }
     
     @Override
     public void update(float deltaTime) {
@@ -143,11 +176,19 @@ public class DarkLord extends Monster {
         if(cycleCount >= spellWaitDuration){
             cycleCount = 0;
             randomizeSpellWaitDuration();
-            if(RandomGenerator.getInstance().nextFloat()>PROBABILITY_TO_ATTACK){
+
+            if(RandomGenerator.getInstance().nextFloat() < PROBABILITY_TO_ATTACK){
                 state = DarkLordState.ATTACKING;
             }else{
                 state = DarkLordState.SUMMONING;
             }
+
+            Orientation randomOrientation = getRandomFreeCellOrientation();
+            if (randomOrientation != getOrientation()) {
+
+            }
+            orientate(getRandomFreeCellOrientation());
+            System.out.println(getOrientation());
         }
 
         switch (state){
@@ -167,6 +208,8 @@ public class DarkLord extends Monster {
         }
 
         if(inactivityDuration <= 0) {
+            DiscreteCoordinates coords = getCurrentMainCellCoordinates().jump(getOrientation().toVector());
+
             switch (state) {
                 case IDLE:
                     if (!isDisplacementOccurs()) {
@@ -176,9 +219,21 @@ public class DarkLord extends Monster {
                     break;
 
                 case ATTACKING:
+                    FireSpell fireSpell = new FireSpell(getOwnerArea(), getOrientation(), coords, 0);
+
+                    if (canSummon(fireSpell, coords)){
+                        getOwnerArea().registerActor(fireSpell);
+                    }
+                    state = DarkLordState.IDLE;
                     break;
 
                 case SUMMONING:
+                    FlameSkull skull = new FlameSkull(getOwnerArea(), coords, getOrientation());
+
+                    if (canSummon(skull, coords)){
+                        getOwnerArea().registerActor(skull);
+                    }
+                    state = DarkLordState.IDLE;
                     break;
 
                 case TELEPORTING:
