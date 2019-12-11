@@ -103,13 +103,17 @@ public class FireSpell extends AreaEntity implements Interactor {
         randomlyOrientate();
     }
 
+    public void extinguish(){
+        getOwnerArea().unregisterActor(this);
+        animation.reset();
+    }
+
     @Override
     public void update(float deltaTime) {
         lifetime -= deltaTime;
         if (lifetime <= 0) {
             lifetime = 0;
-            getOwnerArea().unregisterActor(this);
-            animation.reset();
+            extinguish();
             return;
         }
         
@@ -137,7 +141,7 @@ public class FireSpell extends AreaEntity implements Interactor {
     public void draw(Canvas canvas) {
         animation.draw(canvas);
     }
-    
+
     /**
      * Randomly orientate the Flame
      */

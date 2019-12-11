@@ -9,6 +9,7 @@ import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Heart;
 import ch.epfl.cs107.play.game.arpg.actor.item.CastleDoor;
 import ch.epfl.cs107.play.game.arpg.actor.item.Grass;
 import ch.epfl.cs107.play.game.arpg.actor.monster.DarkLord;
+import ch.epfl.cs107.play.game.arpg.actor.monster.FireSpell;
 import ch.epfl.cs107.play.game.arpg.actor.monster.FlameSkull;
 import ch.epfl.cs107.play.game.arpg.actor.monster.LogMonster;
 import ch.epfl.cs107.play.game.arpg.actor.monster.Monster;
@@ -90,6 +91,15 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
     default void interactWith(Monster monster) {
         // by default the interaction is empty
     }
+
+    /**
+     * Simulate an interaction between RPG Interactor and a FireSpell
+     * @param fireSpell (FireSpell), not null
+     */
+    default void interactWith(FireSpell fireSpell) {
+        // by default the interaction is empty
+    }
+
     
     /**
      * Simulate an interaction between RPG Interactor and a FlameSkull
