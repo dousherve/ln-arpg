@@ -10,7 +10,7 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 public abstract class Projectile extends MovableAreaEntity implements Interactor {
 
     /// speed in case/second
-    private int speed;
+    private float speed;
     /// maximum distance for the projectile (in case)
     private float maximumDistance;
     /// traveled distance
@@ -23,8 +23,10 @@ public abstract class Projectile extends MovableAreaEntity implements Interactor
      * @param area        (Area): Owner area. Not null
      * @param orientation (Orientation): Initial orientation of the entity in the Area. Not null
      * @param position    (DiscreteCoordinate): Initial position of the entity in the Area. Not null
+     * @param speed       (float) speed in cell/Second
+     * @param maximumDistance (float) maximum distance in cell
      */
-    public Projectile(Area area, Orientation orientation, DiscreteCoordinates position, int speed, float maximumDistance) {
+    public Projectile(Area area, Orientation orientation, DiscreteCoordinates position, float speed, float maximumDistance) {
         super(area, orientation, position);
         this.speed = speed;
         this.maximumDistance = maximumDistance;
