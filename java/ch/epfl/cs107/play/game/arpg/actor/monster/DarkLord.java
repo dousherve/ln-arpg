@@ -253,9 +253,12 @@ public class DarkLord extends Monster {
                             && coords.y >= 0 && coords.y < getOwnerArea().getHeight()
                             && getOwnerArea().canEnterAreaCells(this, Collections.singletonList(coords)))
                         {
-                            getOwnerArea().unregisterActor(this);
+                            // TODO: 11/12/2019 fix teleportation bug (doesn't exit cell) 
+                            getOwnerArea().enterAreaCells(this, Collections.singletonList(coords));
+                            getOwnerArea().leaveAreaCells(this, Collections.singletonList(getCurrentMainCellCoordinates()));
+
                             setCurrentPosition(coords.toVector());
-                            getOwnerArea().registerActor(this);
+                            
 
                             break;
                         }
