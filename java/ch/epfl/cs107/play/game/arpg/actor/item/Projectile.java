@@ -2,12 +2,15 @@ package ch.epfl.cs107.play.game.arpg.actor.item;
 
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Animation;
+import ch.epfl.cs107.play.game.areagame.actor.FlyableEntity;
 import ch.epfl.cs107.play.game.areagame.actor.Interactor;
 import ch.epfl.cs107.play.game.areagame.actor.MovableAreaEntity;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
+import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
-public abstract class Projectile extends MovableAreaEntity implements Interactor {
+public abstract class Projectile extends MovableAreaEntity implements Interactor, FlyableEntity {
 
     /// speed in case/second
     private float speed;
@@ -43,7 +46,7 @@ public abstract class Projectile extends MovableAreaEntity implements Interactor
             stop();
             return;
         }
-        move(0);
+        System.out.println(move(16));
     }
 
     // MARK:- Interactor
@@ -61,6 +64,11 @@ public abstract class Projectile extends MovableAreaEntity implements Interactor
     @Override
     public boolean wantsCellInteraction() {
         return true;
+    }
+
+    @Override
+    public void acceptInteraction(AreaInteractionVisitor v) {
+        ((ARPGInteractionVisitor) v).interactWith(this);
     }
 
 }
