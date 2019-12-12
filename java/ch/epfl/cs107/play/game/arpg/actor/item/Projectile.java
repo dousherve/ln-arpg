@@ -41,12 +41,13 @@ public abstract class Projectile extends MovableAreaEntity implements Interactor
 
     @Override
     public void update(float deltaTime) {
+        super.update(deltaTime);
         distance += deltaTime*speed;
         if (distance >= maximumDistance){
             stop();
             return;
         }
-        System.out.println(move(16));
+        move(5);
     }
 
     // MARK:- Interactor

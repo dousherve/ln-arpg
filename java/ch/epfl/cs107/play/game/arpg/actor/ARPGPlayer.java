@@ -433,7 +433,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     private boolean useBow() {
         if(possess(ARPGItem.ARROW)) {
             DiscreteCoordinates arrowPosition = getCurrentMainCellCoordinates().jump(getOrientation().toVector());
-            Arrow arrow = new Arrow(getOwnerArea(), getOrientation(), arrowPosition, 3f, 5f);
+            Arrow arrow = new Arrow(getOwnerArea(), getOrientation(), arrowPosition, 5f, 5f);
 
             if(getOwnerArea().canEnterAreaCells(arrow, Collections.singletonList(arrowPosition))) {
                 getOwnerArea().registerActor(arrow);
