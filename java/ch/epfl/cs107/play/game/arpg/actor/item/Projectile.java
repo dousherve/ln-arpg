@@ -47,7 +47,9 @@ public abstract class Projectile extends MovableAreaEntity implements Interactor
             stop();
             return;
         }
-        move(5);
+        if(!isDisplacementOccurs() && !move(5)){
+            stop();
+        }
     }
 
     // MARK:- Interactor

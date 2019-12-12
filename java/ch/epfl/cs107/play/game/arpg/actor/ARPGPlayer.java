@@ -1,12 +1,15 @@
 package ch.epfl.cs107.play.game.arpg.actor;
 
+import ch.epfl.cs107.play.game.actor.Entity;
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Animation;
+import ch.epfl.cs107.play.game.areagame.actor.AreaEntity;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.arpg.actor.item.Arrow;
+import ch.epfl.cs107.play.game.arpg.actor.item.MagicWaterPojectile;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.ARPGCollectableAreaEntity;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.CastleKey;
@@ -14,6 +17,7 @@ import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Coin;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Heart;
 import ch.epfl.cs107.play.game.arpg.actor.item.CastleDoor;
 import ch.epfl.cs107.play.game.arpg.actor.item.Grass;
+import ch.epfl.cs107.play.game.arpg.actor.monster.Monster;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.Inventory;
 import ch.epfl.cs107.play.game.rpg.InventoryItem;
@@ -78,13 +82,22 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
                 door.open();
             }
         }
-        
+
+        @Override
+        public void interactWith(Monster monster) {
+            if (state == State.ATTACKING_WITH_SWORD){
+                monster.harm(Monster.Vulnerability.PHYSICAL, swordDamage);
+            }
+        }
     }
     
     /// The maximum Health Points of the player
     private static final float MAX_HP = 5f;
     /// Health points
     private float hp;
+
+    /// Sword damages
+    private float swordDamage = 2f;
 
     /// Attacking state of the player
     private State state;
@@ -403,6 +416,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             case STAFF:
                 if (state == State.IDLE){
                     state = State.ATTACKING_WITH_STAFF;
+                    useStaff();
                 }
                 break;
 
@@ -421,27 +435,58 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             DiscreteCoordinates bombPosition = getCurrentMainCellCoordinates().jump(getOrientation().toVector());
             Bomb bomb = new Bomb(getOwnerArea(), bombPosition);
             
-            if (getOwnerArea().canEnterAreaCells(bomb, Collections.singletonList(bombPosition))) {
+            if (canSummonEntity(bomb, bombPosition)) {
                 getOwnerArea().registerActor(bomb);
                 return true;
             }
         }
-        
         return false;
     }
 
+    /**
+     * Set an Arrow on the floor (if possible) and removes it from the inventory
+     * @return (boolean) A boolean flag indicating if the Arrow has successfully been set
+     */
     private boolean useBow() {
         if(possess(ARPGItem.ARROW)) {
             DiscreteCoordinates arrowPosition = getCurrentMainCellCoordinates().jump(getOrientation().toVector());
             Arrow arrow = new Arrow(getOwnerArea(), getOrientation(), arrowPosition, 5f, 5f);
 
-            if(getOwnerArea().canEnterAreaCells(arrow, Collections.singletonList(arrowPosition))) {
+            if(canSummonEntity(arrow, arrowPosition)) {
                 getOwnerArea().registerActor(arrow);
                 return true;
             }
         }
-
         return false;
+    }
+
+    /**
+     * Set a MagicWaterPojectile on the floor (if possible)
+     * @return (boolean) A boolean flag indicating if the MagicWaterPojectile has successfully been set
+     */
+    private void useStaff() {
+        if(possess(ARPGItem.STAFF)) {
+            DiscreteCoordinates pearlPosition = getCurrentMainCellCoordinates().jump(getOrientation().toVector());
+            MagicWaterPojectile pearl = new MagicWaterPojectile(getOwnerArea(), getOrientation(), pearlPosition, 5f, 5f);
+
+            if(canSummonEntity(pearl, pearlPosition)) {
+                getOwnerArea().registerActor(pearl);
+            }
+        }
+    }
+
+    private void useSword(){
+        wantsViewInteraction();
+    }
+
+    /**
+     *
+     * @param entity (Interactable) the entity to summon
+     * @param coords (List<DiscreteCoordinates>) the coordinates of the target cells
+     * @return true if the entity can be summoned at the given position
+     */
+    private boolean canSummonEntity(AreaEntity entity, DiscreteCoordinates coords){
+        return getOwnerArea().canEnterAreaCells(entity, Collections.singletonList(coords));
     }
     
     /**
