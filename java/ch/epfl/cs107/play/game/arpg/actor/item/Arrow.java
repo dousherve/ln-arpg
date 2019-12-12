@@ -4,7 +4,6 @@ import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
-import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.arpg.actor.monster.FireSpell;
 import ch.epfl.cs107.play.game.arpg.actor.monster.Monster;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
@@ -41,7 +40,7 @@ public class Arrow extends Projectile {
         
     }
 
-    private static final float DAMAGE = .5f;
+    private static final float DAMAGE = 1f;
 
     private static ArrowHandler handler;
 
