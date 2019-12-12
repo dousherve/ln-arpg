@@ -10,35 +10,38 @@ import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 public abstract class Projectile extends MovableAreaEntity implements Interactor, FlyableEntity {
-
-    /// frame rate
+    
+    /// Frame rate
     private static final int FRAME_RATE = 24;
-    /// speed in case/second
+    
+    /// Speed in cell/second
     private float speed;
-    /// maximum distance for the projectile (in case)
+    
+    /// Maximum travelling distance of the projectile
     private float maximumDistance;
-    /// traveled distance
+    /// Traveled distance
     private float distance;
 
-
     /**
-     * Default AreaEntity constructor
+     * Default Projectile constructor
      *
      * @param area        (Area): Owner area. Not null
      * @param orientation (Orientation): Initial orientation of the entity in the Area. Not null
      * @param position    (DiscreteCoordinate): Initial position of the entity in the Area. Not null
-     * @param speed       (float) speed in cell/Second
-     * @param maximumDistance (float) maximum distance in cell
+     * @param speed       (float) speed
+     * @param maximumDistance (float) maximum distance
      */
-    public Projectile(Area area, Orientation orientation, DiscreteCoordinates position, float speed, float maximumDistance) {
+    protected Projectile(Area area, Orientation orientation, DiscreteCoordinates position, float speed, float maximumDistance) {
         super(area, orientation, position);
+        
         this.speed = speed;
         this.maximumDistance = maximumDistance;
-
+    
+        distance = 0;
     }
-
+    
     /**
-     * Stop the projectile
+     * Stop the projectile by unregistering it
      */
     public void stop(){
         getOwnerArea().unregisterActor(this);
@@ -47,19 +50,25 @@ public abstract class Projectile extends MovableAreaEntity implements Interactor
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        distance += deltaTime*speed;
-
+        
+        distance += deltaTime * speed;
         if (distance >= maximumDistance){
             stop();
             return;
         }
-        // if there is a collision with something
-        if(!isDisplacementOccurs() && !move(((int)(FRAME_RATE / speed)))){
+        
+        // Stop if there is a collision
+        if (!isDisplacementOccurs() && !move(((int) (FRAME_RATE / speed)))) {
             stop();
         }
     }
 
-    // MARK:- Interactor
+    // MARK:- Interactable
+    
+    @Override
+    public boolean takeCellSpace() {
+        return false;
+    }
 
     @Override
     public boolean isCellInteractable() {
@@ -70,15 +79,22 @@ public abstract class Projectile extends MovableAreaEntity implements Interactor
     public boolean isViewInteractable() {
         return false;
     }
-
-    @Override
-    public boolean wantsCellInteraction() {
-        return true;
-    }
-
+    
     @Override
     public void acceptInteraction(AreaInteractionVisitor v) {
         ((ARPGInteractionVisitor) v).interactWith(this);
     }
-
+    
+    // MARK:- Interactor
+    
+    @Override
+    public boolean wantsCellInteraction() {
+        return distance <= maximumDistance;
+    }
+    
+    @Override
+    public boolean wantsViewInteraction() {
+        return false;
+    }
+    
 }

@@ -238,8 +238,9 @@ public class LogMonster extends Monster {
         wakingUpAnimation = new Animation(WAKING_ANIMATION_DURATION, wakingUpSprites, false);
     }
     
-
-    
+    /**
+     * @return (boolean) a boolean indicating if we can go to the facing cell
+     */
     private boolean canGoToNextCell() {
         return getOwnerArea().canEnterAreaCells(this,
                 Collections.singletonList(
@@ -251,10 +252,8 @@ public class LogMonster extends Monster {
     // MARK:- Monster
     
     @Override
-    protected List<ARPGCollectableAreaEntity> getItemsToDropAtDeath() {
-        return Collections.singletonList(
-                new Coin(getOwnerArea(), Orientation.DOWN, getCurrentMainCellCoordinates())
-        );
+    protected ARPGCollectableAreaEntity getItemToDropAtDeath() {
+        return new Coin(getOwnerArea(), getOrientation(), getCurrentMainCellCoordinates());
     }
     
     // MARK:- Interactable

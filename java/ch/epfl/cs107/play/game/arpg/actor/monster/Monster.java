@@ -13,6 +13,7 @@ import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RandomGenerator;
 import ch.epfl.cs107.play.math.RegionOfInterest;
+import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
 import java.util.Arrays;
@@ -28,7 +29,7 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
         PHYSICAL, FIRE, MAGIC
     }
     
-    enum MonsterState {
+    protected enum MonsterState {
         ALIVE, VANISHING, DEAD
     }
 
@@ -60,7 +61,7 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
      * @param maxHp       (float) The maximum HP
      * @param vulnerabilities (Vulnerability...) The vulnerabilities of the Monster
      */
-    Monster(Area area, Orientation orientation, DiscreteCoordinates position, float maxHp, Vulnerability... vulnerabilities) {
+    protected Monster(Area area, Orientation orientation, DiscreteCoordinates position, float maxHp, Vulnerability... vulnerabilities) {
         super(area, orientation, position);
         
         this.vulnerabilities = vulnerabilities;
@@ -69,7 +70,9 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
         Sprite[] vanishSprites = new Sprite[7];
         for (int i = 0; i < vanishSprites.length; ++i) {
             vanishSprites[i] = new RPGSprite("zelda/vanish", 2f, 2f, this,
-                    new RegionOfInterest(32 * i, 0, 32, 32));
+                    new RegionOfInterest(32 * i, 0, 32, 32),
+                    new Vector(-0.5f, -0.5f)
+            );
         }
     
         vanishAnimation = new Animation(VANISH_ANIMATION_DURATION, vanishSprites, false);
@@ -88,19 +91,20 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
         recoveryTimer = Math.max(recoveryTimer - deltaTime, 0);
         
         if (monsterState == MonsterState.VANISHING) {
+            
             if (!vanishAnimation.isCompleted()) {
                 vanishAnimation.update(deltaTime);
             } else {
                 monsterState = MonsterState.DEAD;
     
-                // Drop the items to drop at death
-                // TODO: maybe there's no need for it to be a list : we can only drop a single Collectable I think
-                for (ARPGCollectableAreaEntity entity : getItemsToDropAtDeath()) {
-                    getOwnerArea().registerActor(entity);
+                // Drop the item to drop at death
+                if (getItemToDropAtDeath() != null) {
+                    getOwnerArea().registerActor(getItemToDropAtDeath());
                 }
                 
                 leaveArea();
             }
+            
         }
     }
     
@@ -135,10 +139,10 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
     
     /**
      *
-     * @return (List<ARPGCollectableAreaEntity>) The list of items to drop at death. Empty by default.
+     * @return (ARPGCollectableAreaEntity) The collectable item to drop at death. Null by default.
      */
-    protected List<ARPGCollectableAreaEntity> getItemsToDropAtDeath() {
-        return Collections.emptyList();
+    protected ARPGCollectableAreaEntity getItemToDropAtDeath() {
+        return null;
     }
     
     /**

@@ -3,6 +3,7 @@ package ch.epfl.cs107.play.game.arpg.handler;
 import ch.epfl.cs107.play.game.arpg.ARPGBehavior;
 import ch.epfl.cs107.play.game.arpg.actor.ARPGPlayer;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
+import ch.epfl.cs107.play.game.arpg.actor.item.collectable.ARPGCollectableAreaEntity;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.CastleKey;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Coin;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Heart;
@@ -53,11 +54,29 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
     }
     
     /**
+     * Simulate an interaction between RPG Interactor and a CastleDoor
+     * @param castleDoor (CastleDoor), not null
+     */
+    default void interactWith(CastleDoor castleDoor) {
+        // by default the interaction is empty
+    }
+    
+    // MARK:- ARPGCollecatbleAreaEntity
+    
+    /**
+     * Simulate an interaction between RPG Interactor and a ARPGCollectableAreaEntity
+     * @param entity (ARPGCollectableAreaEntity), not null
+     */
+    default void interactWith(ARPGCollectableAreaEntity entity) {
+        // by default the interaction is empty
+    }
+    
+    /**
      * Simulate an interaction between RPG Interactor and a Coin
      * @param coin (Coin), not null
      */
     default void interactWith(Coin coin) {
-        // by default the interaction is empty
+        interactWith((ARPGCollectableAreaEntity) coin);
     }
 
     /**
@@ -65,7 +84,7 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
      * @param heart (Heart), not null
      */
     default void interactWith(Heart heart) {
-        // by default the interaction is empty
+        interactWith((ARPGCollectableAreaEntity) heart);
     }
 
     /**
@@ -73,16 +92,10 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
      * @param key (CastleKey), not null
      */
     default void interactWith(CastleKey key) {
-        // by default the interaction is empty
+        interactWith((ARPGCollectableAreaEntity) key);
     }
     
-    /**
-     * Simulate an interaction between RPG Interactor and a CastleDoor
-     * @param door (CastleDoor), not null
-     */
-    default void interactWith(CastleDoor door) {
-        // by default the interaction is empty
-    }
+    // MARK:- Monster
     
     /**
      * Simulate an interaction between RPG Interactor and a Monster
@@ -123,7 +136,5 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
     default void interactWith(DarkLord darkLord) {
         interactWith((Monster) darkLord);
     }
-    
-    // TODO: see if we can solve the problem of the "automatic pick-up" for an ARPGCollectableAreaEntity
     
 }

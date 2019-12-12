@@ -7,6 +7,8 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.arpg.actor.ARPGPlayer;
+import ch.epfl.cs107.play.game.arpg.actor.item.collectable.ARPGCollectableAreaEntity;
+import ch.epfl.cs107.play.game.arpg.actor.item.collectable.CastleKey;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -109,7 +111,14 @@ public class DarkLord extends Monster {
         randomizeSpellWaitDuration();
         setupAnimations();
     }
-
+    
+    // MARK:- Monster
+    
+    @Override
+    protected ARPGCollectableAreaEntity getItemToDropAtDeath() {
+        return new CastleKey(getOwnerArea(), getOrientation(), getCurrentMainCellCoordinates());
+    }
+    
     // MARK:- Specific DarkLord methods
 
     /**
@@ -330,12 +339,16 @@ public class DarkLord extends Monster {
     public void draw(Canvas canvas) {
         super.draw(canvas);
         
-        if (state == DarkLordState.IDLE) {
-            movingAnimations[animationIndex].draw(canvas);
-        } else {
-            attackingAnimations[animationIndex].draw(canvas);
+        if (isAlive()) {
+            
+            if (state == DarkLordState.IDLE) {
+                movingAnimations[animationIndex].draw(canvas);
+            } else {
+                attackingAnimations[animationIndex].draw(canvas);
+            }
+            
         }
-
+        
     }
     
     // MARK:- Interactable

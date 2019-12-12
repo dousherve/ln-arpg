@@ -16,60 +16,62 @@ import java.util.Collections;
 import java.util.List;
 
 public class Arrow extends Projectile {
+    
+    private static class ArrowHandler implements ARPGInteractionVisitor {
+        
+        @Override
+        public void interactWith(Monster monster) {
+            monster.harm(Monster.Vulnerability.PHYSICAL, DAMAGE);
+        }
+        
+        @Override
+        public void interactWith(Grass grass) {
+            grass.cut();
+        }
+        
+        @Override
+        public void interactWith(Bomb bomb) {
+            bomb.explode();
+        }
+        
+        @Override
+        public void interactWith(FireSpell fireSpell) {
+            fireSpell.extinguish();
+        }
+        
+    }
 
     private static final float DAMAGE = .5f;
 
     private static ArrowHandler handler;
 
     // MARK:- Sprite
+    
     private Sprite[] movingSprites;
     private static final float SIZE = 1f;
     private static final String IMG_NAME = "zelda/arrow";
 
-
-    private static class ArrowHandler implements ARPGInteractionVisitor {
-
-        @Override
-        public void interactWith(Monster monster) {
-            monster.harm(Monster.Vulnerability.PHYSICAL, DAMAGE);
-        }
-
-        @Override
-        public void interactWith(Grass grass) {
-            grass.cut();
-        }
-
-        @Override
-        public void interactWith(Bomb bomb) {
-            bomb.explode();
-        }
-
-        @Override
-        public void interactWith(FireSpell fireSpelle) {
-            fireSpelle.extinguish();
-        }
-    }
-
     /**
-     * Default AreaEntity constructor
+     * Default AreaArrowEntity constructor
      *
      * @param area            (Area): Owner area. Not null
      * @param orientation     (Orientation): Initial orientation of the entity in the Area. Not null
      * @param position        (DiscreteCoordinate): Initial position of the entity in the Area. Not null
-     * @param speed           (float) speed in cell/Second
-     * @param maximumDistance (float) maximum distance in cell
+     * @param speed           (float) speed
+     * @param maximumDistance (float) maximum distance
      */
     public Arrow(Area area, Orientation orientation, DiscreteCoordinates position, float speed, float maximumDistance) {
         super(area, orientation, position, speed, maximumDistance);
-
-        System.out.println(orientation);
-
+        
         handler = new ArrowHandler();
 
-        movingSprites = new Sprite[4];
-        Orientation[] o = new Orientation[]{Orientation.UP, Orientation.RIGHT, Orientation.DOWN, Orientation.LEFT};
+        movingSprites = new Sprite[Orientation.values().length];
         for (int i = 0; i < movingSprites.length; ++i) {
-            movingSprites[o[i].ordinal()] = new Sprite(IMG_NAME, SIZE, SIZE, this, new RegionOfInterest(32*i,0,32,32));
+            movingSprites[Orientation.fromInt(i).ordinal()] = 
+                    new Sprite(
+                            IMG_NAME, SIZE, SIZE, this,
+                            new RegionOfInterest(32 * i, 0, 32, 32)
+                    );
         }
     }
 
@@ -78,6 +80,8 @@ public class Arrow extends Projectile {
         movingSprites[getOrientation().ordinal()].draw(canvas);
     }
 
+    // MARK:- Interactable
+    
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {
         return Collections.singletonList(getCurrentMainCellCoordinates());
@@ -87,23 +91,12 @@ public class Arrow extends Projectile {
     public List<DiscreteCoordinates> getFieldOfViewCells() {
         return null;
     }
-
-    @Override
-    public boolean wantsViewInteraction() {
-        return false;
-    }
+    
+    // MARK:- Interactor
 
     @Override
     public void interactWith(Interactable other) {
         other.acceptInteraction(handler);
     }
-
-    @Override
-    public boolean takeCellSpace() {
-        return false;
-    }
-
-    @Override
-    public void acceptInteraction(AreaInteractionVisitor v) {
-    }
+    
 }

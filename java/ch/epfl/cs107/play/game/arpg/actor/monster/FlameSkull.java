@@ -96,7 +96,6 @@ public class FlameSkull extends Monster implements FlyableEntity {
     public void update(float deltaTime) {
         super.update(deltaTime);
         
-        // TODO: remove the if?
         if (isAlive()) {
             lifetime -= deltaTime;
             if (lifetime <= 0) {

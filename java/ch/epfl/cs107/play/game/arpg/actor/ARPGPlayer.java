@@ -1,6 +1,5 @@
 package ch.epfl.cs107.play.game.arpg.actor;
 
-import ch.epfl.cs107.play.game.actor.Entity;
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Animation;
 import ch.epfl.cs107.play.game.areagame.actor.AreaEntity;
@@ -16,7 +15,6 @@ import ch.epfl.cs107.play.game.arpg.actor.item.collectable.CastleKey;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Coin;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Heart;
 import ch.epfl.cs107.play.game.arpg.actor.item.CastleDoor;
-import ch.epfl.cs107.play.game.arpg.actor.item.Grass;
 import ch.epfl.cs107.play.game.arpg.actor.monster.Monster;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.Inventory;
@@ -28,7 +26,6 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Button;
 import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Keyboard;
-import ch.epfl.cs107.play.window.swing.Item;
 
 import java.util.Collections;
 import java.util.List;
@@ -45,31 +42,27 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         public void interactWith(Door door) {
             setIsPassingADoor(door);
         }
-    
-        @Override
-        public void interactWith(Grass grass) {
-            grass.cut();
-        }
         
+        @Override
         public void interactWith(ARPGCollectableAreaEntity collectableEntity) {
             collectableEntity.setCollected();
         }
     
         @Override
         public void interactWith(Coin coin) {
-            coin.setCollected();
+            interactWith((ARPGCollectableAreaEntity) coin);
             collectItem(coin);
         }
 
         @Override
         public void interactWith(Heart heart) {
-            heart.setCollected();
+            interactWith((ARPGCollectableAreaEntity) heart);
             collectItem(heart);
         }
     
         @Override
         public void interactWith(CastleKey key) {
-            key.setCollected();
+            interactWith((ARPGCollectableAreaEntity) key);
             collectItem(key);
         }
     
@@ -85,10 +78,11 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
 
         @Override
         public void interactWith(Monster monster) {
-            if (state == State.ATTACKING_WITH_SWORD){
-                monster.harm(Monster.Vulnerability.PHYSICAL, swordDamage);
+            if (state == State.ATTACKING_WITH_SWORD) {
+                monster.harm(Monster.Vulnerability.PHYSICAL, SWORD_DAMAGE);
             }
         }
+        
     }
     
     /// The maximum Health Points of the player
@@ -96,8 +90,8 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     /// Health points
     private float hp;
 
-    /// Sword damages
-    private float swordDamage = 2f;
+    /// Sword damage
+    private static final float SWORD_DAMAGE = 2f;
 
     /// Attacking state of the player
     private State state;
@@ -112,21 +106,22 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     private ARPGItem currentItem;
     private int currentItemIndex = -1;
     
-    /// Keeps track if we are displaying the fortune or the money
+    /// Keeps track whether we are displaying the fortune or the money
     private boolean isDisplayingMoney;
 
     // MARK:- Animations
 
-    /// Animations array
+    /// Animations arrays
     private Animation[] movingAnimations;
-    private Animation[] swordAnimation;
-    private Animation[] bowAnimation;
-    private Animation[] staffAnimation;
+    private Animation[] swordAnimations;
+    private Animation[] bowAnimations;
+    private Animation[] staffAnimations;
 
+    /// The current rendering animation
     private Animation currentAnimation;
 
     /// Index of the current animation in the above-mentioned arrays
-    private int playerAnimationIndex;
+    private int animationIndex;
     /// Animation duration in number of frames
     private static final int ANIMATION_DURATION = 2;
 
@@ -151,9 +146,10 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         inventory = new ARPGInventory(165);
     
         // TODO: remove debug default inventory items
-        inventory.add(ARPGItem.BOMB, 5);
+        inventory.add(ARPGItem.BOW, 1);
+        inventory.add(ARPGItem.ARROW, 100);
         
-        setupAnimation();
+        setupAnimations();
         
         hp = MAX_HP;
 
@@ -166,10 +162,10 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     }
 
     /**
-     * Setup movingAnimation and attacking animations
+     * Setup animations
      */
-    private void setupAnimation(){
-        // TODO: 12/12/2019 Can we optimizing this?
+    private void setupAnimations() {
+        // TODO: 12/12/2019 Can we optimize this?
 
         Sprite[][] sprites = RPGSprite.extractSprites("zelda/player", 4,
                 1, 2, this, 16, 32,
@@ -179,28 +175,26 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         Sprite[][] bowSprites = RPGSprite.extractSprites("zelda/player.bow", 4,
                 2, 2, this, 32, 32,
                 new Orientation[] {Orientation.DOWN, Orientation.UP, Orientation.RIGHT, Orientation.LEFT});
-        bowAnimation = RPGSprite.createAnimations(ANIMATION_DURATION, bowSprites,false);
+        bowAnimations = RPGSprite.createAnimations(ANIMATION_DURATION, bowSprites,false);
 
         Sprite[][] swordSpites = RPGSprite.extractSprites("zelda/player.sword", 4,
                 2, 2, this, 32, 32,
                 new Orientation[] {Orientation.DOWN, Orientation.UP, Orientation.RIGHT, Orientation.LEFT});
-        swordAnimation = RPGSprite.createAnimations(ANIMATION_DURATION, swordSpites,false);
+        swordAnimations = RPGSprite.createAnimations(ANIMATION_DURATION, swordSpites,false);
 
         Sprite[][] staffSprites = RPGSprite.extractSprites("zelda/player.staff_water", 4,
                 2, 2, this, 32, 32,
                 new Orientation[] {Orientation.DOWN, Orientation.UP, Orientation.RIGHT, Orientation.LEFT});
-        staffAnimation = RPGSprite.createAnimations(ANIMATION_DURATION, staffSprites, false);
+        staffAnimations = RPGSprite.createAnimations(ANIMATION_DURATION, staffSprites, false);
 
 
-        playerAnimationIndex = getOrientation().ordinal();
-
+        animationIndex = getOrientation().ordinal();
     }
 
-    public void updateCurrentAnimation(float deltaTime){
-        // TODO: 12/12/2019 disable moving during attacking
+    private void updateCurrentAnimation(float deltaTime){
         currentAnimation.update(deltaTime);
-        if (currentAnimation.isCompleted()){
-            System.out.println("finished bow");
+        
+        if (currentAnimation.isCompleted()) {
             currentAnimation.reset();
             state = State.IDLE;
         }
@@ -212,38 +206,8 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         super.update(deltaTime);
         
         recoveryTimer = Math.max(recoveryTimer - deltaTime, 0);
-        
-        playerAnimationIndex = getOrientation().ordinal();
 
-        switch (state){
-            case IDLE:
-                currentAnimation = movingAnimations[playerAnimationIndex];
-                if (isDisplacementOccurs()) {
-                    currentAnimation.update(deltaTime);
-                } else {
-                    currentAnimation.reset();
-                }
-                break;
-
-            case ATTACKING_WITH_BOW:
-                currentAnimation = bowAnimation[playerAnimationIndex];
-                updateCurrentAnimation(deltaTime);
-                break;
-
-            case ATTACKING_WITH_SWORD:
-                currentAnimation = swordAnimation[playerAnimationIndex];
-                updateCurrentAnimation(deltaTime);
-                break;
-
-            case ATTACKING_WITH_STAFF:
-                currentAnimation = staffAnimation[playerAnimationIndex];
-                updateCurrentAnimation(deltaTime);
-                break;
-
-            default:
-                break;
-        }
-
+        // Handle the keyboard events
         handleKeyboardEvents();
         
         if (currentItem == null || !possess(currentItem)) {
@@ -252,6 +216,38 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         
         // TODO: move that into a function only called when money or fortune changes when debug money is removed
         statusGui.updateMoney(isDisplayingMoney ? inventory.getMoney() : inventory.getFortune());
+    
+        // Update the animations
+        
+        animationIndex = getOrientation().ordinal();
+        switch (state) {
+            case IDLE:
+                currentAnimation = movingAnimations[animationIndex];
+                if (isDisplacementOccurs()) {
+                    currentAnimation.update(deltaTime);
+                } else {
+                    currentAnimation.reset();
+                }
+                break;
+        
+            case ATTACKING_WITH_BOW:
+                currentAnimation = bowAnimations[animationIndex];
+                updateCurrentAnimation(deltaTime);
+                break;
+        
+            case ATTACKING_WITH_SWORD:
+                currentAnimation = swordAnimations[animationIndex];
+                updateCurrentAnimation(deltaTime);
+                break;
+        
+            case ATTACKING_WITH_STAFF:
+                currentAnimation = staffAnimations[animationIndex];
+                updateCurrentAnimation(deltaTime);
+                break;
+        
+            default:
+                break;
+        }
     }
 
 
@@ -270,7 +266,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
      * @param b (Button): button corresponding to the given orientation, not null
      */
     private void moveOrientate(Orientation orientation, Button b) {
-        if (b.isDown()) {
+        if (b.isDown() && state == State.IDLE) {
             if (getOrientation() == orientation) move(ANIMATION_DURATION);
             else orientate(orientation);
         }
@@ -342,11 +338,8 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
                 currentItemIndex = (currentItemIndex + 1) % inventory.getItems().length;
                 item = inventory.getItems()[currentItemIndex];
             }
+            
             currentItem = item;
-
-            // TODO: Remove debug sysout
-            System.out.println("Current item: " + currentItem.getName() +
-                    " (" + inventory.getQuantity(currentItem) + ")");
         } else {
             currentItem = null;
         }
@@ -356,8 +349,6 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     }
     
     // MARK:- Specific ARPGPlayer methods
-    
-    
     
     // MARK:- Item collect
     
@@ -392,36 +383,36 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
      */
     private void handleItemUsage() {
         if (currentItem == null) {
+            // We return if the player doesn't currently hold any item
             return;
         }
         
-        switch (currentItem) {
-            case BOMB:
-                if (useBomb())  inventory.remove(currentItem, 1);
-                break;
-
-            case BOW:
-                if (state == State.IDLE){
+        if (state == State.IDLE && !isDisplacementOccurs()) {
+            
+            switch (currentItem) {
+                case BOMB:
+                    if (useBomb())  inventory.remove(currentItem, 1);
+                    break;
+        
+                case BOW:
                     state = State.ATTACKING_WITH_BOW;
-                    if(useBow()) inventory.remove(ARPGItem.ARROW, 1);
-                }
-                break;
-
-            case SWORD:
-                if (state == State.IDLE){
+                    
+                    if (useBow()) inventory.remove(ARPGItem.ARROW, 1);
+                    break;
+        
+                case SWORD:
                     state = State.ATTACKING_WITH_SWORD;
-                }
-                break;
-
-            case STAFF:
-                if (state == State.IDLE){
+                    break;
+        
+                case STAFF:
                     state = State.ATTACKING_WITH_STAFF;
                     useStaff();
-                }
-                break;
-
-            default:
-                break;
+                    break;
+        
+                default:
+                    break;
+            }
+            
         }
         System.out.println(state);
     }
@@ -444,15 +435,15 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     }
 
     /**
-     * Set an Arrow on the floor (if possible) and removes it from the inventory
-     * @return (boolean) A boolean flag indicating if the Arrow has successfully been set
+     * Shoot an Arrow (if possible) and removes it from the inventory
+     * @return (boolean) A boolean flag indicating if the Arrow has successfully been shot
      */
     private boolean useBow() {
-        if(possess(ARPGItem.ARROW)) {
+        if (possess(ARPGItem.ARROW)) {
             DiscreteCoordinates arrowPosition = getCurrentMainCellCoordinates().jump(getOrientation().toVector());
             Arrow arrow = new Arrow(getOwnerArea(), getOrientation(), arrowPosition, 1, 3);
 
-            if(canSummonEntity(arrow, arrowPosition)) {
+            if (canSummonEntity(arrow, arrowPosition)) {
                 getOwnerArea().registerActor(arrow);
                 return true;
             }
@@ -461,10 +452,11 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     }
 
     /**
-     * Set a MagicWaterPojectile on the floor (if possible)
+     * Shoot a MagicWaterProjectile (if possible)
+     * @return (boolean) A boolean flag indicating if the MagicWaterPojectile has successfully been shot
      */
     private void useStaff() {
-        if(possess(ARPGItem.STAFF)) {
+        if (possess(ARPGItem.STAFF)) {
             DiscreteCoordinates pearlPosition = getCurrentMainCellCoordinates().jump(getOrientation().toVector());
             MagicWaterPojectile pearl = new MagicWaterPojectile(getOwnerArea(), getOrientation(), pearlPosition, 1, 5);
 
@@ -473,8 +465,11 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             }
         }
     }
-
-    private void useSword(){
+    
+    /**
+     * Use the Sword by notifying the Behavior that we want a view Interaction
+     */
+    private void useSword() {
         wantsViewInteraction();
     }
 
@@ -501,8 +496,6 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         this.hp = Math.min(Math.max(this.hp - hp, 0), MAX_HP);
         recoveryTimer = TIMEOUT_RECOVERY;
         statusGui.updateHp(this.hp);
-        // TODO: remove debug sysout
-        System.out.println("HP (" + this.hp + ")");
     }
 
     /**
