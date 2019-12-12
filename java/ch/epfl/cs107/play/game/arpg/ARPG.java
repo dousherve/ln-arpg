@@ -32,7 +32,6 @@ public class ARPG extends RPG {
             setCurrentArea("zelda/Ferme", true);
             
             initPlayer(new ARPGPlayer(getCurrentArea(), Orientation.DOWN, new DiscreteCoordinates(6,10)));
-            
             return true;
         }
         

@@ -30,10 +30,8 @@ public abstract class ARPGArea extends Area {
     public boolean begin(Window window, FileSystem fileSystem) {
         if (super.begin(window, fileSystem)) {
             // Set the behavior map
-    
             ARPGBehavior behavior = new ARPGBehavior(window, getTitle());
             setBehavior(behavior);
-            
             createArea();
             return true;
         }

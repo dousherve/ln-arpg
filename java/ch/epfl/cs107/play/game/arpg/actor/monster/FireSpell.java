@@ -174,7 +174,7 @@ public class FireSpell extends AreaEntity implements Interactor {
 
     @Override
     public void acceptInteraction(AreaInteractionVisitor v) {
-        return;
+        ((ARPGInteractionVisitor) v).interactWith(this);
     }
     
     // MARK:- Interactor

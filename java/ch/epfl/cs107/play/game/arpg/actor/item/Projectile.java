@@ -1,7 +1,6 @@
 package ch.epfl.cs107.play.game.arpg.actor.item;
 
 import ch.epfl.cs107.play.game.areagame.Area;
-import ch.epfl.cs107.play.game.areagame.actor.Animation;
 import ch.epfl.cs107.play.game.areagame.actor.FlyableEntity;
 import ch.epfl.cs107.play.game.areagame.actor.Interactor;
 import ch.epfl.cs107.play.game.areagame.actor.MovableAreaEntity;
@@ -12,6 +11,8 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 public abstract class Projectile extends MovableAreaEntity implements Interactor, FlyableEntity {
 
+    /// frame rate
+    private static final int FRAME_RATE = 24;
     /// speed in case/second
     private float speed;
     /// maximum distance for the projectile (in case)
@@ -33,8 +34,12 @@ public abstract class Projectile extends MovableAreaEntity implements Interactor
         super(area, orientation, position);
         this.speed = speed;
         this.maximumDistance = maximumDistance;
+
     }
 
+    /**
+     * Stop the projectile
+     */
     public void stop(){
         getOwnerArea().unregisterActor(this);
     }
@@ -43,11 +48,13 @@ public abstract class Projectile extends MovableAreaEntity implements Interactor
     public void update(float deltaTime) {
         super.update(deltaTime);
         distance += deltaTime*speed;
+
         if (distance >= maximumDistance){
             stop();
             return;
         }
-        if(!isDisplacementOccurs() && !move(5)){
+        // if there is a collision with something
+        if(!isDisplacementOccurs() && !move(((int)(FRAME_RATE / speed)))){
             stop();
         }
     }

@@ -450,7 +450,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     private boolean useBow() {
         if(possess(ARPGItem.ARROW)) {
             DiscreteCoordinates arrowPosition = getCurrentMainCellCoordinates().jump(getOrientation().toVector());
-            Arrow arrow = new Arrow(getOwnerArea(), getOrientation(), arrowPosition, 5f, 5f);
+            Arrow arrow = new Arrow(getOwnerArea(), getOrientation(), arrowPosition, 1, 3);
 
             if(canSummonEntity(arrow, arrowPosition)) {
                 getOwnerArea().registerActor(arrow);
@@ -462,12 +462,11 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
 
     /**
      * Set a MagicWaterPojectile on the floor (if possible)
-     * @return (boolean) A boolean flag indicating if the MagicWaterPojectile has successfully been set
      */
     private void useStaff() {
         if(possess(ARPGItem.STAFF)) {
             DiscreteCoordinates pearlPosition = getCurrentMainCellCoordinates().jump(getOrientation().toVector());
-            MagicWaterPojectile pearl = new MagicWaterPojectile(getOwnerArea(), getOrientation(), pearlPosition, 5f, 5f);
+            MagicWaterPojectile pearl = new MagicWaterPojectile(getOwnerArea(), getOrientation(), pearlPosition, 1, 5);
 
             if(canSummonEntity(pearl, pearlPosition)) {
                 getOwnerArea().registerActor(pearl);
