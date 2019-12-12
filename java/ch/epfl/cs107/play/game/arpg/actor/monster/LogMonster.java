@@ -185,7 +185,8 @@ public class LogMonster extends Monster {
     public void draw(Canvas canvas) {
         super.draw(canvas);
         
-        if (getMonsterState() == MonsterState.ALIVE) {
+        // TODO: remove the if ?
+        if (isAlive()) {
             
             switch (state) {
                 case SLEEPING:

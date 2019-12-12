@@ -166,7 +166,7 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
     /**
      * The actions to be executed when the Monster dies.
      */
-    void die() {
+    protected void die() {
         monsterState = MonsterState.VANISHING;
         
         leaveArea();
@@ -176,8 +176,15 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
      *
      * @return (State) The current state of the Monster
      */
-    MonsterState getMonsterState() {
+    protected MonsterState getMonsterState() {
         return monsterState;
+    }
+    
+    /**
+     * @return (boolean) a boolean indicating if the current Monster is alive
+     */
+    final protected boolean isAlive() {
+        return monsterState == MonsterState.ALIVE;
     }
     
     /**

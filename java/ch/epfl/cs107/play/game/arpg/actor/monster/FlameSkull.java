@@ -73,13 +73,12 @@ public class FlameSkull extends Monster implements FlyableEntity {
      * Default FlameSkull constructor
      *
      * @param area            (Area): Owner area. Not null
-     * @param position        (Coordinate): Initial position of the entity. Not null
      * @param orientation     (Orientation): orientation of the entity
+     * @param position        (Coordinate): Initial position of the entity. Not null
      */
-    public FlameSkull(Area area, DiscreteCoordinates position, Orientation orientation) {
+    public FlameSkull(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position, MAX_HP, Vulnerability.PHYSICAL, Vulnerability.MAGIC);
-    
-        randomlyOrientate();
+        
         handler = new FlameSkullHandler();
         // We choose a random value between MIN_LIFE_TIME and MAX_LIFE_TIME
         lifetime = MIN_LIFE_TIME +
@@ -97,7 +96,8 @@ public class FlameSkull extends Monster implements FlyableEntity {
     public void update(float deltaTime) {
         super.update(deltaTime);
         
-        if (getMonsterState() == MonsterState.ALIVE) {
+        // TODO: remove the if?
+        if (isAlive()) {
             lifetime -= deltaTime;
             if (lifetime <= 0) {
                 die();
@@ -120,14 +120,11 @@ public class FlameSkull extends Monster implements FlyableEntity {
     public void draw(Canvas canvas) {
         super.draw(canvas);
         
-        if (getMonsterState() == MonsterState.ALIVE) {
+        // TODO: remove the if?
+        if (isAlive()) {
             animations[animationIndex].draw(canvas);
         }
     }
-    
-    // TODO: make helper methods somewhere to randomly move and orientate a MovableAreaEntity
-    
-
     
     // MARK:- Interactable
     
@@ -146,7 +143,7 @@ public class FlameSkull extends Monster implements FlyableEntity {
     @Override
     public boolean wantsCellInteraction() {
         // We check if the monster has changed cell, in order not to deal the damage mutliple times
-        return (getMonsterState() == MonsterState.ALIVE);
+        return isAlive();
     }
     
     @Override

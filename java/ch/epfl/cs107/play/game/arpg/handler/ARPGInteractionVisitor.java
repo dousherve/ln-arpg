@@ -99,7 +99,6 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
     default void interactWith(FireSpell fireSpell) {
         // by default the interaction is empty
     }
-
     
     /**
      * Simulate an interaction between RPG Interactor and a FlameSkull

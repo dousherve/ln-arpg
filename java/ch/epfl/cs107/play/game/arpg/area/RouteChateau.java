@@ -70,7 +70,7 @@ public class RouteChateau extends ARPGArea {
         }
         
         if (getKeyboard().get(Keyboard.S).isPressed()) {
-            registerActor(new FlameSkull(this, new DiscreteCoordinates(8, 10), Orientation.DOWN));
+            registerActor(new FlameSkull(this, Orientation.DOWN, new DiscreteCoordinates(8, 10)));
         }
     
         if (getKeyboard().get(Keyboard.L).isPressed()) {
