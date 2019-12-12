@@ -3,7 +3,6 @@ package ch.epfl.cs107.play.game.rpg;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Set;
 
 public abstract class Inventory {
     

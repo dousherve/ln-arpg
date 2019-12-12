@@ -3,12 +3,15 @@ package ch.epfl.cs107.play.game.arpg.handler;
 import ch.epfl.cs107.play.game.arpg.ARPGBehavior;
 import ch.epfl.cs107.play.game.arpg.actor.ARPGPlayer;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
+import ch.epfl.cs107.play.game.arpg.actor.item.CastleDoor;
+import ch.epfl.cs107.play.game.arpg.actor.item.Grass;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.ARPGCollectableAreaEntity;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.CastleKey;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Coin;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Heart;
-import ch.epfl.cs107.play.game.arpg.actor.item.CastleDoor;
-import ch.epfl.cs107.play.game.arpg.actor.item.Grass;
+import ch.epfl.cs107.play.game.arpg.actor.item.projectile.Arrow;
+import ch.epfl.cs107.play.game.arpg.actor.item.projectile.MagicWaterProjectile;
+import ch.epfl.cs107.play.game.arpg.actor.item.projectile.Projectile;
 import ch.epfl.cs107.play.game.arpg.actor.monster.DarkLord;
 import ch.epfl.cs107.play.game.arpg.actor.monster.FireSpell;
 import ch.epfl.cs107.play.game.arpg.actor.monster.FlameSkull;
@@ -135,6 +138,32 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
      */
     default void interactWith(DarkLord darkLord) {
         interactWith((Monster) darkLord);
+    }
+    
+    // MARK:- Projectile
+    
+    /**
+     * Simulate an interaction between RPG Interactor and a Projectile
+     * @param projectile (Projectile), not null
+     */
+    default void interactWith(Projectile projectile) {
+        projectile.stop();
+    }
+    
+    /**
+     * Simulate an interaction between RPG Interactor and a Arrow
+     * @param arrow (Arrow), not null
+     */
+    default void interactWith(Arrow arrow) {
+        interactWith((Projectile) arrow);
+    }
+    
+    /**
+     * Simulate an interaction between RPG Interactor and a Arrow
+     * @param arrow (Arrow), not null
+     */
+    default void interactWith(MagicWaterProjectile arrow) {
+        interactWith((Projectile) arrow);
     }
     
 }

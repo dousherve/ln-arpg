@@ -1,15 +1,11 @@
 package ch.epfl.cs107.play.game.arpg.actor;
 
 import ch.epfl.cs107.play.game.actor.Graphics;
-import ch.epfl.cs107.play.game.arpg.actor.gui.ARPGStatusGUIElement;
 import ch.epfl.cs107.play.game.arpg.actor.gui.ARPGStatusHpGUI;
 import ch.epfl.cs107.play.game.arpg.actor.gui.ARPGStatusItemGUI;
 import ch.epfl.cs107.play.game.arpg.actor.gui.ARPGStatusMoneyGUI;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ARPGStatusGUI implements Graphics {
     

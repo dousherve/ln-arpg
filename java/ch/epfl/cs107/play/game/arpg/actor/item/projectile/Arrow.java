@@ -1,9 +1,11 @@
-package ch.epfl.cs107.play.game.arpg.actor.item;
+package ch.epfl.cs107.play.game.arpg.actor.item.projectile;
 
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
+import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
+import ch.epfl.cs107.play.game.arpg.actor.item.Grass;
 import ch.epfl.cs107.play.game.arpg.actor.monster.FireSpell;
 import ch.epfl.cs107.play.game.arpg.actor.monster.Monster;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
@@ -51,7 +53,7 @@ public class Arrow extends Projectile {
     private static final String IMG_NAME = "zelda/arrow";
 
     /**
-     * Default AreaArrowEntity constructor
+     * Default Arrow constructor
      *
      * @param area            (Area): Owner area. Not null
      * @param orientation     (Orientation): Initial orientation of the entity in the Area. Not null

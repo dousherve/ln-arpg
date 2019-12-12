@@ -33,10 +33,10 @@ public class Play {
         final Game game = new ARPG();
 
 		// Use Swing display
-		final Window window = new SwingWindow(game.getTitle(), fileSystem, 600, 600);
+		// final Window window = new SwingWindow(game.getTitle(), fileSystem, 600, 600);
 		
 		// Bigger window size (better for 4K Displays)
-		// final Window window = new SwingWindow(game.getTitle(), fileSystem, 1200, 1200);
+		final Window window = new SwingWindow(game.getTitle(), fileSystem, 1200, 1200);
 		
 		//Recorder recorder = new Recorder(window); 
 		//RecordReplayer replayer = new RecordReplayer(window); // not used in this project
@@ -51,7 +51,7 @@ public class Play {
 				long lastTime;
 				final float frameDuration = ONE_SEC / game.getFrameRate();
 
-				// Run until the user try to close the window
+				// Run until the user tries to close the window
 				while (!window.isCloseRequested()) {
 
 					// Compute time interval

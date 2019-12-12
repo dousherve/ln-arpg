@@ -288,20 +288,17 @@ public class DarkLord extends Monster {
                             getCurrentMainCellCoordinates().y + DY
                     );
     
-                    List<DiscreteCoordinates> targetCoords = new ArrayList<>();
-                    targetCoords.add(mainTargetCoords);
-                    targetCoords.add(mainTargetCoords.up());
-                    
                     if (       
                             !isDisplacementOccurs() &&
                             mainTargetCoords.x >= 0 && mainTargetCoords.x < getOwnerArea().getWidth() &&
                             mainTargetCoords.y >= 0 && mainTargetCoords.y < getOwnerArea().getHeight() &&
-                            getOwnerArea().canEnterAreaCells(this, targetCoords)
+                            getOwnerArea().canEnterAreaCells(this, Collections.singletonList(mainTargetCoords))
                     ) {
                         // TODO: fuck, fuck.. FUCKK FUCKCKFUKCKCKCCKCKCKCK
-                        getOwnerArea().leaveAreaCells(this, getCurrentCells());
+                        resetMotion();
+                        getOwnerArea().leaveAreaCells(this, Collections.singletonList(getCurrentMainCellCoordinates()));
                         setCurrentPosition(mainTargetCoords.toVector());
-                        getOwnerArea().enterAreaCells(this, getCurrentCells());
+                        getOwnerArea().enterAreaCells(this, Collections.singletonList(mainTargetCoords));
     
                         attackingAnimations[animationIndex].reset();
                         state = DarkLordState.IDLE;
@@ -352,12 +349,6 @@ public class DarkLord extends Monster {
     }
     
     // MARK:- Interactable
-    
-    
-    @Override
-    public List<DiscreteCoordinates> getCurrentCells() {
-        return Collections.singletonList(getCurrentMainCellCoordinates());
-    }
     
     @Override
     public List<DiscreteCoordinates> getFieldOfViewCells() {

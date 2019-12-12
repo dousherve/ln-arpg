@@ -1,11 +1,10 @@
-package ch.epfl.cs107.play.game.arpg.actor.item;
+package ch.epfl.cs107.play.game.arpg.actor.item.projectile;
 
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Animation;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
-import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.arpg.actor.monster.FireSpell;
 import ch.epfl.cs107.play.game.arpg.actor.monster.Monster;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
@@ -17,11 +16,25 @@ import ch.epfl.cs107.play.window.Canvas;
 import java.util.Collections;
 import java.util.List;
 
-public class MagicWaterPojectile extends Projectile{
+public class MagicWaterProjectile extends Projectile {
+    
+    private static class MagicWaterProjectileHandler implements ARPGInteractionVisitor{
+        
+        @Override
+        public void interactWith(Monster monster) {
+            monster.harm(Monster.Vulnerability.MAGIC, DAMAGE);
+        }
+        
+        @Override
+        public void interactWith(FireSpell fireSpell) {
+            fireSpell.extinguish();
+        }
+        
+    }
 
-    private static final float DAMAGE = 1f;
+    private static final float DAMAGE = 2.5f;
 
-    private static MagicWaterPojectileHandler handler;
+    private static MagicWaterProjectileHandler handler;
 
     // MARK:- Animation
     private Animation movingAnimation;
@@ -29,51 +42,44 @@ public class MagicWaterPojectile extends Projectile{
     private static final int MOVING_ANIMATION_DURATION = 1;
     private static final String IMG_NAME = "zelda/magicWaterProjectile";
 
-    private static class MagicWaterPojectileHandler implements ARPGInteractionVisitor{
-
-        @Override
-        public void interactWith(Monster monster) {
-            monster.harm(Monster.Vulnerability.MAGIC, DAMAGE);
-        }
-
-        @Override
-        public void interactWith(FireSpell fireSpell) {
-            fireSpell.extinguish();
-        }
-    }
-
     /**
      * Default AreaEntity constructor
      *
      * @param area            (Area): Owner area. Not null
      * @param orientation     (Orientation): Initial orientation of the entity in the Area. Not null
      * @param position        (DiscreteCoordinate): Initial position of the entity in the Area. Not null
-     * @param speed           (float) speed in cell/Second
-     * @param maximumDistance (float) maximum distance in cell
+     * @param speed           (float) speed
+     * @param maximumDistance (float) maximum distance
      */
-    public MagicWaterPojectile(Area area, Orientation orientation, DiscreteCoordinates position, float speed, float maximumDistance) {
+    public MagicWaterProjectile(Area area, Orientation orientation, DiscreteCoordinates position, float speed, float maximumDistance) {
         super(area, orientation, position, speed, maximumDistance);
 
-        handler = new MagicWaterPojectileHandler();
+        handler = new MagicWaterProjectileHandler();
 
         Sprite[] movingSprites  = new Sprite[4];
         for (int i = 0; i < movingSprites.length; ++i) {
-            movingSprites[i] = new RPGSprite(IMG_NAME, SIZE, SIZE, this, new RegionOfInterest(32*i,0,32,32));
+            movingSprites[i] = new RPGSprite(
+                    IMG_NAME, SIZE, SIZE, this,
+                    new RegionOfInterest(32 * i, 0, 32, 32)
+            );
         }
-        movingAnimation = new Animation(MOVING_ANIMATION_DURATION, movingSprites, true);
-
+        
+        movingAnimation = new Animation(MOVING_ANIMATION_DURATION, movingSprites);
     }
-
+    
+    @Override
+    public void update(float deltaTime) {
+        super.update(deltaTime);
+        
+        movingAnimation.update(deltaTime);
+    }
+    
     @Override
     public void draw(Canvas canvas) {
         movingAnimation.draw(canvas);
     }
-
-    @Override
-    public void update(float deltaTime) {
-        super.update(deltaTime);
-        movingAnimation.update(deltaTime);
-    }
+    
+    // MARK:- Interactable
 
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {
@@ -85,22 +91,11 @@ public class MagicWaterPojectile extends Projectile{
         return null;
     }
 
-    @Override
-    public boolean wantsViewInteraction() {
-        return false;
-    }
+    // MARK:- Interactor
 
     @Override
     public void interactWith(Interactable other) {
         other.acceptInteraction(handler);
     }
-
-    @Override
-    public boolean takeCellSpace() {
-        return false;
-    }
-
-    @Override
-    public void acceptInteraction(AreaInteractionVisitor v) {
-    }
+    
 }

@@ -1,4 +1,4 @@
-package ch.epfl.cs107.play.game.arpg.actor.item;
+package ch.epfl.cs107.play.game.arpg.actor.item.projectile;
 
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.FlyableEntity;
@@ -43,7 +43,7 @@ public abstract class Projectile extends MovableAreaEntity implements Interactor
     /**
      * Stop the projectile by unregistering it
      */
-    public void stop(){
+    public void stop() {
         getOwnerArea().unregisterActor(this);
     }
 

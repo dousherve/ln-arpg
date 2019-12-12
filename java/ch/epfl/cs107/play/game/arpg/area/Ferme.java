@@ -1,9 +1,6 @@
 package ch.epfl.cs107.play.game.arpg.area;
 
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
-import ch.epfl.cs107.play.game.arpg.actor.item.Arrow;
-import ch.epfl.cs107.play.game.arpg.actor.item.collectable.CastleKey;
-import ch.epfl.cs107.play.game.arpg.actor.monster.FireSpell;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 public class Ferme extends ARPGArea {
