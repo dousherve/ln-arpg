@@ -4,10 +4,10 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
 import ch.epfl.cs107.play.game.arpg.actor.item.CastleDoor;
 import ch.epfl.cs107.play.game.arpg.actor.item.Grass;
-import ch.epfl.cs107.play.game.arpg.actor.monster.DarkLord;
-import ch.epfl.cs107.play.game.arpg.actor.monster.FireSpell;
-import ch.epfl.cs107.play.game.arpg.actor.monster.FlameSkull;
-import ch.epfl.cs107.play.game.arpg.actor.monster.LogMonster;
+import ch.epfl.cs107.play.game.arpg.actor.attacker.DarkLord;
+import ch.epfl.cs107.play.game.arpg.actor.attacker.FireSpell;
+import ch.epfl.cs107.play.game.arpg.actor.attacker.FlameSkull;
+import ch.epfl.cs107.play.game.arpg.actor.attacker.LogMonster;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Keyboard;
 
@@ -57,6 +57,7 @@ public class RouteChateau extends ARPGArea {
             }
         }
         
+        registerActor(new FireSpell(this, Orientation.DOWN, new DiscreteCoordinates(5, 5), 3));
     }
     
     @Override

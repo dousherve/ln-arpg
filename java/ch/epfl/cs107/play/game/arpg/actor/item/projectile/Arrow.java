@@ -6,8 +6,8 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
 import ch.epfl.cs107.play.game.arpg.actor.item.Grass;
-import ch.epfl.cs107.play.game.arpg.actor.monster.FireSpell;
-import ch.epfl.cs107.play.game.arpg.actor.monster.Monster;
+import ch.epfl.cs107.play.game.arpg.actor.attacker.FireSpell;
+import ch.epfl.cs107.play.game.arpg.actor.attacker.Monster;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RegionOfInterest;
@@ -18,11 +18,13 @@ import java.util.List;
 
 public class Arrow extends Projectile {
     
-    private static class ArrowHandler implements ARPGInteractionVisitor {
+    private class ArrowHandler implements ARPGInteractionVisitor {
         
         @Override
         public void interactWith(Monster monster) {
-            monster.harm(Monster.Vulnerability.PHYSICAL, DAMAGE);
+            if (canInteractWith(monster)) {
+                monster.harm(Monster.Vulnerability.PHYSICAL, DAMAGE);
+            }
         }
         
         @Override
@@ -44,7 +46,7 @@ public class Arrow extends Projectile {
 
     private static final float DAMAGE = 1f;
 
-    private static ArrowHandler handler;
+    private final ArrowHandler handler;
 
     // MARK:- Sprite
     

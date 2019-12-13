@@ -1,4 +1,4 @@
-package ch.epfl.cs107.play.game.arpg.actor.monster;
+package ch.epfl.cs107.play.game.arpg.actor.attacker;
 
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Animation;
@@ -19,17 +19,18 @@ import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
-import javax.security.auth.login.AccountNotFoundException;
 import java.util.Collections;
 import java.util.List;
 
 public class FireSpell extends AreaEntity implements Interactor {
     
-    private static class FireSpellHandler implements ARPGInteractionVisitor {
+    private class FireSpellHandler implements ARPGInteractionVisitor {
     
         @Override
         public void interactWith(ARPGPlayer player) {
-            player.harm(DAMAGE);
+            if (attackHandler.canHarm(player)) {
+                player.harm(DAMAGE);
+            }
         }
     
         @Override
@@ -44,7 +45,9 @@ public class FireSpell extends AreaEntity implements Interactor {
     
         @Override
         public void interactWith(Monster monster) {
-            monster.harm(Monster.Vulnerability.FIRE, DAMAGE);
+            if (attackHandler.canHarm(monster)) {
+                monster.harm(Monster.Vulnerability.FIRE, DAMAGE);
+            }
         }
         
     }
@@ -54,6 +57,9 @@ public class FireSpell extends AreaEntity implements Interactor {
     
     /// Interaction handler
     private FireSpellHandler handler;
+    
+    /// Continuous attack handler
+    private ContinuousAttackHandler attackHandler;
 
     private static final float MIN_LIFE_TIME = 5f, MAX_LIFE_TIME = 10f;
     
@@ -63,7 +69,10 @@ public class FireSpell extends AreaEntity implements Interactor {
 
     private static final float SIZE = 1f;
 
+    /// The damage to inflict
     private static final float DAMAGE = 0.5f;
+    
+    private static final float ATTACK_DELAY = 0.3f;
 
     /// The strength
     private int strength;
@@ -84,6 +93,7 @@ public class FireSpell extends AreaEntity implements Interactor {
         super(area, orientation, position);
         
         handler = new FireSpellHandler();
+        attackHandler = new ContinuousAttackHandler(ATTACK_DELAY);
         
         cycleCount = 0;
         
@@ -99,7 +109,7 @@ public class FireSpell extends AreaEntity implements Interactor {
         animation = new Animation(ANIMATION_DURATION, sprites, true);
 
         this.strength = Math.max(strength, 0);
-
+        
         randomlyOrientate();
     }
 
@@ -116,6 +126,9 @@ public class FireSpell extends AreaEntity implements Interactor {
             extinguish();
             return;
         }
+        
+        // Update the continuous attack handler
+        attackHandler.update(deltaTime);
         
         ++cycleCount;
         if (cycleCount >= PROPAGATION_TIME_FIRE) {

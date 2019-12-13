@@ -16,7 +16,7 @@ import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Coin;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Heart;
 import ch.epfl.cs107.play.game.arpg.actor.item.projectile.Arrow;
 import ch.epfl.cs107.play.game.arpg.actor.item.projectile.MagicWaterProjectile;
-import ch.epfl.cs107.play.game.arpg.actor.monster.Monster;
+import ch.epfl.cs107.play.game.arpg.actor.attacker.Monster;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.Inventory;
 import ch.epfl.cs107.play.game.rpg.InventoryItem;
@@ -121,11 +121,6 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     /// State of the player
     private State state;
 
-    /// The timeout after which the Player can take damage again
-    private static final float TIMEOUT_RECOVERY = .2f;
-    /// The recovery timer
-    private float recoveryTimer;
-    
     /// The Inventory of the Player
     private final ARPGInventory inventory;
     private ARPGItem currentItem;
@@ -182,7 +177,6 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         state = State.IDLE;
         
         isDisplayingMoney = true;
-        recoveryTimer = 0f;
     
         resetMotion();
     }
@@ -218,8 +212,6 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     public void update(float deltaTime) {
         super.update(deltaTime);
         
-        recoveryTimer = Math.max(recoveryTimer - deltaTime, 0);
-
         // Handle the keyboard events
         handleKeyboardEvents();
         
@@ -550,13 +542,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
      * @param damage (float) The amount of Health Points to remove from the ARPGPlayer
      */
     public void harm(float damage) {
-        if (recoveryTimer > 0) {
-            // If we're still recovering, don't take damage
-            return;
-        }
-        
         this.hp = Math.min(Math.max(this.hp - damage, 0), MAX_HP);
-        recoveryTimer = TIMEOUT_RECOVERY;
         statusGui.updateHp(this.hp);
     }
 

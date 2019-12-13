@@ -12,11 +12,11 @@ import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Heart;
 import ch.epfl.cs107.play.game.arpg.actor.item.projectile.Arrow;
 import ch.epfl.cs107.play.game.arpg.actor.item.projectile.MagicWaterProjectile;
 import ch.epfl.cs107.play.game.arpg.actor.item.projectile.Projectile;
-import ch.epfl.cs107.play.game.arpg.actor.monster.DarkLord;
-import ch.epfl.cs107.play.game.arpg.actor.monster.FireSpell;
-import ch.epfl.cs107.play.game.arpg.actor.monster.FlameSkull;
-import ch.epfl.cs107.play.game.arpg.actor.monster.LogMonster;
-import ch.epfl.cs107.play.game.arpg.actor.monster.Monster;
+import ch.epfl.cs107.play.game.arpg.actor.attacker.DarkLord;
+import ch.epfl.cs107.play.game.arpg.actor.attacker.FireSpell;
+import ch.epfl.cs107.play.game.arpg.actor.attacker.FlameSkull;
+import ch.epfl.cs107.play.game.arpg.actor.attacker.LogMonster;
+import ch.epfl.cs107.play.game.arpg.actor.attacker.Monster;
 import ch.epfl.cs107.play.game.rpg.handler.RPGInteractionVisitor;
 
 public interface ARPGInteractionVisitor extends RPGInteractionVisitor {

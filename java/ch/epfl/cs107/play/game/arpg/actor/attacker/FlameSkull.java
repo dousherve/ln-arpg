@@ -1,4 +1,4 @@
-package ch.epfl.cs107.play.game.arpg.actor.monster;
+package ch.epfl.cs107.play.game.arpg.actor.attacker;
 
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Animation;
@@ -19,11 +19,13 @@ import ch.epfl.cs107.play.window.Canvas;
 
 public class FlameSkull extends Monster implements FlyableEntity {
     
-    private static class FlameSkullHandler implements ARPGInteractionVisitor {
+    private class FlameSkullHandler implements ARPGInteractionVisitor {
     
         @Override
         public void interactWith(ARPGPlayer player) {
-            player.harm(DAMAGE);
+            if (attackHandler.canHarm(player)) {
+                player.harm(DAMAGE);
+            }
         }
     
         @Override
@@ -38,7 +40,9 @@ public class FlameSkull extends Monster implements FlyableEntity {
         
         @Override
         public void interactWith(Monster monster) {
-            monster.harm(Vulnerability.FIRE, DAMAGE);
+            if (attackHandler.canHarm(monster)) {
+                monster.harm(Vulnerability.FIRE, DAMAGE);
+            }
         }
         
     }
@@ -59,8 +63,13 @@ public class FlameSkull extends Monster implements FlyableEntity {
     /// The size of the FlameSkull
     private static final float SIZE = 2f;
     
+    private static final float ATTACK_DELAY = 0.3f;
+    
     /// The Interaction handler
     private FlameSkullHandler handler;
+    
+    /// The continuous attack handler
+    private ContinuousAttackHandler attackHandler;
     
     /// Animations array
     private Animation[] animations;
@@ -80,6 +89,8 @@ public class FlameSkull extends Monster implements FlyableEntity {
         super(area, orientation, position, MAX_HP, Vulnerability.PHYSICAL, Vulnerability.MAGIC);
         
         handler = new FlameSkullHandler();
+        attackHandler = new ContinuousAttackHandler(ATTACK_DELAY);
+        
         // We choose a random value between MIN_LIFE_TIME and MAX_LIFE_TIME
         lifetime = MIN_LIFE_TIME +
                 (MAX_LIFE_TIME - MIN_LIFE_TIME) * RandomGenerator.getInstance().nextFloat();
@@ -102,6 +113,8 @@ public class FlameSkull extends Monster implements FlyableEntity {
                 die();
                 return;
             }
+            
+            attackHandler.update(deltaTime);
     
             randomlyMove(ANIMATION_DURATION);
     
@@ -119,7 +132,6 @@ public class FlameSkull extends Monster implements FlyableEntity {
     public void draw(Canvas canvas) {
         super.draw(canvas);
         
-        // TODO: remove the if?
         if (isAlive()) {
             animations[animationIndex].draw(canvas);
         }

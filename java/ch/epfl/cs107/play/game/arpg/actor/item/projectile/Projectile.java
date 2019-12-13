@@ -2,12 +2,16 @@ package ch.epfl.cs107.play.game.arpg.actor.item.projectile;
 
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.FlyableEntity;
+import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Interactor;
 import ch.epfl.cs107.play.game.areagame.actor.MovableAreaEntity;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Projectile extends MovableAreaEntity implements Interactor, FlyableEntity {
     
@@ -21,6 +25,8 @@ public abstract class Projectile extends MovableAreaEntity implements Interactor
     private float maximumDistance;
     /// Traveled distance
     private float distance;
+    
+    private List<Interactable> interactedEntities;
 
     /**
      * Default Projectile constructor
@@ -36,6 +42,8 @@ public abstract class Projectile extends MovableAreaEntity implements Interactor
         
         this.speed = speed;
         this.maximumDistance = maximumDistance;
+        
+        interactedEntities = new ArrayList<>();
     
         distance = 0;
     }
@@ -60,6 +68,21 @@ public abstract class Projectile extends MovableAreaEntity implements Interactor
         // Stop if there is a collision
         if (!isDisplacementOccurs() && !move(((int) (FRAME_RATE / speed)))) {
             stop();
+        }
+    }
+    
+    /**
+     * Indicate if we can interact with the given Interactable,
+     * in other words indicate if the Projectile already has interacted with it
+     * @param interactable (Interactable) not null
+     * @return (boolean) a boolean indicating if we can interact with the given Interactable
+     */
+    final protected boolean canInteractWith(Interactable interactable) {
+        if (interactedEntities.contains(interactable)){
+            return false;
+        } else {
+            interactedEntities.add(interactable);
+            return true;
         }
     }
 
