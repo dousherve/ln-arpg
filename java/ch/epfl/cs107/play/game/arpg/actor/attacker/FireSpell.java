@@ -63,7 +63,9 @@ public class FireSpell extends AreaEntity implements Interactor {
 
     private static final float MIN_LIFE_TIME = 5f, MAX_LIFE_TIME = 10f;
     
-    private static final int PROPAGATION_TIME_FIRE = 100;
+    private final int PROPAGATION_TIME_FIRE;
+
+    private final boolean LINEAR_PROPAGATION;
     
     private int cycleCount;
 
@@ -89,12 +91,15 @@ public class FireSpell extends AreaEntity implements Interactor {
      * @param position    (DiscreteCoordinate): Initial position of the entity in the Area. Not null
      * @param strength    (int) The strength of the spell
      */
-    public FireSpell(Area area, Orientation orientation, DiscreteCoordinates position, int strength) {
+    public FireSpell(Area area, Orientation orientation, DiscreteCoordinates position, int strength, boolean linearPropagation, int propagationTime) {
         super(area, orientation, position);
         
         handler = new FireSpellHandler();
         attackHandler = new ContinuousAttackHandler(ATTACK_DELAY);
-        
+
+        PROPAGATION_TIME_FIRE = propagationTime;
+        LINEAR_PROPAGATION = linearPropagation;
+
         cycleCount = 0;
         
         lifetime = MIN_LIFE_TIME +
@@ -109,8 +114,14 @@ public class FireSpell extends AreaEntity implements Interactor {
         animation = new Animation(ANIMATION_DURATION, sprites, true);
 
         this.strength = Math.max(strength, 0);
-        
-        randomlyOrientate();
+
+        if(!LINEAR_PROPAGATION) {
+            randomlyOrientate();
+        }
+    }
+
+    public FireSpell(Area area, Orientation orientation, DiscreteCoordinates position, int strength){
+        this(area, orientation, position, strength, false, 100);
     }
 
     public void extinguish(){
@@ -137,13 +148,20 @@ public class FireSpell extends AreaEntity implements Interactor {
                 DiscreteCoordinates newFlamePos = getCurrentMainCellCoordinates().jump(
                         getOrientation().toVector()
                 );
+
                 FireSpell flame = new FireSpell(getOwnerArea(), getOrientation(),
-                        newFlamePos, strength - 1);
+                        newFlamePos, strength - 1, LINEAR_PROPAGATION, PROPAGATION_TIME_FIRE);
+
                 if (getOwnerArea().canEnterAreaCells(
                         flame, Collections.singletonList(newFlamePos))
                 ) {
                     getOwnerArea().registerActor(flame);
                 }
+
+                if(LINEAR_PROPAGATION){
+                    strength = 0;
+                }
+
             }
         }
         
