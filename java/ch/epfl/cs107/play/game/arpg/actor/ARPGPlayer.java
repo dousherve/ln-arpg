@@ -69,11 +69,13 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     
         @Override
         public void interactWith(CastleDoor door) {
-            if (door.isOpen()) {
-                setIsPassingADoor(door);
-                door.close();
-            } else if (possess(ARPGItem.CASTLE_KEY)) {
-                door.open();
+            if (state == State.IDLE) {
+                if (door.isOpen()) {
+                    setIsPassingADoor(door);
+                    door.close();
+                } else if (possess(ARPGItem.CASTLE_KEY)) {
+                    door.open();
+                }
             }
         }
         
@@ -120,7 +122,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     private State state;
 
     /// The timeout after which the Player can take damage again
-    private static final float TIMEOUT_RECOVERY = .5f;
+    private static final float TIMEOUT_RECOVERY = .2f;
     /// The recovery timer
     private float recoveryTimer;
     
@@ -530,7 +532,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
      * Use the Sword by notifying the Behavior that we want a view Interaction
      */
     private void useSword() {
-        wantsViewInteraction();
+        state = State.ATTACKING_WITH_SWORD;
     }
 
     /**
@@ -545,15 +547,15 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     
     /**
      * Harm the player. Make sure that the HP level does not go below 0 or over MAX_HP.
-     * @param hp (float) The amount of Health Points to remove from the ARPGPlayer
+     * @param damage (float) The amount of Health Points to remove from the ARPGPlayer
      */
-    public void harm(float hp) {
+    public void harm(float damage) {
         if (recoveryTimer > 0) {
             // If we're still recovering, don't take damage
             return;
         }
         
-        this.hp = Math.min(Math.max(this.hp - hp, 0), MAX_HP);
+        this.hp = Math.min(Math.max(this.hp - damage, 0), MAX_HP);
         recoveryTimer = TIMEOUT_RECOVERY;
         statusGui.updateHp(this.hp);
     }
@@ -562,8 +564,9 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
      * Heal the player.
      * @param hp (float) The amount of Health Points to add from the ARPGPlayer
      */
-    public void heal(float hp) {
-        harm(-hp);
+    private void heal(float hp) {
+        this.hp = Math.min(this.hp + hp, MAX_HP);
+        statusGui.updateHp(this.hp);
     }
     
     // MARK:- Inventory.Holder
