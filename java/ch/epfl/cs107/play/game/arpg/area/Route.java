@@ -3,6 +3,7 @@ package ch.epfl.cs107.play.game.arpg.area;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
 import ch.epfl.cs107.play.game.arpg.actor.item.Grass;
+import ch.epfl.cs107.play.game.arpg.actor.item.Waterfall;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 public class Route extends ARPGArea {
@@ -52,6 +53,9 @@ public class Route extends ARPGArea {
         // Bomb
         // TODO: remove debug bomb
         registerActor(new Bomb(this, new DiscreteCoordinates(8, 10)));
+        
+        // Waterfall
+        registerActor(new Waterfall(this, new DiscreteCoordinates(11, 3)));
     }
     
 }

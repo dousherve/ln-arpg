@@ -308,10 +308,7 @@ public class DarkLord extends Monster {
                     ++teleportationAttempts;
                 
                 } while (teleportationAttempts < MAX_TELEPORTATION_ATTEMPTS);
-
-
-
-            
+                
                 teleportationAttempts = 0;
                 state = DarkLordState.IDLE;
                 break;
