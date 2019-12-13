@@ -18,11 +18,13 @@ import java.util.List;
 
 public class MagicWaterProjectile extends Projectile {
     
-    private static class MagicWaterProjectileHandler implements ARPGInteractionVisitor{
+    private class MagicWaterProjectileHandler implements ARPGInteractionVisitor{
         
         @Override
         public void interactWith(Monster monster) {
-            monster.harm(Monster.Vulnerability.MAGIC, DAMAGE);
+            if (canInteractWith(monster)) {
+                monster.harm(Monster.Vulnerability.MAGIC, DAMAGE);
+            }
         }
         
         @Override
