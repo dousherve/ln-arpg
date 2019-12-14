@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+/**
+ * Represents an Inventory for a classical RPG game.
+ */
 public abstract class Inventory {
     
     public interface Holder {

@@ -2,7 +2,15 @@
 
 ### Hiérarchie de classes
 
-- `actor`
+Voici une hiérarchie des classes, interfaces et types énumérés
+qui ont été créés. En italique, une succinte description de l'élément dont il est question
+justifie son placement dans son paquetage ou sa classe.
+
+- `ch.epfl.cs107.play.game.areagame.actor`
+
+    - FlyableEntity (interface) *Elle est ici car commune à tous les acteurs des jeux de type Area.*
+
+- `ch.epfl.cs107.play.game.arpg.actor`
 
     - `actor.gui`  
     *Sous-paquetage de actor contenant tous les éléments de l'interface graphique utilisateur.*
@@ -44,6 +52,8 @@
     *Sous-paquetage contenant tous les monstres du ARPG, ou ce qui leur est relatif.*
     
         - Monster (classe abstraite) *Base d'un monstre de ARPG.*
+            - MonsterState (type énuméré imbriqué) *État commun à tous les monstres*
+            - Vulnerability (typé énuméré imbriqué) *Vulnérabilité commune à tous les monstres*
           <br><br>
         - DarkLord (classe)
         - FlameSkull (classe)
@@ -62,8 +72,16 @@
     <br><br>
     
     - ARPGPlayer (classe) *Représente un joueur dans le jeu ARPG.*
+        - State (typé énuméré imbriqué) *Représente l'état dans lequel se trouve l'ARPGPlayer.*
     - ARPGInventory (classe) *Représente un inventaire dans le jeu ARPG.*
     - ARPGItem (type énuméré) *Représente les différents objets utilisables dans le jeu ARPG.*
     - ARPGStatusGUI (classe) *Représente l'interface graphique utilisateur du Player.*  
+    
     *Ces classes ne sont pas dans un sous-paquetage spécifique pour des raisons de visibilité et d'encapsulation,
     il est commode qu'elles soient dans le même paquetage.*
+    
+- `ch.epfl.cs107.play.game.rpg`
+
+    - Inventory (classe) *Represents an Inventory for **any** RPG game.*
+    - InventoryItem (class) *Represents an InventoryItem for **any** RPG game.*  
+    *Ces deux classes sont communes à tous les jeux de type RPG, d'où le choix de ce package et non `arpg`.
