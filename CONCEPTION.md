@@ -43,13 +43,13 @@
     - `actor.monster`  
     *Sous-paquetage contenant tous les monstres du ARPG, ou ce qui leur est relatif.*
     
-        - Monster (classe abstraite) *Base d'un monstre de ARPG.*  
-        <br>
+        - Monster (classe abstraite) *Base d'un monstre de ARPG.*
+          <br><br>
         - DarkLord (classe)
         - FlameSkull (classe)
         - LogMonster (classe) *Ces 3 classes représentent 3 monstres.*
         <br><br>
-        - FireSpell (classe) *Représente un sort de Feu jeté par le `DarkLord`.
+        - FireSpell (classe) *Représente un sort de Feu jeté par le `DarkLord`.*
         
     - `actor.terrain`  
     *Sous-paquetage contenant tous les élements de décor.*
