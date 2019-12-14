@@ -1,6 +1,7 @@
 package ch.epfl.cs107.play.game.arpg.area;
 
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
+import ch.epfl.cs107.play.game.arpg.actor.character.King;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 public class Chateau extends ARPGArea {
@@ -23,6 +24,9 @@ public class Chateau extends ARPGArea {
     protected void createArea() {
         // Background & Foreground
         registerBackgroundAndForeground();
+
+        //King
+        registerActor(new King(this, Orientation.DOWN, new DiscreteCoordinates(7, 12)));
 
         // Doors
         registerDoors(areaKeys, destinationCoords, orientations, positions, otherCells);

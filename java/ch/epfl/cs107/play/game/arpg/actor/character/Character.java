@@ -69,7 +69,7 @@ public class Character extends MovableAreaEntity implements Interactor {
     //TEST
 
     protected Dialog dialog;
-    private boolean showDialog = false;
+    protected boolean showDialog = false;
 
     /**
      * Default Character constructor
