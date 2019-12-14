@@ -8,12 +8,14 @@ import java.util.Map;
 
 /**
  * This class represents a way of taking into account the fact
- * that the continous attacker should wait before dealing damage again
- * to a certain Interactable.
+ * that an attacker that attacks continously should wait before
+ * dealing damage again to a certain Interactable.
  */
 public class ContinuousAttackHandler implements Updatable {
     
     private final float ATTACK_DELAY;
+    /// A Map associating a certain Interactable with the delay after
+    /// which he can take damage again.
     private Map<Interactable, Float> damageDelayMap;
     
     protected ContinuousAttackHandler(float delay) {
