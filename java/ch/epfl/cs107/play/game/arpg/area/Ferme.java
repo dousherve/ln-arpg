@@ -1,6 +1,7 @@
 package ch.epfl.cs107.play.game.arpg.area;
 
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
+import ch.epfl.cs107.play.game.arpg.actor.character.Character;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 public class Ferme extends ARPGArea {
@@ -39,6 +40,8 @@ public class Ferme extends ARPGArea {
         
         // Doors
         registerDoors(areaKeys, destinationCoords, orientations, positions, otherCells);
+
+        registerActor(new Character(this, Orientation.DOWN, new DiscreteCoordinates(5,7)));
     }
     
 }

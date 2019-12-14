@@ -2,6 +2,7 @@ package ch.epfl.cs107.play.game.arpg.handler;
 
 import ch.epfl.cs107.play.game.arpg.ARPGBehavior;
 import ch.epfl.cs107.play.game.arpg.actor.ARPGPlayer;
+import ch.epfl.cs107.play.game.arpg.actor.character.Character;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.CastleDoor;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
@@ -38,9 +39,17 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
     default void interactWith(ARPGPlayer player) {
         // by default the interaction is empty
     }
-    
+
+    /**
+     * Interaction with a character
+     * @param character (Character) the player to interact with
+     */
+    default void interactWith(Character character) {
+        // by default the interaction is empty
+    }
+
     // MARK:- Terrain
-    
+
     /**
      * Simulate an interaction between RPG Interactor and a Grass
      * @param grass (Grass), not null
