@@ -49,9 +49,6 @@ public class Route extends ARPGArea {
                 registerActor(new Grass(this, new DiscreteCoordinates(i, j)));
             }
         }
-        // Bomb
-        // TODO: remove debug bomb
-        registerActor(new Bomb(this, new DiscreteCoordinates(8, 10)));
         
         // Waterfall
         registerActor(new Waterfall(this, new DiscreteCoordinates(11, 3)));

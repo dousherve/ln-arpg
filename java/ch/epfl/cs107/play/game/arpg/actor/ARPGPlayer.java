@@ -336,24 +336,24 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             isDisplayingMoney = !isDisplayingMoney;
         }
         
-        // TODO: remove debug stuff
+        // DEBUG:- give 5 of each item
         if (keyboard.get(Keyboard.Z).isPressed()) {
             for (ARPGItem item : ARPGItem.values()) {
                 inventory.add(item, 5);
             }
         }
         
-        // TODO: remove debug money
+        // DEBUG:- add 10 coins to the player's money
         if (keyboard.get(Keyboard.M).isPressed()) {
             inventory.addMoney(10);
         }
         
-        // TODO: remove debug display pos
+        // DEBUG:- print current coordinates
         if (keyboard.get(Keyboard.P).isPressed()) {
             System.out.println(getCurrentMainCellCoordinates().toString());
         }
         
-        // TODO: remove debug heal
+        // DEBUG:- heal the player
         if (keyboard.get(Keyboard.H).isPressed()) {
             heal(MAX_HP);
         }

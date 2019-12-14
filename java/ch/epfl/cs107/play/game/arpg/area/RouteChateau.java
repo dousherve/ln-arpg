@@ -63,21 +63,23 @@ public class RouteChateau extends ARPGArea {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        
-        // TODO: see if we must remove these key actions
 
+        // DEBUG:- spawn a DarkLord monster
         if (getKeyboard().get(Keyboard.D).isPressed()) {
             registerActor(new DarkLord(this, Orientation.DOWN,  new DiscreteCoordinates(8, 10)));
         }
-        
+
+        // DEBUG:- spawn a FlameSkull monster
         if (getKeyboard().get(Keyboard.S).isPressed()) {
             registerActor(new FlameSkull(this, Orientation.DOWN, new DiscreteCoordinates(8, 10)));
         }
-    
+
+        // DEBUG:- spawn a LogMonster monster
         if (getKeyboard().get(Keyboard.L).isPressed()) {
             registerActor(new LogMonster(this, new DiscreteCoordinates(9, 9)));
         }
-    
+
+        // DEBUG:- spawn a Bomb
         if (getKeyboard().get(Keyboard.B).isPressed()) {
             registerActor(new Bomb(this, new DiscreteCoordinates(8, 7)));
         }

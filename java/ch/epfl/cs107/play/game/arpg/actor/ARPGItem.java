@@ -40,9 +40,23 @@ public enum ARPGItem implements InventoryItem {
     }
     
     @Override
-    // TODO: implement weights for the items
     public float getWeight() {
-        return 0;
+        switch (this) {
+            case ARROW:
+                return 2;
+            case SWORD:
+                return 10;
+            case BOW:
+                return 5;
+            case BOMB:
+                return 3;
+            case STAFF:
+                return 7;
+            case CASTLE_KEY:
+                return 1;
+            default:
+                return 0;
+        }
     }
     
     @Override

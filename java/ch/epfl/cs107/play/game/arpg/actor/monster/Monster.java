@@ -148,9 +148,7 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
         
         if (isVulnerableTo(vulnerability)) {
             hp = Math.max(hp - damage, 0);
-            // TODO: remove debug sout
-            System.out.println(getClass().getSimpleName() + 
-                    " harmed: " + vulnerability.name() + " ; new HP: " + hp);
+
             if (hp <= 0) {
                 die();
             }
