@@ -12,6 +12,11 @@ justifie son placement dans son paquetage, ou sa classe s'il est imbriqué.
 
 - `ch.epfl.cs107.play.game.arpg.actor`
 
+     - `actor.character`
+    *Sous-paquetage de actor contenant tous les personnages non-joueurs du jeu*
+        -   Character (classe)
+        *Personnage non joueur de base*
+
     - `actor.gui`  
     *Sous-paquetage de actor contenant tous les éléments de l'interface graphique utilisateur.*
     
