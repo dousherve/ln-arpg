@@ -5,17 +5,17 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 public class Chateau extends ARPGArea {
 
-    private String[] areaKeys = {"zelda/RouteChateau"};
-    private DiscreteCoordinates[] destinationCoords = {
+    private final String[] areaKeys = {"zelda/RouteChateau"};
+    private final DiscreteCoordinates[] destinationCoords = {
             new DiscreteCoordinates(9, 12)
     };
-    private Orientation[] orientations = {
+    private final Orientation[] orientations = {
             Orientation.DOWN,
     };
-    private DiscreteCoordinates[] positions = {
+    private final DiscreteCoordinates[] positions = {
             new DiscreteCoordinates(7,0)
     };
-    private DiscreteCoordinates[][] otherCells = {
+    private final DiscreteCoordinates[][] otherCells = {
             {new DiscreteCoordinates(8,0)}
     };
 

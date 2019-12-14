@@ -11,9 +11,9 @@ public class ARPGStatusGUI implements Graphics {
     
     private static final float DEPTH = 100.f;
     
-    private ARPGStatusItemGUI itemGUI;
-    private ARPGStatusHpGUI hpGUI;
-    private ARPGStatusMoneyGUI moneyGUI;
+    private final ARPGStatusItemGUI itemGUI;
+    private final ARPGStatusHpGUI hpGUI;
+    private final ARPGStatusMoneyGUI moneyGUI;
     
     protected ARPGStatusGUI(int maxHp) {
         

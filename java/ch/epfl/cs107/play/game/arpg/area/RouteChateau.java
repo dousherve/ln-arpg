@@ -13,17 +13,17 @@ import ch.epfl.cs107.play.window.Keyboard;
 
 public class RouteChateau extends ARPGArea {
 
-    private String[] areaKeys = {"zelda/Route"};
-    private DiscreteCoordinates[] destinationCoords = {
+    private final String[] areaKeys = {"zelda/Route"};
+    private final DiscreteCoordinates[] destinationCoords = {
             new DiscreteCoordinates(9, 18)
     };
-    private Orientation[] orientations = {
+    private final Orientation[] orientations = {
             Orientation.DOWN
     };
-    private DiscreteCoordinates[] positions = {
+    private final DiscreteCoordinates[] positions = {
             new DiscreteCoordinates(9, 0)
     };
-    private DiscreteCoordinates[][] otherCells = {
+    private final DiscreteCoordinates[][] otherCells = {
             {new DiscreteCoordinates(10, 0)}
     };
 

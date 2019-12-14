@@ -44,7 +44,7 @@ public class DarkLord extends Monster {
     private static final int SIZE = 2;
 
     /// The Interaction handler
-    private DarkLordHandler handler;
+    private final DarkLordHandler handler;
 
     /// The DarkLord state
     private DarkLordState state;

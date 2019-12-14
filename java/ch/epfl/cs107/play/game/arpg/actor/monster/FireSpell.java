@@ -56,10 +56,10 @@ public class FireSpell extends AreaEntity implements Interactor {
     private float lifetime;
     
     /// Interaction handler
-    private FireSpellHandler handler;
+    private final FireSpellHandler handler;
     
     /// Continuous attack handler
-    private ContinuousAttackHandler attackHandler;
+    private final ContinuousAttackHandler attackHandler;
 
     private static final float MIN_LIFE_TIME = 5f, MAX_LIFE_TIME = 10f;
 

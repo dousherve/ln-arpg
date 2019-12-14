@@ -75,8 +75,8 @@ public class ARPGStatusMoneyGUI implements ARPGStatusGUIElement {
     
     /**
      * Return the digit of a number at a certain position (position is the index from right to left)
-     * @param number
-     * @param pos (int)
+     * @param number (int) The number from which we will extract the digit
+     * @param pos (int) The position of the digit to extract
      * @return (int) The requested digit
      */
     private int getDigit(int number, int pos) {

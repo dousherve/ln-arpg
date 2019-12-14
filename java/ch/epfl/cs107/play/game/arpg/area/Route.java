@@ -8,23 +8,23 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 public class Route extends ARPGArea {
     
-    private String[] areaKeys = {"zelda/Ferme", "zelda/Village", "zelda/RouteChateau"};
-    private DiscreteCoordinates[] destinationCoords = {
+    private final String[] areaKeys = {"zelda/Ferme", "zelda/Village", "zelda/RouteChateau"};
+    private final DiscreteCoordinates[] destinationCoords = {
             new DiscreteCoordinates(18, 15),
             new DiscreteCoordinates(29, 18),
             new DiscreteCoordinates(9,1)
     };
-    private Orientation[] orientations = {
+    private final Orientation[] orientations = {
             Orientation.UP,
             Orientation.DOWN,
             Orientation.UP
     };
-    private DiscreteCoordinates[] positions = {
+    private final DiscreteCoordinates[] positions = {
             new DiscreteCoordinates(0, 15),
             new DiscreteCoordinates(9, 0),
             new DiscreteCoordinates(9,19)
     };
-    private DiscreteCoordinates[][] otherCells = {
+    private final DiscreteCoordinates[][] otherCells = {
             {new DiscreteCoordinates(0, 16)},
             {new DiscreteCoordinates(10, 0)},
             {new DiscreteCoordinates(10,19)}

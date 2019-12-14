@@ -149,7 +149,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     private final ARPGPlayerHandler handler;
     
     /// The status GUI
-    private ARPGStatusGUI statusGui;
+    private final ARPGStatusGUI statusGui;
     
     /**
      * Default ARPGPlayer constructor

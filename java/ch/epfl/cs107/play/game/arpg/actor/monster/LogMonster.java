@@ -60,7 +60,7 @@ public class LogMonster extends Monster {
     private static final float SIZE = 2f;
     
     /// The Interaction handler
-    private LogMonsterHandler handler;
+    private final LogMonsterHandler handler;
     
     /// The LogMonster state
     private LogMonsterState state;

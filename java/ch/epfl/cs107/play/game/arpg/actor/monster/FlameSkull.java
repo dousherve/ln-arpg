@@ -66,10 +66,10 @@ public class FlameSkull extends Monster implements FlyableEntity {
     private static final float ATTACK_DELAY = 0.3f;
     
     /// The Interaction handler
-    private FlameSkullHandler handler;
+    private final FlameSkullHandler handler;
     
     /// The continuous attack handler
-    private ContinuousAttackHandler attackHandler;
+    private final ContinuousAttackHandler attackHandler;
     
     /// Animations array
     private Animation[] animations;
