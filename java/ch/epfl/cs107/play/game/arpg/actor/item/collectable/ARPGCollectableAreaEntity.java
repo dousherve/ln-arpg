@@ -7,6 +7,9 @@ import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
+/**
+ * A class representing a collectable AreaEntity.
+ */
 abstract public class ARPGCollectableAreaEntity extends CollectableAreaEntity {
     
     /**

@@ -21,6 +21,9 @@ import ch.epfl.cs107.play.window.Canvas;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * A class representing a Bomb AreaEntity.
+ */
 public class Bomb extends AreaEntity implements Interactor {
     
     private static class BombHandler implements ARPGInteractionVisitor {

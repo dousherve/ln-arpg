@@ -19,7 +19,7 @@ public class Heart extends ARPGCollectableAreaEntity {
     private Animation animation;
     private static final int ANIMATION_DURATION = 4;
 
-    /// The amount of Health Points the heart gives
+    /// The amount of Health Points the heart gives when collected by the Player
     private static final float HP = 1f;
 
     private static final float SIZE = 1f;
