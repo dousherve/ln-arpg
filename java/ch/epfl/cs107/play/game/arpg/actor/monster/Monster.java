@@ -109,6 +109,7 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
             
         }
     }
+
     
     @Override
     public void draw(Canvas canvas) {

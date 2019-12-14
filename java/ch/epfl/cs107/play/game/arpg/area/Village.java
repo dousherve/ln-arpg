@@ -1,6 +1,8 @@
 package ch.epfl.cs107.play.game.arpg.area;
 
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
+import ch.epfl.cs107.play.game.arpg.actor.character.Character;
+import ch.epfl.cs107.play.game.arpg.actor.character.Guard;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 public class Village extends ARPGArea {
@@ -37,9 +39,15 @@ public class Village extends ARPGArea {
     protected void createArea() {
         // Background & Foreground
         registerBackgroundAndForeground();
-        
+
+
         // Doors
         registerDoors(areaKeys, destinationCoords, orientations, positions, otherCells);
+
+        //
+        registerActor(new Character(this, Orientation.DOWN, new DiscreteCoordinates(5,5)));
+        registerActor(new Guard(this, Orientation.DOWN, new DiscreteCoordinates(15,6)));
+        registerActor(new Character(this, Orientation.DOWN, new DiscreteCoordinates(30,15)));
     }
     
 }

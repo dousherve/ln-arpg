@@ -56,8 +56,6 @@ public class RouteChateau extends ARPGArea {
                 registerActor(new Grass(this, new DiscreteCoordinates(i, j)));
             }
         }
-        
-        registerActor(new FireSpell(this, Orientation.DOWN, new DiscreteCoordinates(5, 5), 3));
     }
     
     @Override
