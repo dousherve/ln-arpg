@@ -44,7 +44,7 @@
     *Sous-paquetage contenant tous les monstres du ARPG, ou ce qui leur est relatif.*
     
         - Monster (classe abstraite) *Base d'un monstre de ARPG.*  
-        <br><br>
+        <br>
         - DarkLord (classe)
         - FlameSkull (classe)
         - LogMonster (classe) *Ces 3 classes représentent 3 monstres.*
@@ -59,12 +59,11 @@
         - Waterfall (classe)  
         *Ces 3 éléments font partie du décor.*
         
-    <br><br><br>
+    <br><br>
     
     - ARPGPlayer (classe) *Représente un joueur dans le jeu ARPG.*
     - ARPGInventory (classe) *Représente un inventaire dans le jeu ARPG.*
     - ARPGItem (type énuméré) *Représente les différents objets utilisables dans le jeu ARPG.*
-    - ARPGStatusGUI (classe) *Représente l'interface graphique utilisateur du Player.*
-    <br>
+    - ARPGStatusGUI (classe) *Représente l'interface graphique utilisateur du Player.*  
     *Ces classes ne sont pas dans un sous-paquetage spécifique pour des raisons de visibilité et d'encapsulation,
     il est commode qu'elles soient dans le même paquetage.*
