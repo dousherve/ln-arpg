@@ -166,8 +166,7 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
      */
     protected void die() {
         monsterState = MonsterState.VANISHING;
-        
-        leaveArea();
+
     }
     
     /**

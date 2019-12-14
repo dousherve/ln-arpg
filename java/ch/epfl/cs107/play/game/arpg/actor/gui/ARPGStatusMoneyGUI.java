@@ -13,7 +13,7 @@ public class ARPGStatusMoneyGUI implements ARPGStatusGUIElement {
     
     private static final float WIDTH = 4f, HEIGHT = WIDTH / 2f;
     private static final float DIGITS_SIZE = .85f;
-    
+
     private static final String COINS_RESOURCE_NAME = "zelda/coinsDisplay";
     private static final String DIGITS_RESOURCE_NAME = "zelda/digits";
     
@@ -24,8 +24,8 @@ public class ARPGStatusMoneyGUI implements ARPGStatusGUIElement {
     public ARPGStatusMoneyGUI() {
         coinsDisplay = new ImageGraphics(ResourcePath.getSprite(COINS_RESOURCE_NAME),
                 WIDTH, HEIGHT, new RegionOfInterest(0, 0, 64, 32));
-        coinsDisplay.setDepth(DEPTH);
-        
+        coinsDisplay.setDepth(30);
+
         digits = new ImageGraphics[3];
         
         money = 0;
@@ -46,7 +46,7 @@ public class ARPGStatusMoneyGUI implements ARPGStatusGUIElement {
             digits[i] = new ImageGraphics(ResourcePath.getSprite(DIGITS_RESOURCE_NAME),
                     DIGITS_SIZE, DIGITS_SIZE, getDigitRoi(getDigit(money, 2 - i)));
             digits[i].setAnchor(digitAnchor.add(i * SPACING, .65f));
-            digits[i].setDepth(DEPTH);
+            digits[i].setDepth(35);
             digits[i].draw(canvas);
         }
     }

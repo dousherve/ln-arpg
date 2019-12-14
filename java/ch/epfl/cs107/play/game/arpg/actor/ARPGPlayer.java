@@ -7,6 +7,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.arpg.actor.character.Character;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.CastleDoor;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
@@ -78,7 +79,12 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
                 }
             }
         }
-        
+
+        @Override
+        public void interactWith(Character character) {
+            character.personalInteraction();
+        }
+
         // Sword interactions
 
         @Override

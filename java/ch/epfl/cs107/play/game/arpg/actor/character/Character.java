@@ -10,9 +10,13 @@ import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.arpg.actor.ARPGPlayer;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
+import ch.epfl.cs107.play.game.rpg.actor.Dialog;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
+import ch.epfl.cs107.play.io.XMLTexts;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RandomGenerator;
+import ch.epfl.cs107.play.math.RegionOfInterest;
+import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
 import java.util.ArrayList;
@@ -21,11 +25,15 @@ import java.util.List;
 
 public class Character extends MovableAreaEntity implements Interactor {
 
-    private enum State{
-        IDLE, STOPPED
+    protected enum State{
+        IDLE, STOPPED, ATTACKING, VANISHING
     }
 
-    private class CharacterHandler implements ARPGInteractionVisitor {
+    public enum Vulnerability{
+        PHYSICAL, MAGIC, FIRE
+    }
+
+    protected class CharacterHandler implements ARPGInteractionVisitor {
 
         @Override
         public void interactWith(ARPGPlayer player) {
@@ -33,22 +41,37 @@ public class Character extends MovableAreaEntity implements Interactor {
         }
     }
 
+
+    private static final String[] DEFAULT_SENTENCES = new String[]{
+            "dialog_1", "dialog_2",
+    };
+
     private static final int ACTION_RADIUS = 2;
 
     /// State of the character
-    private State state;
+    protected State state;
+
+    protected static float hp;
 
     /// InteractionVisitor handler
-    private CharacterHandler handler;
+    protected CharacterHandler handler;
 
     // MARK:- Animation
 
     /// Animations array
     protected Animation[] movingAnimations;
     private static final int MOVING_ANIMATION_DURATION = 10;
+    /// The vanish Animation
+    private Animation vanishAnimation;
+    private static final int VANISH_ANIMATION_DURATION = 2;
+
 
     private static final float PROBABILITY_TO_CHANGE_ORIENTATION = 0.3f;
 
+    //TEST
+
+    protected Dialog dialog;
+    private boolean showDialog = false;
 
     /**
      * Default Character constructor
@@ -61,16 +84,34 @@ public class Character extends MovableAreaEntity implements Interactor {
         super(area, orientation, position);
 
         setupAnimation();
+
+        hp  = 5f;
+
+        String text = XMLTexts.getText(DEFAULT_SENTENCES[RandomGenerator.getInstance().nextInt(DEFAULT_SENTENCES.length)]);
+        dialog = new Dialog(text, "zelda/dialog", getOwnerArea());
+
         handler = new CharacterHandler();
         state = State.IDLE;
     }
 
+    /**
+     *  Initialize animations
+     */
     protected void setupAnimation(){
         Sprite[][] sprites = RPGSprite.extractSprites("zelda/character", 4,
                 1, 2, this, 16, 32,
                 new Orientation[] {Orientation.UP, Orientation.RIGHT, Orientation.DOWN, Orientation.LEFT});
         movingAnimations = RPGSprite.createAnimations(MOVING_ANIMATION_DURATION / 2, sprites);
+
+        Sprite[] vanishSprites = new Sprite[7];
+        for (int i = 0; i < vanishSprites.length; ++i) {
+            vanishSprites[i] = new RPGSprite("zelda/vanish", 2f, 2f, this,
+                    new RegionOfInterest(32 * i, 0, 32, 32));
+        }
+        vanishAnimation = new Animation(VANISH_ANIMATION_DURATION, vanishSprites, false);
+
     }
+
 
     /**
      * Randomly orientate the Character
@@ -83,32 +124,75 @@ public class Character extends MovableAreaEntity implements Interactor {
     /**
      * Randomly move the Character
      */
-    protected void randomlyMove(int animationDuration) {
+    protected void randomlyMove() {
         if (!isDisplacementOccurs()) {
             if (RandomGenerator.getInstance().nextFloat() < PROBABILITY_TO_CHANGE_ORIENTATION) {
                 randomlyOrientate();
             }
 
-            move(animationDuration);
+            move(MOVING_ANIMATION_DURATION);
         }
+    }
+
+    /**
+     *  What the character do when the player interact with
+     */
+    public void personalInteraction(){
+        setShowDialog();
+    }
+
+    /**
+     *  Show/hide the dialog
+     */
+    protected void setShowDialog(){
+        showDialog = !showDialog;
+    }
+
+    public void harm(Vulnerability vulnerability, float damage){
+        hp = Math.max(hp - damage, 0);
+    }
+
+    protected void die(){
+        state = State.VANISHING;
     }
 
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        if (state == State.IDLE){
-            randomlyMove(MOVING_ANIMATION_DURATION);
+
+        if (hp <= 0){
+            die();
+        }
+
+        if (state == State.IDLE) {
+            randomlyMove();
             movingAnimations[getOrientation().ordinal()].update(deltaTime);
+
+        }else if (state == State.VANISHING){
+            vanishAnimation.update(deltaTime);
+            System.out.println("vanish");
+            if (vanishAnimation.isCompleted()){
+                getOwnerArea().unregisterActor(this);
+            }
+
         } else {
             movingAnimations[getOrientation().ordinal()].reset();
+            state = State.IDLE;
         }
-        state = State.IDLE;
 
     }
 
     @Override
     public void draw(Canvas canvas) {
-        movingAnimations[getOrientation().ordinal()].draw(canvas);
+        if (state != State.VANISHING){
+            movingAnimations[getOrientation().ordinal()].draw(canvas);
+        } else {
+            vanishAnimation.draw(canvas);
+        }
+
+        if (showDialog){
+            dialog.draw(canvas);
+        }
     }
 
     // MARK:- Interactable
