@@ -61,7 +61,7 @@ public class DarkLord extends Monster {
     
     private static final int FIRE_SPELL_STRENGTH = 3;
 
-    private static final float PROBABILITY_TO_ATTACK = .5f;
+    private static final float PROBABILITY_TO_ATTACK = 1f;
 
     private static final int MIN_SPELL_WAIT_DURATION = 240;
     private static final int MAX_SPELL_WAIT_DURATION = 360;
@@ -247,7 +247,7 @@ public class DarkLord extends Monster {
         
             case ATTACKING:
                 if (attackingAnimations[animationIndex].isCompleted()) {
-                    FireSpell fireSpell = new FireSpell(getOwnerArea(), getOrientation(), FACING_CELL_COORDS, 3);
+                    FireSpell fireSpell = new FireSpell(getOwnerArea(), getOrientation(), FACING_CELL_COORDS, 3, true);
     
                     if (canSummon(fireSpell, fireSpell.getCurrentCells())) {
                         getOwnerArea().registerActor(fireSpell);
@@ -296,7 +296,6 @@ public class DarkLord extends Monster {
                             mainTargetCoords.y >= 0 && mainTargetCoords.y < getOwnerArea().getHeight() &&
                             getOwnerArea().canEnterAreaCells(this, Collections.singletonList(mainTargetCoords))
                     ) {
-                        // TODO: fuck, fuck.. FUCKK FUCKCKFUKCKCKCCKCKCKCK
 
                         getOwnerArea().leaveAreaCells(this, Collections.singletonList(getCurrentMainCellCoordinates()));
                         setCurrentPosition(mainTargetCoords.toVector());
