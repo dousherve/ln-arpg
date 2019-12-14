@@ -9,6 +9,7 @@
     
         - ARPGStatusGUIElement (interface)
           *Base d'un élément de l'interface graphique.*
+          <br><br>
         - ARPGStatusHpGUI (classe)
         - ARPGStatusItemGUI (classe)
         - ARPGStatusMoneyGUI (classe)  
@@ -38,3 +39,5 @@
             *Ces 2 classes sont des spécifications de `Projectile`.*
             
         - Bomb (classe) *Cet **item** est trop spécifique pour être contenu dans un sous-paquetage.*
+        
+    - `actor.monster`
