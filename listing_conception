@@ -1,9 +1,9 @@
 actor
 	actor.gui
 		ARPGStatusGUIElement 	(interface)
-		ARPGStatusHpGUI		(classe)
-		ARPGStatusItemGUI	(classe)	
-		ARPGStatusMoneyGUI	(classe)
+		ARPGStatusHpGUI		    (classe)
+		ARPGStatusItemGUI	    (classe)
+		ARPGStatusMoneyGUI	    (classe)
 
 	actor.item
 		item.collectable
