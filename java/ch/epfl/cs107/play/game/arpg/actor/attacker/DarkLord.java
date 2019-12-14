@@ -271,11 +271,13 @@ public class DarkLord extends Monster {
     
             case CASTING_TELEPORT_SPELL:
                 if (!isDisplacementOccurs() && attackingAnimations[animationIndex].isCompleted()) {
+                    resetMotion();
                     state = DarkLordState.TELEPORTING;
                 }
                 break;
         
             case TELEPORTING:
+                inactivityDuration = MAX_INACTIVITY_DURATION;
                 do {
                     System.out.println(teleportationAttempts);
                     // Delta X, Delta Y
@@ -295,7 +297,7 @@ public class DarkLord extends Monster {
                             getOwnerArea().canEnterAreaCells(this, Collections.singletonList(mainTargetCoords))
                     ) {
                         // TODO: fuck, fuck.. FUCKK FUCKCKFUKCKCKCCKCKCKCK
-                        resetMotion();
+
                         getOwnerArea().leaveAreaCells(this, Collections.singletonList(getCurrentMainCellCoordinates()));
                         setCurrentPosition(mainTargetCoords.toVector());
                         getOwnerArea().enterAreaCells(this, Collections.singletonList(mainTargetCoords));
