@@ -12,7 +12,9 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.signal.logic.Logic;
 import ch.epfl.cs107.play.window.Window;
 
-
+/**
+ * The top level of abstraction of an Area in an ARPG game
+ */
 public abstract class ARPGArea extends Area {
     
     /**

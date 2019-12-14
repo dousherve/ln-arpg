@@ -3,8 +3,8 @@
 ### Hiérarchie de classes
 
 Voici une hiérarchie des classes, interfaces et types énumérés
-qui ont été créés. En italique, une succinte description de l'élément dont il est question
-justifie son placement dans son paquetage ou sa classe.
+qui ont été créés. En italique, une succincte description de l'élément dont il est question
+justifie son placement dans son paquetage, ou sa classe s'il est imbriqué.
 
 - `ch.epfl.cs107.play.game.areagame.actor`
 
@@ -25,7 +25,7 @@ justifie son placement dans son paquetage ou sa classe.
         placées dans `gui`.*
         
     - `actor.item`  
-    *Paquetage contenant tous les objets du jeu avec lesquels on peut interagir.*
+    *Sous-paquetage contenant tous les objets du jeu avec lesquels on peut interagir.*
     
         - `item.collectable`  
         *Sous-paquetage contenant tous les éléments que l'on peut collecter.*
@@ -53,11 +53,11 @@ justifie son placement dans son paquetage ou sa classe.
     
         - Monster (classe abstraite) *Base d'un monstre de ARPG.*
             - MonsterState (type énuméré imbriqué) *État commun à tous les monstres*
-            - Vulnerability (typé énuméré imbriqué) *Vulnérabilité commune à tous les monstres*
+            - Vulnerability (typé énuméré imbriqué) *Vulnérabilités, communes à tous les monstres*
           <br><br>
         - DarkLord (classe)
         - FlameSkull (classe)
-        - LogMonster (classe) *Ces 3 classes représentent 3 monstres.*
+        - LogMonster (classe) *Ces 3 classes représentent 3 monstres spécifiques.*
         <br><br>
         - FireSpell (classe) *Représente un sort de Feu jeté par le `DarkLord`.*
         
@@ -69,7 +69,7 @@ justifie son placement dans son paquetage ou sa classe.
         - Waterfall (classe)  
         *Ces 3 éléments font partie du décor.*
         
-    <br><br>
+    <br>
     
     - ARPGPlayer (classe) *Représente un joueur dans le jeu ARPG.*
         - State (typé énuméré imbriqué) *Représente l'état dans lequel se trouve l'ARPGPlayer.*
@@ -77,11 +77,23 @@ justifie son placement dans son paquetage ou sa classe.
     - ARPGItem (type énuméré) *Représente les différents objets utilisables dans le jeu ARPG.*
     - ARPGStatusGUI (classe) *Représente l'interface graphique utilisateur du Player.*  
     
-    *Ces classes ne sont pas dans un sous-paquetage spécifique pour des raisons de visibilité et d'encapsulation,
-    il est commode qu'elles soient dans le même paquetage.*
+    *Ces classes ne sont pas dans un sous-paquetage spécifique pour des raisons de visibilité et d'encapsulation. En effet,
+    il est commode qu'elles soient dans le même paquetage pour éviter de fournir des droits d'accès trop étendus.*
+    
+- `ch.epfl.cs107.play.game.arpg.area`
+
+    - ARPGArea (classe abstraite) *Représente le plus haut niveau d'abstraction d'une aire d'un ARPG*  
+    <br>
+    
+    - Chateau (classe)
+    - Ferme (classe)
+    - Route (classe)
+    - RouteChateau (classe)
+    - Village (classe)  
+    *Ces classes sont des déclinaisons spécifiques de ARPGArea, qui sont bien sûr relatives aux aires de jeu.*
     
 - `ch.epfl.cs107.play.game.rpg`
 
-    - Inventory (classe) *Represents an Inventory for **any** RPG game.*
-    - InventoryItem (class) *Represents an InventoryItem for **any** RPG game.*  
-    *Ces deux classes sont communes à tous les jeux de type RPG, d'où le choix de ce package et non `arpg`.
+    - Inventory (classe) *Représente un inventaire pour **tous** les jeux RPG.*
+    - InventoryItem (class) *Représente un objet d'inventaire pour **tous** les jeux RPG.*
+    *Ces deux classes sont communes à tous les jeux de type RPG, d'où le choix de ce package et non `arpg`.*

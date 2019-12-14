@@ -25,10 +25,16 @@ import java.util.List;
  */
 public abstract class Monster extends MovableAreaEntity implements Interactor {
     
+    /**
+     * The different vulnerabilities a Monster can have.
+     */
     public enum Vulnerability {
         PHYSICAL, FIRE, MAGIC
     }
     
+    /**
+     * The different states a Monster can be in at its top level.
+     */
     protected enum MonsterState {
         ALIVE, VANISHING, DEAD
     }

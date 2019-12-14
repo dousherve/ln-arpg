@@ -63,11 +63,15 @@ public class FireSpell extends AreaEntity implements Interactor {
 
     private static final float MIN_LIFE_TIME = 5f, MAX_LIFE_TIME = 10f;
 
+    /// The propagation time if we're in linear propagation mode
     private static final int LINEAR_PROPAGATION_TIME = 10;
+    /// The propagation time of the flame spell in normal mode
     private static final int NORMAL_PROPAGATION_TIME = 100;
 
+    /// The actual propagation time
     private int propagationTime;
 
+    /// Keep track in which mode we currently are
     private boolean linearPropagation;
     
     private int cycleCount;

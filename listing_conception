@@ -38,11 +38,11 @@ actor
 	ARPGStatusGUI		(classe)
 
 area
-	ARPGArea		(classe)
+	ARPGArea		(classe abstraite)
 	Chateau			(classe)
 	Ferme			(classe)
 	Route			(classe)
-	RouteChateau		(classe)
+	RouteChateau	(classe)
 	Village			(classe)
 	
 ARPG

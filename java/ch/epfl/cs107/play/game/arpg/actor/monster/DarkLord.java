@@ -32,7 +32,10 @@ public class DarkLord extends Monster {
         }
         
     }
-
+    
+    /**
+     * The different states the DarkLord can be in.
+     */
     private enum DarkLordState {
         IDLE, ATTACKING, SUMMONING, CASTING_TELEPORT_SPELL, TELEPORTING
     }

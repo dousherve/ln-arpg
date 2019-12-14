@@ -39,6 +39,7 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
         // by default the interaction is empty
     }
     
+    // MARK:- Terrain
     
     /**
      * Simulate an interaction between RPG Interactor and a Grass
