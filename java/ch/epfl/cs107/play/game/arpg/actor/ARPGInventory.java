@@ -16,7 +16,7 @@ public class ARPGInventory extends Inventory {
         super(MAX_WEIGHT);
         
         this.money = money;
-        fortune = money;
+        this.fortune = money;
     }
     
     /**

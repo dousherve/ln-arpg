@@ -10,7 +10,7 @@ public enum ARPGItem implements InventoryItem {
     ARROW("arrow.icon"), SWORD("sword.icon"), BOW("bow.icon"),
     BOMB("bomb"), STAFF("staff_water.icon"), CASTLE_KEY("key");
     
-    Sprite sprite;
+    private Sprite sprite;
     
     ARPGItem(String resourceName) {
         sprite = new RPGSprite("zelda/" + resourceName, 0.5f, 0.5f, null,

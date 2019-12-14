@@ -15,13 +15,13 @@ public class ARPGStatusGUI implements Graphics {
     private ARPGStatusHpGUI hpGUI;
     private ARPGStatusMoneyGUI moneyGUI;
     
-    protected ARPGStatusGUI() {
-        /// Current Item
+    protected ARPGStatusGUI(int maxHp) {
+        
+        // Current Item
         itemGUI = new ARPGStatusItemGUI();
         
         // Health Points display
-        // TODO: 02/12/2019 change magic number "5"
-        hpGUI = new ARPGStatusHpGUI(5);
+        hpGUI = new ARPGStatusHpGUI(maxHp);
         
         /// Money display
         moneyGUI = new ARPGStatusMoneyGUI();

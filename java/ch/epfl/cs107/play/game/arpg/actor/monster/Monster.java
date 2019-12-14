@@ -1,4 +1,4 @@
-package ch.epfl.cs107.play.game.arpg.actor.attacker;
+package ch.epfl.cs107.play.game.arpg.actor.monster;
 
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Animation;

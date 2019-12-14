@@ -1,4 +1,4 @@
-package ch.epfl.cs107.play.game.arpg.actor.attacker;
+package ch.epfl.cs107.play.game.arpg.actor.monster;
 
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Animation;
@@ -278,7 +278,9 @@ public class DarkLord extends Monster {
         
             case TELEPORTING:
                 inactivityDuration = MAX_INACTIVITY_DURATION;
+                
                 do {
+                    // TODO: remove debug sout
                     System.out.println(teleportationAttempts);
                     // Delta X, Delta Y
                     final int DX = RandomGenerator.getInstance().nextInt(TELEPORTATION_RADIUS * 2) - TELEPORTATION_RADIUS;

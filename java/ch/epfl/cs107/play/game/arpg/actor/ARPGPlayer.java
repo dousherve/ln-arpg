@@ -8,15 +8,15 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
-import ch.epfl.cs107.play.game.arpg.actor.item.CastleDoor;
-import ch.epfl.cs107.play.game.arpg.actor.item.Grass;
+import ch.epfl.cs107.play.game.arpg.actor.terrain.CastleDoor;
+import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.ARPGCollectableAreaEntity;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.CastleKey;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Coin;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Heart;
 import ch.epfl.cs107.play.game.arpg.actor.item.projectile.Arrow;
 import ch.epfl.cs107.play.game.arpg.actor.item.projectile.MagicWaterProjectile;
-import ch.epfl.cs107.play.game.arpg.actor.attacker.Monster;
+import ch.epfl.cs107.play.game.arpg.actor.monster.Monster;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.Inventory;
 import ch.epfl.cs107.play.game.rpg.InventoryItem;
@@ -160,7 +160,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     public ARPGPlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates) {
         super(owner, orientation, coordinates);
         
-        statusGui = new ARPGStatusGUI();
+        statusGui = new ARPGStatusGUI((int) MAX_HP);
         
         handler = new ARPGPlayerHandler();
         inventory = new ARPGInventory(165);
@@ -185,8 +185,6 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
      * Setup animations
      */
     private void setupAnimations() {
-        // TODO: 12/12/2019 Can we optimize this?
-
         Sprite[][] sprites = RPGSprite.extractSprites("zelda/player", 4,
                 1, 2, this, 16, 32,
                 new Orientation[] {Orientation.DOWN, Orientation.RIGHT, Orientation.UP, Orientation.LEFT});

@@ -16,7 +16,7 @@ abstract public class ARPGCollectableAreaEntity extends CollectableAreaEntity {
      * @param orientation (Orientation): Initial orientation of the entity in the Area. Not null
      * @param position    (DiscreteCoordinate): Initial position of the entity in the Area. Not null
      */
-    public ARPGCollectableAreaEntity(Area area, Orientation orientation, DiscreteCoordinates position) {
+    protected ARPGCollectableAreaEntity(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
     }
     
