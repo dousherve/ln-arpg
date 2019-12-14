@@ -1,0 +1,52 @@
+actor
+	actor.gui
+		ARPGStatusGUIElement 	(interface)
+		ARPGStatusHpGUI		(classe)
+		ARPGStatusItemGUI	(classe)	
+		ARPGStatusMoneyGUI	(classe)
+
+	actor.item
+		item.collectable
+			APRGCollectableAreaEntity	(classe abstraite)
+			CastleKey			(classe)
+			Coin				(classe)
+			Heart				(classe)
+
+		item.projectile			
+			Arrow				(classe)
+			MagicWaterProjectile		(classe)
+			Projectile			(classe abstraite)
+			
+		Bomb			(classe)
+
+	actor.monster
+		ContinuousAttackHandler (classe)
+		DarkLord		(classe)
+		FireSpell		(classe)
+		FlameSkull		(classe)
+		LogMonster		(classe)
+		Monster			(classe abstraite)
+		
+	actor.terrain
+		CastleDoor		(classe)
+		Grass			(classe)
+		Waterfall		(classe)
+
+	ARPGInventory		(classe)
+	ARPGItem		(enum)
+	ARPGPlayer		(classe)
+	ARPGStatusGUI		(classe)
+
+area
+	ARPGArea		(classe)
+	Chateau			(classe)
+	Ferme			(classe)
+	Route			(classe)
+	RouteChateau		(classe)
+	Village			(classe)
+	
+ARPG
+ARPGBehavior
+
+
+
