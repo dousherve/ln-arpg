@@ -8,6 +8,9 @@ import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
+/**
+ *  Graphic user interface element showing selected item.
+ */
 public class ARPGStatusItemGUI implements ARPGStatusGUIElement {
 
     private static final float SIZE = 1.75f;

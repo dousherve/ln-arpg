@@ -280,8 +280,6 @@ public class DarkLord extends Monster {
                 inactivityDuration = MAX_INACTIVITY_DURATION;
                 
                 do {
-                    // TODO: remove debug sout
-                    System.out.println(teleportationAttempts);
                     // Delta X, Delta Y
                     final int DX = RandomGenerator.getInstance().nextInt(TELEPORTATION_RADIUS * 2) - TELEPORTATION_RADIUS;
                     final int DY = RandomGenerator.getInstance().nextInt(TELEPORTATION_RADIUS * 2) - TELEPORTATION_RADIUS;

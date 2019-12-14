@@ -6,6 +6,9 @@ import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
+/**
+ *  Graphic user interface element showing health points.
+ */
 public class ARPGStatusHpGUI implements ARPGStatusGUIElement {
 
     /// The resource name of the Heart sprite

@@ -6,6 +6,9 @@ import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
+/**
+ * Graphic user interface element showing money and fortune.
+ */
 public class ARPGStatusMoneyGUI implements ARPGStatusGUIElement {
     
     private static final float WIDTH = 4f, HEIGHT = WIDTH / 2f;
