@@ -18,7 +18,9 @@ import ch.epfl.cs107.play.math.RandomGenerator;
 import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
+import ch.epfl.cs107.play.window.Sound;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,10 +29,6 @@ public class Character extends MovableAreaEntity implements Interactor {
 
     protected enum State{
         IDLE, STOPPED, ATTACKING, VANISHING
-    }
-
-    public enum Vulnerability{
-        PHYSICAL, MAGIC, FIRE
     }
 
     protected class CharacterHandler implements ARPGInteractionVisitor {
@@ -60,10 +58,10 @@ public class Character extends MovableAreaEntity implements Interactor {
 
     /// Animations array
     protected Animation[] movingAnimations;
-    private static final int MOVING_ANIMATION_DURATION = 10;
+    protected static final int MOVING_ANIMATION_DURATION = 10;
     /// The vanish Animation
-    private Animation vanishAnimation;
-    private static final int VANISH_ANIMATION_DURATION = 2;
+    protected Animation vanishAnimation;
+    protected static final int VANISH_ANIMATION_DURATION = 2;
 
 
     private static final float PROBABILITY_TO_CHANGE_ORIENTATION = 0.3f;
@@ -106,7 +104,8 @@ public class Character extends MovableAreaEntity implements Interactor {
         Sprite[] vanishSprites = new Sprite[7];
         for (int i = 0; i < vanishSprites.length; ++i) {
             vanishSprites[i] = new RPGSprite("zelda/vanish", 2f, 2f, this,
-                    new RegionOfInterest(32 * i, 0, 32, 32));
+                    new RegionOfInterest(32 * i, 0, 32, 32),
+                    new Vector(-0.5f,0f));
         }
         vanishAnimation = new Animation(VANISH_ANIMATION_DURATION, vanishSprites, false);
 
@@ -148,7 +147,7 @@ public class Character extends MovableAreaEntity implements Interactor {
         showDialog = !showDialog;
     }
 
-    public void harm(Vulnerability vulnerability, float damage){
+    public void harm(float damage){
         hp = Math.max(hp - damage, 0);
     }
 
@@ -156,39 +155,53 @@ public class Character extends MovableAreaEntity implements Interactor {
         state = State.VANISHING;
     }
 
+    public boolean isInvicible(){
+        return true;
+    }
+
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
 
-        if (hp <= 0){
+        if (hp <= 0) {
             die();
         }
-
-        if (state == State.IDLE) {
-            randomlyMove();
-            movingAnimations[getOrientation().ordinal()].update(deltaTime);
-
-        }else if (state == State.VANISHING){
-            vanishAnimation.update(deltaTime);
-            System.out.println("vanish");
-            if (vanishAnimation.isCompleted()){
-                getOwnerArea().unregisterActor(this);
-            }
-
-        } else {
-            movingAnimations[getOrientation().ordinal()].reset();
-            state = State.IDLE;
+        switch (state) {
+            case IDLE:
+                randomlyMove();
+                movingAnimations[getOrientation().ordinal()].update(deltaTime);
+                break;
+            case ATTACKING:
+                break;
+            case VANISHING:
+                vanishAnimation.update(deltaTime);
+                if (vanishAnimation.isCompleted()) {
+                    getOwnerArea().unregisterActor(this);
+                }
+                break;
+            case STOPPED:
+                state = State.IDLE;
+                movingAnimations[getOrientation().ordinal()].reset();
+                break;
+            default:
+                break;
         }
 
     }
 
+
     @Override
     public void draw(Canvas canvas) {
-        if (state != State.VANISHING){
-            movingAnimations[getOrientation().ordinal()].draw(canvas);
-        } else {
-            vanishAnimation.draw(canvas);
+        if (hp <= 0){
+            die();
         }
+
+        if (state == State.VANISHING) {
+            vanishAnimation.draw(canvas);
+        }else {
+            movingAnimations[getOrientation().ordinal()].draw(canvas);
+        }
+
 
         if (showDialog){
             dialog.draw(canvas);

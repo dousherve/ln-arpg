@@ -82,9 +82,12 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
 
         @Override
         public void interactWith(Character character) {
-            character.personalInteraction();
+            if (shouldSlay() && !character.isInvicible()) {
+                character.harm(SWORD_DAMAGE);
+            } else if (state != State.ATTACKING_WITH_SWORD){
+                character.personalInteraction();
+            }
         }
-
         // Sword interactions
 
         @Override

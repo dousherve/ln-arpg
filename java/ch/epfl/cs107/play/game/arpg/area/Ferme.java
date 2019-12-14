@@ -42,7 +42,7 @@ public class Ferme extends ARPGArea {
         // Doors
         registerDoors(areaKeys, destinationCoords, orientations, positions, otherCells);
 
-        Character chart = new Character(this, Orientation.DOWN, new DiscreteCoordinates(5,7));
+        Character chart = new Guard(this, Orientation.DOWN, new DiscreteCoordinates(5,7));
         registerActor(chart);
     }
     
