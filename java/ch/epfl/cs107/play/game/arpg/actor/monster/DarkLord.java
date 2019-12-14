@@ -340,7 +340,7 @@ public class DarkLord extends Monster {
     public void draw(Canvas canvas) {
         super.draw(canvas);
         
-        if (isAlive()) {
+        if (isAlive() && visible) {
             
             if (state == DarkLordState.IDLE) {
                 movingAnimations[animationIndex].draw(canvas);

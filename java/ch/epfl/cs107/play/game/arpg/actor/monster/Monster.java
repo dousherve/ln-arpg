@@ -52,7 +52,8 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
     /// The vanish Animation
     private Animation vanishAnimation;
     private static final int VANISH_ANIMATION_DURATION = 2;
-    
+
+
     /**
      * Default Monster constructor
      *
@@ -86,6 +87,10 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
+
+        if(wasHurt) {
+            blink(deltaTime);
+        }
         
         if (monsterState == MonsterState.VANISHING) {
             
@@ -154,6 +159,7 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
         
         if (isVulnerableTo(vulnerability)) {
             hp = Math.max(hp - damage, 0);
+            wasHurt = true;
 
             if (hp <= 0) {
                 die();

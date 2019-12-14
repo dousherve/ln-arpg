@@ -132,7 +132,7 @@ public class FlameSkull extends Monster implements FlyableEntity {
     public void draw(Canvas canvas) {
         super.draw(canvas);
         
-        if (isAlive()) {
+        if (isAlive() && visible) {
             animations[animationIndex].draw(canvas);
         }
     }

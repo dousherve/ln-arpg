@@ -154,6 +154,18 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     /// Action animation duration in number of frames
     private static final int ACTION_ANIMATION_DURATION = 1;
 
+    /// for blinking when player is hurt
+    /// number of time it blink
+    private static final float BLINKING_TIME = 5;
+    /// frequency of the blinking
+    private static final float BLINK_FREQUENCY = 0.1f;
+    private float blinkTimer = 0;
+    /// number of time it has already blinked
+    private float hasBlinked = 0;
+
+    private boolean visible = true;
+    private boolean wasHurt = false;
+
     /// InteractionVisitor handler
     private final ARPGPlayerHandler handler;
     
@@ -218,6 +230,21 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
+
+        if(wasHurt) {
+            blinkTimer += deltaTime;
+            if (blinkTimer >= BLINK_FREQUENCY) {
+                blinkTimer = 0;
+                visible = !visible;
+                ++hasBlinked;
+            }
+            if (hasBlinked >= BLINKING_TIME*2){
+                wasHurt = false;
+                blinkTimer = 0;
+                hasBlinked = 0;
+                visible = true;
+            }
+        }
         
         // Handle the keyboard events
         handleKeyboardEvents();
@@ -303,8 +330,9 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     @Override
     public void draw(Canvas canvas) {
         // Animate the player
-        currentAnimation.draw(canvas);
-
+        if  (visible) {
+            currentAnimation.draw(canvas);
+        }
         // Draw the GUI
         statusGui.draw(canvas);
     }
@@ -550,6 +578,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
      */
     public void harm(float damage) {
         this.hp = Math.min(Math.max(this.hp - damage, 0), MAX_HP);
+        wasHurt = true;
         statusGui.updateHp(this.hp);
     }
 

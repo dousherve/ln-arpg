@@ -26,6 +26,18 @@ public abstract class MovableAreaEntity extends AreaEntity {
     // The cells the entity entered
     private List<DiscreteCoordinates> enteredCells;
 
+    /// for blinking when monster is hurt
+    /// number of time it blink
+    private static final float BLINKING_TIME = 5;
+    /// frequency of the blinking
+    private static final float BLINK_FREQUENCY = 0.1f;
+    private float blinkTimer = 0;
+    /// number of time it has already blinked
+    private float hasBlinked = 0;
+
+    protected boolean visible = true;
+    protected boolean wasHurt = false;
+
     private Vector targetPosition;
     private Vector originPosition;
 
@@ -38,6 +50,25 @@ public abstract class MovableAreaEntity extends AreaEntity {
     public MovableAreaEntity(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
         resetMotion();
+    }
+
+    /**
+     * Turn off/on the entity visibility BLINKING_TIME times at BLINK_FREQUENCY frequency
+     * @param deltaTime (float) delta time to update blinking
+     */
+    public void blink(float deltaTime){
+        blinkTimer += deltaTime;
+        if (blinkTimer >= BLINK_FREQUENCY) {
+            blinkTimer = 0;
+            visible = !visible;
+            ++hasBlinked;
+        }
+        if (hasBlinked >= BLINKING_TIME*2){
+            wasHurt = false;
+            blinkTimer = 0;
+            hasBlinked = 0;
+            visible = true;
+        }
     }
 
     /**
