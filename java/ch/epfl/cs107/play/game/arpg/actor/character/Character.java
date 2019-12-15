@@ -28,7 +28,7 @@ import java.util.List;
 public class Character extends MovableAreaEntity implements Interactor {
 
     protected enum State{
-        IDLE, STOPPED, ATTACKING, VANISHING
+        IDLE, STOPPED, ATTACKING, VANISHING, SPECIAL
     }
 
     protected class CharacterHandler implements ARPGInteractionVisitor {

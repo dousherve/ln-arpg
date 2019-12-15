@@ -3,7 +3,9 @@ package ch.epfl.cs107.play.game.arpg.handler;
 import ch.epfl.cs107.play.game.arpg.ARPGBehavior;
 import ch.epfl.cs107.play.game.arpg.actor.ARPGPlayer;
 import ch.epfl.cs107.play.game.arpg.actor.character.Character;
+import ch.epfl.cs107.play.game.arpg.actor.character.Woman;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
+import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Staff;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.CastleDoor;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.ARPGCollectableAreaEntity;
@@ -46,6 +48,14 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
      */
     default void interactWith(Character character) {
         // by default the interaction is empty
+    }
+
+    /**
+     * Interaction with a character
+     * @param woman (Woman) the player to interact with
+     */
+    default void interactWith(Woman woman) {
+        System.out.println("test");
     }
 
     // MARK:- Terrain
@@ -91,6 +101,15 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
     default void interactWith(Coin coin) {
         interactWith((ARPGCollectableAreaEntity) coin);
     }
+
+    /**
+     * Simulate an interaction between RPG Interactor and a Staff
+     * @param staff (Staff), not null
+     */
+    default void interactWith(Staff staff) {
+        interactWith((ARPGCollectableAreaEntity) staff);
+    }
+
 
     /**
      * Simulate an interaction between RPG Interactor and a Heart

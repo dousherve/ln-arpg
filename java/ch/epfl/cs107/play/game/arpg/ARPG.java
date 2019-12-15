@@ -6,6 +6,8 @@ import ch.epfl.cs107.play.game.arpg.area.Chateau;
 import ch.epfl.cs107.play.game.arpg.area.Ferme;
 import ch.epfl.cs107.play.game.arpg.area.Route;
 import ch.epfl.cs107.play.game.arpg.area.RouteChateau;
+import ch.epfl.cs107.play.game.arpg.area.RouteTemple;
+import ch.epfl.cs107.play.game.arpg.area.Temple;
 import ch.epfl.cs107.play.game.arpg.area.Village;
 import ch.epfl.cs107.play.game.rpg.RPG;
 import ch.epfl.cs107.play.io.FileSystem;
@@ -22,6 +24,8 @@ public class ARPG extends RPG {
         addArea(new Route());
         addArea(new RouteChateau());
         addArea(new Chateau());
+        addArea(new RouteTemple());
+        addArea(new Temple());
     }
     
     @Override

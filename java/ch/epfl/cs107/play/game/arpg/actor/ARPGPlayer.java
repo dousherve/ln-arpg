@@ -8,7 +8,9 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.arpg.actor.character.Character;
+import ch.epfl.cs107.play.game.arpg.actor.character.Woman;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
+import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Staff;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.CastleDoor;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.ARPGCollectableAreaEntity;
@@ -61,7 +63,13 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             interactWith((ARPGCollectableAreaEntity) heart);
             collectItem(heart);
         }
-    
+
+        @Override
+        public void interactWith(Staff staff) {
+            interactWith((ARPGCollectableAreaEntity) staff);
+            collectItem(staff);
+        }
+
         @Override
         public void interactWith(CastleKey key) {
             interactWith((ARPGCollectableAreaEntity) key);
@@ -82,6 +90,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
 
         @Override
         public void interactWith(Character character) {
+
             if (shouldSlay() && !character.isInvicible()) {
                 character.harm(SWORD_DAMAGE);
             } else if (state != State.ATTACKING_WITH_SWORD){
@@ -90,7 +99,14 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             }
         }
 
-
+        @Override
+        public void interactWith(Woman woman) {
+            if (possess(ARPGItem.SWORD)){
+                woman.beginQuest();
+            } else {
+                woman.personalInteraction();
+            }
+        }
 
         // Sword interactions
 
@@ -181,7 +197,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         inventory.add(ARPGItem.SWORD, 1);
         inventory.add(ARPGItem.BOW, 1);
         inventory.add(ARPGItem.ARROW, 5);
-        inventory.add(ARPGItem.STAFF, 1);
+        //inventory.add(ARPGItem.STAFF, 1);
         
         setupAnimations();
         
@@ -447,6 +463,14 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
      */
     private void collectItem(CastleKey key) {
         inventory.add(ARPGItem.CASTLE_KEY, 1);
+    }
+
+    /**
+     * Handle CastleKey collection
+     * @param staff (Staff) A Staff
+     */
+    private void collectItem(Staff staff) {
+        inventory.add(ARPGItem.STAFF, 1);
     }
     
     // MARK:- Handle items usage

@@ -15,6 +15,7 @@
     <string name="riddle_1">Il parait que si tu as compris le sens de la vie, alors tu pourras passer</string>
     <string name="riddle_2">On dit qu'il faut savoir ce que l'on cherche pour pouvoir passer...le sais-tu ? Parce que moi pas vraiment...</string>
     <string name="mew_dialog">Mew...mew, mew mew !</string>
+    <string name="templeDoor">Pour combattre le Seigneur Noir tu as besoin d'être plus puissant. Fais attention.</string>
     <string name="closed_door">Cette porte est fermée</string>
     <string name="closed_door_joke">Sans blague les gens ferment leur porte...</string>
     <string name="house_of_timmy">Maison de Timmy</string>
@@ -24,6 +25,7 @@
     <string name="petalburg">Clementi-Ville</string>
     <string name="dialog_1">Salut toi ! </string>
     <string name="dialog_2">Bouge toi de là !</string>
+    <string name="dialog_3">Une belle journée aujourd'hui !</string>
     <string name="tv_for_mum">Cette emission plaîrait à maman ... ... ...</string>
     <string name="money_unit">$</string>
     <string name="wants_fight"> veut se battre !</string>
