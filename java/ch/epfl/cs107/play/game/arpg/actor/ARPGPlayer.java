@@ -35,7 +35,7 @@ import java.util.List;
 public class ARPGPlayer extends Player implements Inventory.Holder {
 
     private enum State {
-        IDLE, ATTACKING_WITH_BOW, ATTACKING_WITH_SWORD, ATTACKING_WITH_STAFF
+        IDLE, ATTACKING_WITH_BOW, ATTACKING_WITH_SWORD, ATTACKING_WITH_STAFF, IMMOBILIZED
     }
     
     private class ARPGPlayerHandler implements ARPGInteractionVisitor {
@@ -85,6 +85,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             if (shouldSlay() && !character.isInvicible()) {
                 character.harm(SWORD_DAMAGE);
             } else if (state != State.ATTACKING_WITH_SWORD){
+                state = state == State.IMMOBILIZED ? State.IDLE : State.IMMOBILIZED;
                 character.personalInteraction();
             }
         }
@@ -321,7 +322,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
      */
     private void moveOrientate(Orientation orientation, Button b) {
         if (b.isDown() && state == State.IDLE) {
-            if (getOrientation() == orientation) move(MOVING_ANIMATION_DURATION);
+            if (getOrientation() == orientation && state != State.IMMOBILIZED) move(MOVING_ANIMATION_DURATION);
             else orientate(orientation);
         }
     }
@@ -554,6 +555,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
      * @param damage (float) The amount of Health Points to remove from the ARPGPlayer
      */
     public void harm(float damage) {
+        System.out.println("harmeds");
         this.hp = Math.min(Math.max(this.hp - damage, 0), MAX_HP);
         wasHurt = true;
         statusGui.updateHp(this.hp);

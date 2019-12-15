@@ -27,6 +27,7 @@ public class LogMonster extends Monster {
     
         @Override
         public void interactWith(ARPGPlayer player) {
+            System.out.println(state);
             if (state == LogMonsterState.IDLE) {
                 state = LogMonsterState.ATTACKING;
                 inactivityDuration = 0;
@@ -82,7 +83,7 @@ public class LogMonster extends Monster {
     /// Index of the current animation in the above-mentioned array
     private int movingAnimationIndex;
     /// Moving animation duration in number of frames
-    private static final int MOVING_ANIMATION_DURATION = 16;
+    private static final int MOVING_ANIMATION_DURATION = 10;
     
     private Animation sleepingAnimation;
     private static final int SLEEPING_ANIMATION_DURATION = 16;
@@ -91,7 +92,7 @@ public class LogMonster extends Monster {
     private static final int WAKING_ANIMATION_DURATION = 16;
 
     /// Animation duration in number of frames
-    private static final int ANIMATION_DURATION = 16;
+    private static final int ANIMATION_DURATION = 10;
     
     /**
      * Default LogMonster constructor
@@ -138,7 +139,7 @@ public class LogMonster extends Monster {
             switch (state) {
                 case IDLE:
                     if (!isDisplacementOccurs()) {
-                        randomlyMove(ANIMATION_DURATION);
+                        randomlyMove(MOVING_ANIMATION_DURATION);
                         inactivityDuration = RandomGenerator.getInstance().nextFloat() * MAX_INACTIVITY_DURATION;
                     }
                     break;
@@ -185,7 +186,7 @@ public class LogMonster extends Monster {
     public void draw(Canvas canvas) {
         super.draw(canvas);
         
-        if (isAlive() && visible) {
+        if (visible) {
             
             switch (state) {
                 case SLEEPING:

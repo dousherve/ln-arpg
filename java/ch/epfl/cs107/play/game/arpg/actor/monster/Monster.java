@@ -80,8 +80,7 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
         vanishAnimation = new Animation(VANISH_ANIMATION_DURATION, vanishSprites, false);
         
         monsterState = MonsterState.ALIVE;
-        
-        enterArea(area, position);
+
     }
     
     @Override
@@ -121,22 +120,10 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
     // MARK:- Specific Monster Methods
     
     /**
-     *
-     * @param area (Area): initial area, not null
-     * @param position (DiscreteCoordinates): initial position, not null
-     */
-    private void enterArea(Area area, DiscreteCoordinates position) {
-        area.registerActor(this);
-        
-        setOwnerArea(area);
-        setCurrentPosition(position.toVector());
-        resetMotion();
-    }
-    
-    /**
      * Leave an area by unregistering this Monster
      */
     private void leaveArea() {
+        System.out.println("quitte");;
         getOwnerArea().unregisterActor(this);
     }
     
