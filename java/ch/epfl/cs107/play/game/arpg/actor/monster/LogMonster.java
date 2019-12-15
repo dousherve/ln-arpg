@@ -186,7 +186,7 @@ public class LogMonster extends Monster {
     public void draw(Canvas canvas) {
         super.draw(canvas);
         
-        if (visible) {
+        if (isAlive() && visible) {
             
             switch (state) {
                 case SLEEPING:
