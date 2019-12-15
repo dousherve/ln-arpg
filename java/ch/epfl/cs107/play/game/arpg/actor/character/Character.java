@@ -49,7 +49,7 @@ public class Character extends MovableAreaEntity implements Interactor {
     /// State of the character
     protected State state;
 
-    protected static float hp;
+    protected float hp;
 
     /// InteractionVisitor handler
     protected CharacterHandler handler;

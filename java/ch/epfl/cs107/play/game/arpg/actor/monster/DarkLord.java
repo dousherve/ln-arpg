@@ -87,7 +87,7 @@ public class DarkLord extends Monster {
     /// Moving animations array
     private Animation[] movingAnimations;
     /// Moving animation duration in number of frames
-    private static final int MOVING_ANIMATION_DURATION = 16;
+    private static final int MOVING_ANIMATION_DURATION = 10;
 
     /// Attacking / spell / teleportation animations array
     private Animation[] attackingAnimations;

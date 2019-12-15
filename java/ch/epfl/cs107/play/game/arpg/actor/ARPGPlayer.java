@@ -89,6 +89,9 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
                 character.personalInteraction();
             }
         }
+
+
+
         // Sword interactions
 
         @Override
@@ -349,6 +352,10 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         if (keyboard.get(Keyboard.F).isPressed()) {
             // Switch between fortune and money display by pressing 'F'
             isDisplayingMoney = !isDisplayingMoney;
+        }
+
+        if (keyboard.get(Keyboard.O).isPressed()){
+            getOwnerArea().suspend();
         }
         
         // DEBUG:- give 5 of each item
