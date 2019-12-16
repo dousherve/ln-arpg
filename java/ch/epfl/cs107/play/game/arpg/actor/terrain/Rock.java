@@ -12,6 +12,10 @@ import ch.epfl.cs107.play.window.Canvas;
 import java.util.Collections;
 import java.util.List;
 
+
+/**
+ *  Just a graphic element which take space of a cell
+ */
 public class Rock extends AreaEntity {
 
     private Sprite sprite = new Sprite("rock.1", 1f, 1f, this, new RegionOfInterest(0, 0, 16, 16));

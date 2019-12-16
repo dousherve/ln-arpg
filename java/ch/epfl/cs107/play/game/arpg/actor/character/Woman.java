@@ -11,6 +11,7 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 public class Woman extends Character {
 
+    /// Boolean useful for quest
     private boolean walkToNextMap = false;
     protected static final int MOVING_ANIMATION_DURATION = 10;
 
@@ -26,15 +27,18 @@ public class Woman extends Character {
 
         state = State.STOPPED;
         if (getOwnerArea().getTitle().equals("zelda/Route")){
-            dialog.resetDialog("Je cherche un héro avec une épée");
+            dialog.resetDialog(XMLTexts.getText("Road_staff_quest_1"));
         } else {
             dialog.resetDialog(XMLTexts.getText("templeDoor"));
         }
     }
 
+    /**
+     *  Set dialog and quest position
+     */
     public void beginQuest() {
         if (getOwnerArea().getTitle().equals("zelda/Route")) {
-            dialog.resetDialog("Tu es le garçon avec l'épée? Suis-moi");
+            dialog.resetDialog(XMLTexts.getText("Road_staff_quest_2"));
             super.personalInteraction();
 
             if (!showDialog && getOwnerArea().getTitle().equals("zelda/Route")) {
@@ -61,6 +65,7 @@ public class Woman extends Character {
         super.update(deltaTime);
         state = State.SPECIAL;
 
+        // after than the player spoke to her for the first time, she turn right and walk to the Area's limit, then disappear
         if (walkToNextMap) {
             if (!move(MOVING_ANIMATION_DURATION) && !isDisplacementOccurs()){
                 getOwnerArea().unregisterActor(this);

@@ -17,6 +17,10 @@ justifie son placement dans son paquetage, ou sa classe s'il est imbriqué.
     
         - Character (classe)
         *Personnage non-joueur de base*
+        <br><br>
+        - Guard (classe)
+        - Woman (classe) <br>
+        *Ces 2 classes sont des spécifications de `Character`.*
 
     - `actor.gui.status`  
     *Sous-paquetage de `actor.gui` contenant tous les éléments de l'interface graphique utilisateur.*

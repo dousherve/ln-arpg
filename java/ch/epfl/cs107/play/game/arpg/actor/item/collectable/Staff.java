@@ -17,6 +17,7 @@ import java.util.List;
 
 public class Staff extends ARPGCollectableAreaEntity {
 
+    // MARK:- Animation
     private Animation animation;
     private static final int ANIMATION_DURATION = 4;
 

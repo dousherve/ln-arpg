@@ -37,7 +37,7 @@ public class Character extends MovableAreaEntity implements Interactor {
         }
     }
 
-
+    /// Default sentences that a default character can tell
     private static final String[] DEFAULT_SENTENCES = new String[]{
             "dialog_1", "dialog_2", "dialog_3"
     };
@@ -61,11 +61,9 @@ public class Character extends MovableAreaEntity implements Interactor {
     protected Animation vanishAnimation;
     protected static final int VANISH_ANIMATION_DURATION = 2;
 
-
     private static final float PROBABILITY_TO_CHANGE_ORIENTATION = 0.3f;
 
-    //TEST
-
+    // Default dialog
     protected Dialog dialog;
     protected boolean showDialog = false;
 
@@ -153,6 +151,10 @@ public class Character extends MovableAreaEntity implements Interactor {
         state = State.VANISHING;
     }
 
+    /**
+     *  Tell if the character is invincible or not
+     * @return true if invincible
+     */
     public boolean isInvicible(){
         return true;
     }
@@ -199,7 +201,6 @@ public class Character extends MovableAreaEntity implements Interactor {
         }else {
             movingAnimations[getOrientation().ordinal()].draw(canvas);
         }
-
 
         if (showDialog){
             dialog.draw(canvas);
