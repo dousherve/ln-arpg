@@ -11,9 +11,12 @@ public enum ARPGItem implements InventoryItem {
     BOMB("bomb"), STAFF("staff_water.icon"), CASTLE_KEY("key");
     
     private Sprite sprite;
+    private String resourceName;
     
     ARPGItem(String resourceName) {
-        sprite = new RPGSprite("zelda/" + resourceName, 0.5f, 0.5f, null,
+        this.resourceName = resourceName;
+
+        sprite = new RPGSprite("zelda/" + resourceName, 0.75f, 0.75f, null,
                 new RegionOfInterest(0, 0, 16, 16));
     }
     
@@ -33,6 +36,10 @@ public enum ARPGItem implements InventoryItem {
         }
         
         return "ERROR";
+    }
+
+    public String getResourceName() {
+        return resourceName;
     }
     
     public Sprite getSprite() {

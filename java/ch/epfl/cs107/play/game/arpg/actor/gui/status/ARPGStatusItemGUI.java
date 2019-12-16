@@ -13,7 +13,7 @@ import ch.epfl.cs107.play.window.Canvas;
  */
 public class ARPGStatusItemGUI implements ARPGStatusGUIElement {
 
-    private static final float SIZE = 1.75f;
+    private static final float SIZE = 2.2f;
     
     private ImageGraphics gear;
     private Sprite itemSprite;

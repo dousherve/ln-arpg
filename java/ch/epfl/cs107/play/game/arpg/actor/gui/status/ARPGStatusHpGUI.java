@@ -23,9 +23,9 @@ public class ARPGStatusHpGUI implements ARPGStatusGUIElement {
             new RegionOfInterest(0,0,16,16);
     
     /// The size of the hearts we want to display
-    private static final float SIZE = 1f;
+    private static final float SIZE = 1.2f;
     /// The spacing between the hearts
-    private static final float SPACING = 1f;
+    private static final float SPACING = 1.2f;
     
     private ImageGraphics[] hearts;
     

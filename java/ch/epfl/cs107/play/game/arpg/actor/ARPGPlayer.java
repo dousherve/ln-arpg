@@ -38,7 +38,8 @@ import java.util.List;
 public class ARPGPlayer extends Player implements Inventory.Holder {
 
     private enum State {
-        IDLE, ATTACKING_WITH_BOW, ATTACKING_WITH_SWORD, ATTACKING_WITH_STAFF, IMMOBILIZED
+        IDLE, ATTACKING_WITH_BOW, ATTACKING_WITH_SWORD, ATTACKING_WITH_STAFF, IMMOBILIZED,
+        INVENTORY
     }
     
     private class ARPGPlayerHandler implements ARPGInteractionVisitor {
@@ -183,6 +184,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     
     /// The Inventory GUI
     private final ARPGInventoryGUI inventoryGui;
+    private boolean isDisplayingInventory;
     
     /**
      * Default ARPGPlayer constructor
@@ -212,7 +214,8 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         state = State.IDLE;
         
         isDisplayingMoney = true;
-    
+        isDisplayingInventory = false;
+
         resetMotion();
     }
 
@@ -258,6 +261,9 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     
         // Update the amount of money displayed on the GUI
         statusGui.updateMoney(isDisplayingMoney ? inventory.getMoney() : inventory.getFortune());
+
+        // Update the inventory
+        inventoryGui.update(deltaTime);
         
         // Behave according to the state
         
@@ -339,8 +345,11 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         
         // Draw the status GUI
         statusGui.draw(canvas);
-        /// Draw the inventory GUI
-        inventoryGui.draw(canvas);
+
+        if (isDisplayingInventory) {
+            /// Draw the inventory GUI
+            inventoryGui.draw(canvas);
+        }
     }
     
     /**
@@ -349,9 +358,20 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
      * @param b (Button): button corresponding to the given orientation, not null
      */
     private void moveOrientate(Orientation orientation, Button b) {
-        if (b.isDown() && state == State.IDLE) {
-            if (getOrientation() == orientation && state != State.IMMOBILIZED) move(MOVING_ANIMATION_DURATION);
+        if (b.isDown()) {
+            if (getOrientation() == orientation) move(MOVING_ANIMATION_DURATION);
             else orientate(orientation);
+        }
+    }
+
+    /**
+     * Navigate through the inventory
+     * @param orientation (Orientation): given orientation, not null
+     * @param b (Button): button corresponding to the given orientation, not null
+     */
+    private void navigateInventory(Orientation orientation, Button b) {
+        if (b.isPressed()) {
+            inventoryGui.navigate(orientation);
         }
     }
     
@@ -361,17 +381,29 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     private void handleKeyboardEvents() {
         Keyboard keyboard = getOwnerArea().getKeyboard();
         
-        moveOrientate(Orientation.LEFT, keyboard.get(Keyboard.LEFT));
-        moveOrientate(Orientation.UP, keyboard.get(Keyboard.UP));
-        moveOrientate(Orientation.RIGHT, keyboard.get(Keyboard.RIGHT));
-        moveOrientate(Orientation.DOWN, keyboard.get(Keyboard.DOWN));
-        
-        if (keyboard.get(Keyboard.TAB).isPressed()) {
-            switchCurrentItem();
+        if (state == State.IDLE) {
+            moveOrientate(Orientation.LEFT, keyboard.get(Keyboard.LEFT));
+            moveOrientate(Orientation.UP, keyboard.get(Keyboard.UP));
+            moveOrientate(Orientation.RIGHT, keyboard.get(Keyboard.RIGHT));
+            moveOrientate(Orientation.DOWN, keyboard.get(Keyboard.DOWN));
+
+            if (keyboard.get(Keyboard.TAB).isPressed()) {
+                switchCurrentItem();
+            }
+
+            if (keyboard.get(Keyboard.SPACE).isPressed()) {
+                handleItemUsage();
+            }
+        } else if (state == State.INVENTORY) {
+            navigateInventory(Orientation.LEFT, keyboard.get(Keyboard.LEFT));
+            navigateInventory(Orientation.UP, keyboard.get(Keyboard.UP));
+            navigateInventory(Orientation.RIGHT, keyboard.get(Keyboard.RIGHT));
+            navigateInventory(Orientation.DOWN, keyboard.get(Keyboard.DOWN));
         }
-        
-        if (keyboard.get(Keyboard.SPACE).isPressed()) {
-            handleItemUsage();
+
+        if (keyboard.get(Keyboard.I).isPressed()) {
+            isDisplayingInventory = !isDisplayingInventory;
+            state = isDisplayingInventory ? State.INVENTORY : State.IDLE;
         }
         
         if (keyboard.get(Keyboard.F).isPressed()) {

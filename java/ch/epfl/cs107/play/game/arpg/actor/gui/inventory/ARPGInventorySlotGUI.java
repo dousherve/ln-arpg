@@ -3,8 +3,10 @@ package ch.epfl.cs107.play.game.arpg.actor.gui.inventory;
 import ch.epfl.cs107.play.game.Updatable;
 import ch.epfl.cs107.play.game.actor.ImageGraphics;
 import ch.epfl.cs107.play.game.actor.TextGraphics;
+import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.io.ResourcePath;
 import ch.epfl.cs107.play.game.arpg.actor.ARPGItem;
+import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.TextAlign;
 import ch.epfl.cs107.play.math.Vector;
@@ -14,13 +16,15 @@ import java.awt.Color;
 
 public class ARPGInventorySlotGUI implements Updatable {
     
-    private static final float DEPTH = 15_000f;
+    private static final float DEPTH = 205_000f;
     
     private static final String SLOT_RES = "zelda/inventory.slot";
     private static final String SELECTOR_RES = "zelda/inventory.selector";
     
     /// The item to display
     private ARPGItem item;
+    /// The sprite of the item
+    private Sprite itemSprite;
     /// The quantity of the item to display
     private int quantity;
     /// Keep track if the current slot is selected or not
@@ -31,7 +35,7 @@ public class ARPGInventorySlotGUI implements Updatable {
     /// Used for blinking timing
     private float blinkingTimer;
     /// Blinking cycle delay
-    private static final float BLINKING_DELAY = 1f;
+    private static final float BLINKING_DELAY = .25f;
     
     /// Regions of interest
     private final RegionOfInterest UNSELECTED_ROI;
@@ -50,6 +54,11 @@ public class ARPGInventorySlotGUI implements Updatable {
     
     protected ARPGInventorySlotGUI(ARPGItem item, int quantity, float size, Vector anchor) {
         this.item = item;
+        this.itemSprite = new RPGSprite(
+                "zelda/" + item.getResourceName(),
+                0.75f, 0.75f,
+                null, new RegionOfInterest(0, 0, 16, 16)
+        );
         this.quantity = quantity;
         this.anchor = anchor;
         this.size = size;
@@ -58,10 +67,11 @@ public class ARPGInventorySlotGUI implements Updatable {
         SELECTED_ROI_1 = new RegionOfInterest(0, 0, 64, 64);
         SELECTED_ROI_2 = new RegionOfInterest(64, 0, 64, 64);
         
-        isSelected = true;
+        isSelected = false;
+        blinkingFlag = false;
         
         quantityText = new TextGraphics(
-                "", .5f, Color.BLACK, null, 0f,
+                "", .25f, Color.BLACK, null, 0f,
                 false, false, Vector.ZERO,
                 TextAlign.Horizontal.CENTER, TextAlign.Vertical.BOTTOM,
                 1f, DEPTH
@@ -71,7 +81,12 @@ public class ARPGInventorySlotGUI implements Updatable {
     
     @Override
     public void update(float deltaTime) {
-        
+        blinkingTimer += deltaTime;
+        if (blinkingTimer >= BLINKING_DELAY) {
+            blinkingFlag = !blinkingFlag;
+            blinkingTimer = 0f;
+            updateGui();
+        }
     }
     
     /**
@@ -86,11 +101,14 @@ public class ARPGInventorySlotGUI implements Updatable {
         frameGraphics.draw(canvas);
         
         // Draw the item
-        
-        // Draw the quantity ; we use a little trick to center the text, given that
-        // the TextGraphics object does not provide a way to get its width nor height
-        /*final int charCount = quantityText.getText().length();
-        final Vector deltaTextAnchor = new Vector(size / 2 - charCount * 0.15f, .4f);*/
+        itemSprite.setAnchor(frameGraphics.getAnchor().add(
+                (size - item.getSprite().getWidth()) / 2,
+                (size - item.getSprite().getHeight()) / 2
+        ));
+        itemSprite.setDepth(DEPTH);
+        itemSprite.draw(canvas);
+
+        // Draw the quantity
         quantityText.setAnchor(parentAnchor.add(size / 2, .4f));
         quantityText.draw(canvas);
     }
@@ -124,5 +142,9 @@ public class ARPGInventorySlotGUI implements Updatable {
         isSelected = selected;
         updateGui();
     }
-    
+
+    public float getSize() {
+        return size;
+    }
+
 }
