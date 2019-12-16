@@ -113,7 +113,6 @@ public final class TextItem implements Item {
 
 		g.drawString(text, x, -y);
 
-
         // If requested, also draw outline
 		if (outlineColor != null && thickness > 0.0f) {
 			g.setColor(outlineColor);

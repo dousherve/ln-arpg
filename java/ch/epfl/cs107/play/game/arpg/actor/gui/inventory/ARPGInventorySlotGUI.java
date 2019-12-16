@@ -6,6 +6,7 @@ import ch.epfl.cs107.play.game.actor.TextGraphics;
 import ch.epfl.cs107.play.game.areagame.io.ResourcePath;
 import ch.epfl.cs107.play.game.arpg.actor.ARPGItem;
 import ch.epfl.cs107.play.math.RegionOfInterest;
+import ch.epfl.cs107.play.math.TextAlign;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
@@ -59,8 +60,12 @@ public class ARPGInventorySlotGUI implements Updatable {
         
         isSelected = true;
         
-        quantityText = new TextGraphics("", .5f, Color.BLACK);
-        quantityText.setDepth(DEPTH);
+        quantityText = new TextGraphics(
+                "", .5f, Color.BLACK, null, 0f,
+                false, false, Vector.ZERO,
+                TextAlign.Horizontal.CENTER, TextAlign.Vertical.BOTTOM,
+                1f, DEPTH
+        );
         updateGui();
     }
     
@@ -84,9 +89,9 @@ public class ARPGInventorySlotGUI implements Updatable {
         
         // Draw the quantity ; we use a little trick to center the text, given that
         // the TextGraphics object does not provide a way to get its width nor height
-        final int charCount = quantityText.getText().length();
-        final Vector deltaTextAnchor = new Vector(size / 2 - charCount * 0.15f, .4f);
-        quantityText.setAnchor(parentAnchor.add(deltaTextAnchor));
+        /*final int charCount = quantityText.getText().length();
+        final Vector deltaTextAnchor = new Vector(size / 2 - charCount * 0.15f, .4f);*/
+        quantityText.setAnchor(parentAnchor.add(size / 2, .4f));
         quantityText.draw(canvas);
     }
     

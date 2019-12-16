@@ -340,7 +340,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         // Draw the status GUI
         statusGui.draw(canvas);
         /// Draw the inventory GUI
-        // inventoryGui.draw(canvas);
+        inventoryGui.draw(canvas);
     }
     
     /**
