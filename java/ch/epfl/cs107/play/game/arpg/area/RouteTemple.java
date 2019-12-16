@@ -20,7 +20,7 @@ public class RouteTemple extends ARPGArea {
             new DiscreteCoordinates(5, 6)
     };
     private final DiscreteCoordinates[][] otherCells = {
-            {},
+            {new DiscreteCoordinates(0, 5)},
             {}
     };
 

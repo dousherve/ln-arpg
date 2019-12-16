@@ -123,7 +123,7 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
      * Leave an area by unregistering this Monster
      */
     private void leaveArea() {
-        System.out.println("quitte");;
+        System.out.println("quitte");
         getOwnerArea().unregisterActor(this);
     }
     
@@ -174,7 +174,7 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
     /**
      * @return (boolean) a boolean indicating if the current Monster is alive
      */
-    final protected boolean isAlive() {
+    final public boolean isAlive() {
         return monsterState == MonsterState.ALIVE;
     }
     

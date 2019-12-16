@@ -18,9 +18,7 @@ import ch.epfl.cs107.play.math.RandomGenerator;
 import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
-import ch.epfl.cs107.play.window.Sound;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -41,7 +39,7 @@ public class Character extends MovableAreaEntity implements Interactor {
 
 
     private static final String[] DEFAULT_SENTENCES = new String[]{
-            "dialog_1", "dialog_2",
+            "dialog_1", "dialog_2", "dialog_3"
     };
 
     private static final int ACTION_RADIUS = 2;
