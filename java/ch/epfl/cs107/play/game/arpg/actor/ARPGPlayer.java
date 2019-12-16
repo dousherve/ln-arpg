@@ -8,6 +8,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.arpg.actor.character.Character;
+import ch.epfl.cs107.play.game.arpg.actor.gui.inventory.ARPGInventoryGUI;
 import ch.epfl.cs107.play.game.arpg.actor.character.Woman;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Staff;
@@ -180,6 +181,9 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     /// The status GUI
     private final ARPGStatusGUI statusGui;
     
+    /// The Inventory GUI
+    private final ARPGInventoryGUI inventoryGui;
+    
     /**
      * Default ARPGPlayer constructor
      * @param owner (Area): Owner Area, not null
@@ -190,6 +194,8 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         super(owner, orientation, coordinates);
         
         statusGui = new ARPGStatusGUI((int) MAX_HP);
+        // We set the width of the Inventory GUI to the scale factor of the Area
+        inventoryGui = new ARPGInventoryGUI(getOwnerArea().getCameraScaleFactor());
         
         handler = new ARPGPlayerHandler();
         inventory = new ARPGInventory(165);
@@ -327,11 +333,14 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     @Override
     public void draw(Canvas canvas) {
         // Animate the player
-        if  (visible) {
+        if (visible) {
             currentAnimation.draw(canvas);
         }
-        // Draw the GUI
+        
+        // Draw the status GUI
         statusGui.draw(canvas);
+        /// Draw the inventory GUI
+        // inventoryGui.draw(canvas);
     }
     
     /**
@@ -586,7 +595,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
      * @param damage (float) The amount of Health Points to remove from the ARPGPlayer
      */
     public void harm(float damage) {
-        System.out.println("harmeds");
+        System.out.println("Harmed");
         this.hp = Math.min(Math.max(this.hp - damage, 0), MAX_HP);
         wasHurt = true;
         statusGui.updateHp(this.hp);

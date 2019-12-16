@@ -1,11 +1,11 @@
-package ch.epfl.cs107.play.game.arpg.actor.gui;
+package ch.epfl.cs107.play.game.arpg.actor.gui.status;
 
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
 interface ARPGStatusGUIElement {
     
-    float DEPTH = Float.MAX_VALUE;
+    float DEPTH = 5000f;
     float PADDING = 0.25f;
     
     /**

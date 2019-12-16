@@ -1,4 +1,4 @@
-package ch.epfl.cs107.play.game.arpg.actor.gui;
+package ch.epfl.cs107.play.game.arpg.actor.gui.status;
 
 import ch.epfl.cs107.play.game.actor.ImageGraphics;
 import ch.epfl.cs107.play.game.areagame.io.ResourcePath;
@@ -58,8 +58,8 @@ public class ARPGStatusMoneyGUI implements ARPGStatusGUIElement {
         
         if (digit >= 1) {
             // 1...9
-            int x = (digit - 1) % 4;
-            int y = (digit - 1) / 4;
+            final int x = (digit - 1) % 4;
+            final int y = (digit - 1) / 4;
             return new RegionOfInterest(x * 16, y * 16, 16, 16);
         } else {
             // 0

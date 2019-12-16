@@ -80,7 +80,6 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
         vanishAnimation = new Animation(VANISH_ANIMATION_DURATION, vanishSprites, false);
         
         monsterState = MonsterState.ALIVE;
-
     }
     
     @Override
@@ -160,7 +159,6 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
      */
     protected void die() {
         monsterState = MonsterState.VANISHING;
-
     }
     
     /**

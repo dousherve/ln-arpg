@@ -1,4 +1,4 @@
-package ch.epfl.cs107.play.game.arpg.actor.gui;
+package ch.epfl.cs107.play.game.arpg.actor.gui.status;
 
 import ch.epfl.cs107.play.game.actor.ImageGraphics;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
@@ -31,7 +31,7 @@ public class ARPGStatusItemGUI implements ARPGStatusGUIElement {
     
     @Override
     public void draw(Canvas canvas, Vector parentAnchor) {
-        Vector gearAnchor = new Vector(PADDING, canvas.getScaledHeight() - SIZE - PADDING);
+        Vector gearAnchor = new Vector(PADDING, canvas.getScaledHeight() - PADDING - SIZE);
         gear.setAnchor(parentAnchor.add(gearAnchor));
         gear.draw(canvas);
         

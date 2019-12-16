@@ -1,4 +1,4 @@
-package ch.epfl.cs107.play.game.arpg.actor.gui;
+package ch.epfl.cs107.play.game.arpg.actor.gui.status;
 
 import ch.epfl.cs107.play.game.actor.ImageGraphics;
 import ch.epfl.cs107.play.game.areagame.io.ResourcePath;
@@ -7,7 +7,7 @@ import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
 /**
- *  Graphic user interface element showing health points.
+ *  Graphical user interface element showing health points.
  */
 public class ARPGStatusHpGUI implements ARPGStatusGUIElement {
 
@@ -24,6 +24,8 @@ public class ARPGStatusHpGUI implements ARPGStatusGUIElement {
     
     /// The size of the hearts we want to display
     private static final float SIZE = 1f;
+    /// The spacing between the hearts
+    private static final float SPACING = 1f;
     
     private ImageGraphics[] hearts;
     
@@ -39,8 +41,6 @@ public class ARPGStatusHpGUI implements ARPGStatusGUIElement {
 
     @Override
     public void draw(Canvas canvas, Vector parentAnchor) {
-        /// The spacing between the hearts
-        final float SPACING = 1f;
         for (int i = 0; i < hearts.length; ++i) {
             hearts[i].setAnchor(
                     parentAnchor.add(PADDING, SIZE / 2f).add(new Vector(i * SPACING, 0))
