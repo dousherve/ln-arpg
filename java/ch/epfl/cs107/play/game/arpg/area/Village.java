@@ -4,6 +4,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.arpg.actor.character.Character;
 import ch.epfl.cs107.play.game.arpg.actor.character.Guard;
 import ch.epfl.cs107.play.game.arpg.actor.character.Seller;
+import ch.epfl.cs107.play.game.arpg.actor.terrain.CaveOpening;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 public class Village extends ARPGArea {
@@ -49,6 +50,7 @@ public class Village extends ARPGArea {
         // Doors
         registerDoors(areaKeys, destinationCoords, orientations, positions, otherCells);
 
+        registerActor(new CaveOpening(this, Orientation.DOWN, new DiscreteCoordinates(25, 18)));
 
         //  Characters
         registerActor(new Character(this, Orientation.DOWN, new DiscreteCoordinates(5,5)));

@@ -3,6 +3,7 @@ package ch.epfl.cs107.play.game.arpg.actor.terrain;
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Animation;
 import ch.epfl.cs107.play.game.areagame.actor.AreaEntity;
+import ch.epfl.cs107.play.game.areagame.actor.FlyableEntity;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
@@ -15,7 +16,7 @@ import ch.epfl.cs107.play.window.Canvas;
 import java.util.Collections;
 import java.util.List;
 
-public class Waterfall extends AreaEntity {
+public class Waterfall extends AreaEntity implements FlyableEntity {
     
     private Animation animation;
     private static final int ANIMATION_DURATION = 2;
@@ -32,8 +33,7 @@ public class Waterfall extends AreaEntity {
         Sprite[] sprites = new Sprite[3];
         for (int i = 0; i < sprites.length; ++i) {
             sprites[i] = new RPGSprite("zelda/waterfall", 4, 4,
-                    this, new RegionOfInterest(64 * i, 0, 64, 64),
-                    new Vector(4, 0)
+                    this, new RegionOfInterest(64 * i, 0, 64, 64)
             );
         }
         
@@ -54,7 +54,12 @@ public class Waterfall extends AreaEntity {
     public List<DiscreteCoordinates> getCurrentCells() {
         return Collections.singletonList(getCurrentMainCellCoordinates());
     }
-    
+    @Override
+    public boolean canFly() {
+        return true;
+    }
+
+    // mark:- Interactable
     @Override
     public boolean takeCellSpace() {
         return true;

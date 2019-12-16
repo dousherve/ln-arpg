@@ -3,10 +3,18 @@ package ch.epfl.cs107.play.game.arpg.area;
 import ch.epfl.cs107.play.game.areagame.actor.Background;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Sword;
+import ch.epfl.cs107.play.game.arpg.actor.monster.FlameSkull;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Rock;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.math.RandomGenerator;
 
 public class Grotte extends ARPGArea {
+
+    // MARK:- FlameSkull spawner
+    private static final float MIN_TIME_SPAWN = 5f;
+    private static final float MAX_TIME_SPAWN = 7f;
+    private static final DiscreteCoordinates SPAWNER_COORDINATES = new DiscreteCoordinates(16, 29);
+    private float timerSpawner = 0;
 
     private final String[] areaKeys = {"zelda/Village"};
     private final DiscreteCoordinates[] destinationCoords = {
@@ -57,4 +65,17 @@ public class Grotte extends ARPGArea {
     public String getTitle() {
         return "Grotte";
     }
+
+    @Override
+    public void update(float deltaTime) {
+        super.update(deltaTime);
+        timerSpawner = Math.max(timerSpawner - deltaTime, 0);
+
+        if (timerSpawner <= 0){
+            registerActor(new FlameSkull(this, Orientation.RIGHT, SPAWNER_COORDINATES));
+            timerSpawner = MIN_TIME_SPAWN + (MAX_TIME_SPAWN - MIN_TIME_SPAWN) * RandomGenerator.getInstance().nextFloat();
+        }
+
+    }
+
 }

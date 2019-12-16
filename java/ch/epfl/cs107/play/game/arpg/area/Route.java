@@ -4,6 +4,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.arpg.actor.character.Woman;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
 import ch.epfl.cs107.play.game.arpg.actor.monster.LogMonster;
+import ch.epfl.cs107.play.game.arpg.actor.terrain.Bridge;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Waterfall;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -57,7 +58,9 @@ public class Route extends ARPGArea {
         }
         
         // Waterfall
-        registerActor(new Waterfall(this, new DiscreteCoordinates(11, 3)));
+        registerActor(new Waterfall(this, new DiscreteCoordinates(15, 3)));
+
+        registerActor(new Bridge(this, Orientation.DOWN, new DiscreteCoordinates(15, 9)));
 
         registerActor(new Woman(this, Orientation.LEFT, new DiscreteCoordinates(15,10)));
         registerActor(new LogMonster(this, new DiscreteCoordinates(9,11)));
