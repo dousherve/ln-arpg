@@ -3,8 +3,7 @@ package ch.epfl.cs107.play.game.arpg.area;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.arpg.actor.character.Character;
 import ch.epfl.cs107.play.game.arpg.actor.character.Guard;
-import ch.epfl.cs107.play.game.arpg.actor.character.Woman;
-import ch.epfl.cs107.play.game.rpg.actor.Sign;
+import ch.epfl.cs107.play.game.arpg.actor.character.Seller;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 public class Village extends ARPGArea {
@@ -51,6 +50,7 @@ public class Village extends ARPGArea {
         registerActor(new Character(this, Orientation.DOWN, new DiscreteCoordinates(5,5)));
         registerActor(new Guard(this, Orientation.DOWN, new DiscreteCoordinates(15,6)));
         registerActor(new Character(this, Orientation.DOWN, new DiscreteCoordinates(30,15)));
+        registerActor(new Seller(this, Orientation.DOWN, new DiscreteCoordinates(17, 9)));
     }
     
 }

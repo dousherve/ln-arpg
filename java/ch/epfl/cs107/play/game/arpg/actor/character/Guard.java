@@ -43,7 +43,7 @@ public class Guard extends Character {
     }
 
     @Override
-    public boolean isInvicible() {
+    public boolean isInvincible() {
         return false;
     }
 

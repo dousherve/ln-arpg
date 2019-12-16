@@ -93,7 +93,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         @Override
         public void interactWith(Character character) {
 
-            if (shouldSlay() && !character.isInvicible()) {
+            if (shouldSlay() && !character.isInvincible()) {
                 character.harm(SWORD_DAMAGE);
             } else if (state != State.ATTACKING_WITH_SWORD){
                 state = state == State.IMMOBILIZED ? State.IDLE : State.IMMOBILIZED;
@@ -196,17 +196,20 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         super(owner, orientation, coordinates);
         
         statusGui = new ARPGStatusGUI((int) MAX_HP);
-        // We set the width of the Inventory GUI to the scale factor of the Area
-        inventoryGui = new ARPGInventoryGUI(getOwnerArea().getCameraScaleFactor());
         
         handler = new ARPGPlayerHandler();
         inventory = new ARPGInventory(165);
-    
-        inventory.add(ARPGItem.SWORD, 1);
+
+        //inventory.add(ARPGItem.SWORD, 1);
         inventory.add(ARPGItem.BOW, 1);
         inventory.add(ARPGItem.ARROW, 5);
         //inventory.add(ARPGItem.STAFF, 1);
-        
+
+
+
+        // We set the width of the Inventory GUI to the scale factor of the Area
+        inventoryGui = new ARPGInventoryGUI(getOwnerArea().getCameraScaleFactor(), inventory.getItems());
+
         setupAnimations();
         
         hp = MAX_HP;

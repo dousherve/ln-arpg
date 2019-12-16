@@ -33,7 +33,9 @@ public class Character extends MovableAreaEntity implements Interactor {
 
         @Override
         public void interactWith(ARPGPlayer player) {
-            state = State.STOPPED;
+            if (state == State.IDLE) {
+                state = State.STOPPED;
+            }
         }
     }
 
@@ -155,7 +157,7 @@ public class Character extends MovableAreaEntity implements Interactor {
      *  Tell if the character is invincible or not
      * @return true if invincible
      */
-    public boolean isInvicible(){
+    public boolean isInvincible(){
         return true;
     }
 
