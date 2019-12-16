@@ -45,7 +45,7 @@ public class Temple extends ARPGArea {
         }
 
         if (noMoreMonsters && !doorOpen){
-            unregisterActor(rock);
+            rock.crack();
             doorOpen = true;
         }
     }

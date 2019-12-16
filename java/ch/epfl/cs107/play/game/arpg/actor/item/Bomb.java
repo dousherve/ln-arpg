@@ -11,6 +11,7 @@ import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.arpg.actor.ARPGPlayer;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
 import ch.epfl.cs107.play.game.arpg.actor.monster.Monster;
+import ch.epfl.cs107.play.game.arpg.actor.terrain.Rock;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -42,7 +43,11 @@ public class Bomb extends AreaEntity implements Interactor {
         public void interactWith(Monster monster) {
             monster.harm(Monster.Vulnerability.PHYSICAL, DAMAGE);
         }
-        
+
+        @Override
+        public void interactWith(Rock rock) {
+            rock.crack();
+        }
     }
     
     private enum State {

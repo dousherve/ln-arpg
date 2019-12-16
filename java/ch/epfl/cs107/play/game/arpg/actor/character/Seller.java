@@ -4,7 +4,6 @@ import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.arpg.actor.ARPGItem;
 import ch.epfl.cs107.play.game.arpg.actor.gui.inventory.ARPGInventoryGUI;
-import ch.epfl.cs107.play.game.rpg.InventoryItem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Canvas;
 

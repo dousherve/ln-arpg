@@ -6,6 +6,7 @@ import ch.epfl.cs107.play.game.arpg.actor.character.Character;
 import ch.epfl.cs107.play.game.arpg.actor.character.Woman;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Staff;
+import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Sword;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.CastleDoor;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.ARPGCollectableAreaEntity;
@@ -20,6 +21,7 @@ import ch.epfl.cs107.play.game.arpg.actor.monster.FireSpell;
 import ch.epfl.cs107.play.game.arpg.actor.monster.FlameSkull;
 import ch.epfl.cs107.play.game.arpg.actor.monster.LogMonster;
 import ch.epfl.cs107.play.game.arpg.actor.monster.Monster;
+import ch.epfl.cs107.play.game.arpg.actor.terrain.Rock;
 import ch.epfl.cs107.play.game.rpg.handler.RPGInteractionVisitor;
 
 public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
@@ -75,6 +77,15 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
     default void interactWith(Bomb bomb) {
         // by default the interaction is empty
     }
+
+    /**
+     * Simulate an interaction between RPG Interactor and a Rock
+     * @param rock (Rock), not null
+     */
+    default void interactWith(Rock rock) {
+        // by default the interaction is empty
+    }
+
     
     /**
      * Simulate an interaction between RPG Interactor and a CastleDoor
@@ -126,7 +137,17 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
     default void interactWith(CastleKey key) {
         interactWith((ARPGCollectableAreaEntity) key);
     }
-    
+
+    /**
+     * Simulate an interaction between RPG Interactor and a Sword
+     * @param sword (Sword), not null
+     */
+    default void interactWith(Sword sword) {
+        interactWith((ARPGCollectableAreaEntity) sword);
+    }
+
+
+
     // MARK:- Monster
     
     /**

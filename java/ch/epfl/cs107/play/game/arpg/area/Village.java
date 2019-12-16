@@ -8,13 +8,15 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 public class Village extends ARPGArea {
     
-    private final String[] areaKeys = {"zelda/Ferme", "zelda/Ferme", "zelda/Route"};
+    private final String[] areaKeys = {"zelda/Ferme", "zelda/Ferme", "zelda/Route", "Grotte"};
     private final DiscreteCoordinates[] destinationCoords = {
             new DiscreteCoordinates(4, 1),
             new DiscreteCoordinates(14, 1),
-            new DiscreteCoordinates(9, 1)
+            new DiscreteCoordinates(9, 1),
+            new DiscreteCoordinates(16, 1)
     };
     private final Orientation[] orientations = {
+            Orientation.UP,
             Orientation.UP,
             Orientation.UP,
             Orientation.UP
@@ -22,12 +24,14 @@ public class Village extends ARPGArea {
     private final DiscreteCoordinates[] positions = {
             new DiscreteCoordinates(4, 19),
             new DiscreteCoordinates(13, 19),
-            new DiscreteCoordinates(29, 19)
+            new DiscreteCoordinates(29, 19),
+            new DiscreteCoordinates(25, 18)
     };
     private final DiscreteCoordinates[][] otherCells = {
             {new DiscreteCoordinates(5, 19)},
             {new DiscreteCoordinates(14, 19), new DiscreteCoordinates(15, 19)},
-            {new DiscreteCoordinates(30, 19)}
+            {new DiscreteCoordinates(30, 19)},
+            {}
     };
     
     
@@ -46,7 +50,7 @@ public class Village extends ARPGArea {
         registerDoors(areaKeys, destinationCoords, orientations, positions, otherCells);
 
 
-        //
+        //  Characters
         registerActor(new Character(this, Orientation.DOWN, new DiscreteCoordinates(5,5)));
         registerActor(new Guard(this, Orientation.DOWN, new DiscreteCoordinates(15,6)));
         registerActor(new Character(this, Orientation.DOWN, new DiscreteCoordinates(30,15)));

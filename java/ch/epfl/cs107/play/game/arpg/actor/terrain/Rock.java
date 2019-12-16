@@ -5,7 +5,12 @@ import ch.epfl.cs107.play.game.areagame.actor.AreaEntity;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.arpg.actor.item.collectable.ARPGCollectableAreaEntity;
+import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Coin;
+import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Heart;
+import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.math.RandomGenerator;
 import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.window.Canvas;
 
@@ -18,6 +23,8 @@ import java.util.List;
  */
 public class Rock extends AreaEntity {
 
+    private boolean isCraked;
+
     private Sprite sprite = new Sprite("rock.1", 1f, 1f, this, new RegionOfInterest(0, 0, 16, 16));
 
     /**
@@ -29,7 +36,28 @@ public class Rock extends AreaEntity {
      */
     public Rock(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
+        isCraked = false;
     }
+
+    /**
+     * break the Rock
+     */
+    public void crack(){
+        isCraked = true;
+        generateCollectableItem();
+        getOwnerArea().unregisterActor(this);
+    }
+
+    /**
+     * Randomly spawn a collectable Item or not (Heart or Coin)
+     */
+    private void generateCollectableItem() {
+        if (RandomGenerator.getInstance().nextDouble() < 0.5f) {
+            ARPGCollectableAreaEntity entityToDrop = new Coin(getOwnerArea(), Orientation.DOWN, getCurrentMainCellCoordinates());
+            getOwnerArea().registerActor(entityToDrop);
+        }
+    }
+
 
     @Override
     public void draw(Canvas canvas) {
@@ -43,7 +71,7 @@ public class Rock extends AreaEntity {
 
     @Override
     public boolean takeCellSpace() {
-        return true;
+        return !isCraked;
     }
 
     @Override
@@ -53,11 +81,11 @@ public class Rock extends AreaEntity {
 
     @Override
     public boolean isViewInteractable() {
-        return false;
+        return true;
     }
 
     @Override
     public void acceptInteraction(AreaInteractionVisitor v) {
-
+        ((ARPGInteractionVisitor) v).interactWith(this);
     }
 }

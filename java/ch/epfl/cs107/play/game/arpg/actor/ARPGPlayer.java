@@ -12,6 +12,7 @@ import ch.epfl.cs107.play.game.arpg.actor.gui.inventory.ARPGInventoryGUI;
 import ch.epfl.cs107.play.game.arpg.actor.character.Woman;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Staff;
+import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Sword;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.CastleDoor;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.ARPGCollectableAreaEntity;
@@ -77,7 +78,13 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             interactWith((ARPGCollectableAreaEntity) key);
             collectItem(key);
         }
-    
+
+        @Override
+        public void interactWith(Sword sword) {
+            interactWith((ARPGCollectableAreaEntity) sword);
+            collectItem(sword);
+        }
+
         @Override
         public void interactWith(CastleDoor door) {
             if (state == State.IDLE) {
@@ -204,6 +211,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         inventory.add(ARPGItem.BOW, 1);
         inventory.add(ARPGItem.ARROW, 5);
         //inventory.add(ARPGItem.STAFF, 1);
+        inventory.add(ARPGItem.BOMB, 5);
 
 
 
@@ -510,13 +518,22 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     }
 
     /**
-     * Handle CastleKey collection
+     * Handle Staff collection
      * @param staff (Staff) A Staff
      */
     private void collectItem(Staff staff) {
         inventory.add(ARPGItem.STAFF, 1);
     }
-    
+
+    /**
+     * Handle Sword collection
+     * @param sword (Sword) A Sword
+     */
+    private void collectItem(Sword sword) {
+        inventory.add(ARPGItem.SWORD, 1);
+    }
+
+
     // MARK:- Handle items usage
     
     /**
