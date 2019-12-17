@@ -22,12 +22,12 @@ public abstract class ARPGArea extends Area {
      * Called by the begin() method
      */
     protected abstract void createArea();
-    
+
     @Override
     public final float getCameraScaleFactor() {
         return ARPG.CAMERA_SCALE_FACTOR;
     }
-    
+
     @Override
     public boolean begin(Window window, FileSystem fileSystem) {
         if (super.begin(window, fileSystem)) {

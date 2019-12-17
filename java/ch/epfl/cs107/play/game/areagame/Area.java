@@ -263,10 +263,6 @@ public abstract class Area implements Playable {
     public void update(float deltaTime) {    	
     	purgeRegistration();
 
-    	if(getKeyboard().get(Keyboard.X).isPressed()) {
-    	    setPaused();
-        }
-
         if(!paused) {
             // Render actors
             for (Actor actor : actors) {
@@ -292,7 +288,6 @@ public abstract class Area implements Playable {
     		actor.bip(window);
     		actor.draw(window);
     	}
-
     }
 
     final void purgeRegistration() {

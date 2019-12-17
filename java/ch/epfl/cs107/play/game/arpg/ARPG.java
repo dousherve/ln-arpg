@@ -2,18 +2,11 @@ package ch.epfl.cs107.play.game.arpg;
 
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.arpg.actor.ARPGPlayer;
-import ch.epfl.cs107.play.game.arpg.area.Chateau;
-import ch.epfl.cs107.play.game.arpg.area.Ferme;
-import ch.epfl.cs107.play.game.arpg.area.Grotte;
-import ch.epfl.cs107.play.game.arpg.area.Grotte2;
-import ch.epfl.cs107.play.game.arpg.area.Route;
-import ch.epfl.cs107.play.game.arpg.area.RouteChateau;
-import ch.epfl.cs107.play.game.arpg.area.RouteTemple;
-import ch.epfl.cs107.play.game.arpg.area.Temple;
-import ch.epfl.cs107.play.game.arpg.area.Village;
+import ch.epfl.cs107.play.game.arpg.area.*;
 import ch.epfl.cs107.play.game.rpg.RPG;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.window.Keyboard;
 import ch.epfl.cs107.play.window.Window;
 
 public class ARPG extends RPG {
@@ -35,6 +28,9 @@ public class ARPG extends RPG {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
+        if(getWindow().getKeyboard().get(Keyboard.ESC).isPressed()) {
+            getCurrentArea().setPaused();
+        }
     }
 
     @Override
