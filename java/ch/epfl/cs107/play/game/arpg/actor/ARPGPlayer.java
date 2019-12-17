@@ -8,6 +8,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.arpg.actor.character.Character;
+import ch.epfl.cs107.play.game.arpg.actor.character.Seller;
 import ch.epfl.cs107.play.game.arpg.actor.gui.inventory.ARPGInventoryGUI;
 import ch.epfl.cs107.play.game.arpg.actor.character.Woman;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
@@ -99,7 +100,6 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
 
         @Override
         public void interactWith(Character character) {
-
             if (shouldSlay() && !character.isInvincible()) {
                 character.harm(SWORD_DAMAGE);
             } else if (state != State.ATTACKING_WITH_SWORD){
@@ -117,7 +117,15 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             }
         }
 
-        // Sword interactions
+        @Override
+        public void interactWith(Seller seller) {
+            if (state == State.IMMOBILIZED || state == State.IDLE) {
+                state = state == State.IMMOBILIZED ? State.IDLE : State.IMMOBILIZED;
+                seller.personalInteraction(ARPGPlayer.this);
+            }
+        }
+
+// Sword interactions
 
         @Override
         public void interactWith(Monster monster) {
@@ -216,7 +224,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
 
 
         // We set the width of the Inventory GUI to the scale factor of the Area
-        inventoryGui = new ARPGInventoryGUI(getOwnerArea().getCameraScaleFactor(), inventory.getItems());
+        inventoryGui = new ARPGInventoryGUI(getOwnerArea().getCameraScaleFactor(), "Inventory", inventory.getItems());
 
         setupAnimations();
         
@@ -533,6 +541,19 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         inventory.add(ARPGItem.SWORD, 1);
     }
 
+
+    /**
+     * Buy a item from a Seller
+     * @param item  (ARPGItem) the item to buy
+     * @param price (int) price of the item
+     * @param quantity (int) quantity of the item
+     */
+    public void buyItem(ARPGItem item, int price, int quantity) {
+        if (inventory.getMoney() >= price) {
+            inventory.addMoney(- price);
+            inventory.add(item, quantity);
+        }
+    }
 
     // MARK:- Handle items usage
     

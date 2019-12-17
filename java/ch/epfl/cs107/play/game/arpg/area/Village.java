@@ -53,10 +53,12 @@ public class Village extends ARPGArea {
         registerActor(new CaveOpening(this, Orientation.DOWN, new DiscreteCoordinates(25, 18)));
 
         //  Characters
-        registerActor(new Character(this, Orientation.DOWN, new DiscreteCoordinates(5,5)));
         registerActor(new Guard(this, Orientation.DOWN, new DiscreteCoordinates(15,6)));
+        registerActor(new Character(this, Orientation.DOWN, new DiscreteCoordinates(5,5)));
         registerActor(new Character(this, Orientation.DOWN, new DiscreteCoordinates(30,15)));
+        registerActor(new Character(this, Orientation.DOWN, new DiscreteCoordinates(24,11)));
         registerActor(new Seller(this, Orientation.DOWN, new DiscreteCoordinates(17, 9)));
+
     }
     
 }

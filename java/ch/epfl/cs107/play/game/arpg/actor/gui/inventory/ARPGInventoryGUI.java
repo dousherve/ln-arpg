@@ -34,10 +34,10 @@ public class ARPGInventoryGUI implements Graphics, Updatable {
     private List<ARPGInventorySlotGUI> slots;
     private int currentItemIndex;
     
-    public ARPGInventoryGUI(float width, ARPGItem[] itemToDisplay) {
+    public ARPGInventoryGUI(float width, String titleText, ARPGItem[] itemToDisplay) {
         RegionOfInterest roi = new RegionOfInterest(0, 0, 240, 240);
 
-        title = new TextGraphics("Inventory", 1f, Color.BLACK,
+        title = new TextGraphics(titleText, 1f, Color.BLACK,
                 null, 0,
                 false, false, Vector.ZERO,
                 TextAlign.Horizontal.CENTER, TextAlign.Vertical.BOTTOM, 1f, BG_DEPTH
@@ -51,11 +51,15 @@ public class ARPGInventoryGUI implements Graphics, Updatable {
 
         slots = new ArrayList<>();
         for (ARPGItem item : itemToDisplay) {
-            slots.add(new ARPGInventorySlotGUI(item, item.ordinal(), 2.5f, background.getAnchor()));
+            slots.add(new ARPGInventorySlotGUI(item, 1, 2.5f, background.getAnchor()));
         }
         if (!slots.isEmpty()) {
             slots.get(0).setSelected(true);
         }
+    }
+
+    public ARPGItem getSelectedItem() {
+        return slots.get(currentItemIndex).getItem();
     }
 
     @Override

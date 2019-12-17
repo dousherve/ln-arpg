@@ -41,7 +41,7 @@ public class Character extends MovableAreaEntity implements Interactor {
 
     /// Default sentences that a default character can tell
     private static final String[] DEFAULT_SENTENCES = new String[]{
-            "dialog_1", "dialog_2", "dialog_3"
+            "dialog_1", "dialog_2", "dialog_3", "dialog_4", "dialog_5"
     };
 
     private static final int ACTION_RADIUS = 2;

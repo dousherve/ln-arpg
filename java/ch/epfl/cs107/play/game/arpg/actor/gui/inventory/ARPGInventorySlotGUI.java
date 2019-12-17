@@ -143,6 +143,10 @@ public class ARPGInventorySlotGUI implements Updatable {
         updateGui();
     }
 
+    public ARPGItem getItem() {
+        return item;
+    }
+
     public float getSize() {
         return size;
     }

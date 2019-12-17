@@ -3,9 +3,11 @@ package ch.epfl.cs107.play.game.arpg.handler;
 import ch.epfl.cs107.play.game.arpg.ARPGBehavior;
 import ch.epfl.cs107.play.game.arpg.actor.ARPGPlayer;
 import ch.epfl.cs107.play.game.arpg.actor.character.Character;
+import ch.epfl.cs107.play.game.arpg.actor.character.Seller;
 import ch.epfl.cs107.play.game.arpg.actor.character.Woman;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Staff;
+import ch.epfl.cs107.play.game.arpg.actor.item.collectable.SuperHeart;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Sword;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.CastleDoor;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
@@ -46,7 +48,7 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
 
     /**
      * Interaction with a character
-     * @param character (Character) the player to interact with
+     * @param character (Character) the character to interact with
      */
     default void interactWith(Character character) {
         // by default the interaction is empty
@@ -57,8 +59,17 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
      * @param woman (Woman) the player to interact with
      */
     default void interactWith(Woman woman) {
-        System.out.println("test");
+        // by default the interaction is empty
     }
+
+    /**
+     * Interaction with a character
+     * @param seller (Seller) the seller to interact with
+     */
+    default void interactWith(Seller seller) {
+        // by default the interaction is empty
+    }
+
 
     // MARK:- Terrain
 
@@ -145,8 +156,6 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
     default void interactWith(Sword sword) {
         interactWith((ARPGCollectableAreaEntity) sword);
     }
-
-
 
     // MARK:- Monster
     
