@@ -29,6 +29,15 @@ public class ARPGInventory extends Inventory {
     }
     
     /**
+     * Remove money from the Inventory
+     * @param money (int) The amount of money to add to the Inventory
+     */
+    protected void removeMoney(int money) {
+        this.money = Math.max(this.money - money, 0);
+        this.fortune = Math.max(this.fortune - money, 0);
+    }
+    
+    /**
      * @return (int) the amount of money in the Inventory
      */
     protected int getMoney() {

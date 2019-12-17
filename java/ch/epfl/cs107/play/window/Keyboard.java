@@ -5,6 +5,7 @@ package ch.epfl.cs107.play.window;
  */
 public interface Keyboard {
     int TAB = 9;
+    int ESC = 27;
     int ENTER = 10;
     int SPACE = 32;
     int UP = 38;

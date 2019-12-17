@@ -41,7 +41,7 @@ import java.util.List;
 public class ARPGPlayer extends Player implements Inventory.Holder {
 
     private enum State {
-        IDLE, ATTACKING_WITH_BOW, ATTACKING_WITH_SWORD, ATTACKING_WITH_STAFF, IMMOBILIZED,
+        IDLE, ATTACKING_WITH_BOW, ATTACKING_WITH_SWORD, ATTACKING_WITH_STAFF, STOPPED,
         INVENTORY
     }
     
@@ -108,15 +108,15 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         public void interactWith(Character character) {
             if (shouldSlay() && !character.isInvincible()) {
                 character.harm(SWORD_DAMAGE);
-            } else if (state != State.ATTACKING_WITH_SWORD){
-                state = state == State.IMMOBILIZED ? State.IDLE : State.IMMOBILIZED;
+            } else if (state != State.ATTACKING_WITH_SWORD) {
+                state = (state == State.STOPPED) ? State.IDLE : State.STOPPED;
                 character.personalInteraction();
             }
         }
 
         @Override
         public void interactWith(Alice alice) {
-            if (possess(ARPGItem.SWORD)){
+            if (possess(ARPGItem.SWORD)) {
                 alice.beginQuest();
             } else {
                 alice.personalInteraction();
@@ -125,13 +125,13 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
 
         @Override
         public void interactWith(Seller seller) {
-            if (state == State.IMMOBILIZED || state == State.IDLE) {
-                state = state == State.IMMOBILIZED ? State.IDLE : State.IMMOBILIZED;
+            if (state == State.STOPPED || state == State.IDLE) {
+                state = (state == State.STOPPED) ? State.IDLE : State.STOPPED;
                 seller.personalInteraction(ARPGPlayer.this);
             }
         }
 
-// Sword interactions
+        // Sword interactions
 
         @Override
         public void interactWith(Monster monster) {
@@ -541,14 +541,14 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
 
 
     /**
-     * Buy a item from a Seller
+     * Buy an item from a Seller
      * @param item  (ARPGItem) the item to buy
      * @param price (int) price of the item
      * @param quantity (int) quantity of the item
      */
     public void buyItem(ARPGItem item, int price, int quantity) {
         if (inventory.getMoney() >= price) {
-            inventory.addMoney(- price);
+            inventory.removeMoney(price);
             inventory.add(item, quantity);
         }
     }
@@ -608,6 +608,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
                 return true;
             }
         }
+        
         return false;
     }
 
@@ -628,6 +629,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
                 return true;
             }
         }
+        
         return false;
     }
 
@@ -636,14 +638,14 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
      */
     private void useStaff() {
         if (possess(ARPGItem.STAFF)) {
-            DiscreteCoordinates pearlPosition = getCurrentMainCellCoordinates().jump(getOrientation().toVector());
-            MagicWaterProjectile pearl = new MagicWaterProjectile(
+            DiscreteCoordinates projectilePos = getCurrentMainCellCoordinates().jump(getOrientation().toVector());
+            MagicWaterProjectile projectile = new MagicWaterProjectile(
                     getOwnerArea(), getOrientation(), 
-                    pearlPosition, PROJECTILE_SPEED, MAX_WATER_PROJECTILE_DISTANCE
+                    projectilePos, PROJECTILE_SPEED, MAX_WATER_PROJECTILE_DISTANCE
             );
 
-            if(canSpawnEntity(pearl, pearlPosition)) {
-                getOwnerArea().registerActor(pearl);
+            if (canSpawnEntity(projectile, projectilePos)) {
+                getOwnerArea().registerActor(projectile);
             }
         }
     }
@@ -728,7 +730,8 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     
     @Override
     public boolean wantsViewInteraction() {
-        // The ARPGPlayer wants view interaction if the 'E' key is pressed
+        // The ARPGPlayer wants view interaction if the 'E' key is pressed,
+        // or if he is attacking with his Sword
         return getOwnerArea().getKeyboard().get(Keyboard.E).isPressed() || state == State.ATTACKING_WITH_SWORD;
     }
     
