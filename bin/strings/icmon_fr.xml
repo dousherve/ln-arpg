@@ -16,7 +16,7 @@
     <string name="riddle_2">On dit qu'il faut savoir ce que l'on cherche pour pouvoir passer...le sais-tu ? Parce que moi pas vraiment...</string>
     <string name="mew_dialog">Mew...mew, mew mew !</string>
     <string name="templeDoor">Pour combattre le Seigneur Noir tu as besoin d'être plus puissant. Fais attention.</string>
-    <string name="Road_staff_quest_1">Je cherche un héro avec une épée</string>
+    <string name="Road_staff_quest_1">Je cherche un héro avec une épée pour sauver le roi</string>
     <string name="Road_staff_quest_2">Tu es le garçon avec l'épée? Suis-moi!</string>
     <string name="closed_door">Cette porte est fermée</string>
     <string name="closed_door_joke">Sans blague les gens ferment leur porte...</string>
@@ -28,6 +28,8 @@
     <string name="dialog_1">Salut toi ! </string>
     <string name="dialog_2">Bouge toi de là !</string>
     <string name="dialog_3">Une belle journée aujourd'hui !</string>
+    <string name="dialog_4">Le roi est gardé prisonnier au château ...</string>
+    <string name="dialog_5">Dame Alice attend un chevalier près de la rivière</string>
     <string name="tv_for_mum">Cette emission plaîrait à maman ... ... ...</string>
     <string name="money_unit">$</string>
     <string name="wants_fight"> veut se battre !</string>

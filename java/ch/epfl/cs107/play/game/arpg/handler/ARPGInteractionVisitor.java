@@ -10,6 +10,7 @@ import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Staff;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.SuperHeart;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Sword;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.CastleDoor;
+import ch.epfl.cs107.play.game.arpg.actor.terrain.Chest;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.ARPGCollectableAreaEntity;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.CastleKey;
@@ -97,7 +98,15 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
         // by default the interaction is empty
     }
 
-    
+
+    /**
+     * Simulate an interaction between RPG Interactor and a Chest
+     * @param chest (Chest), not null
+     */
+    default void interactWith(Chest chest) {
+        // by default the interaction is empty
+    }
+
     /**
      * Simulate an interaction between RPG Interactor and a CastleDoor
      * @param castleDoor (CastleDoor), not null

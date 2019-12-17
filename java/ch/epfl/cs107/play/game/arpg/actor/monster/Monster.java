@@ -122,7 +122,6 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
      * Leave an area by unregistering this Monster
      */
     private void leaveArea() {
-        System.out.println("quitte");
         getOwnerArea().unregisterActor(this);
     }
     

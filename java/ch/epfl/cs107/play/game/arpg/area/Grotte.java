@@ -13,21 +13,26 @@ public class Grotte extends ARPGArea {
     // MARK:- FlameSkull spawner
     private static final float MIN_TIME_SPAWN = 5f;
     private static final float MAX_TIME_SPAWN = 7f;
-    private static final DiscreteCoordinates SPAWNER_COORDINATES = new DiscreteCoordinates(16, 29);
+    private static final DiscreteCoordinates SPAWNER_COORDINATES_1 = new DiscreteCoordinates(16, 29);
+    private static final DiscreteCoordinates SPAWNER_COORDINATES_2 = new DiscreteCoordinates(2, 14);
     private float timerSpawner = 0;
 
-    private final String[] areaKeys = {"zelda/Village"};
+    // MARK:- Doors
+    private final String[] areaKeys = {"zelda/Village", "GrotteMew"};
     private final DiscreteCoordinates[] destinationCoords = {
-            new DiscreteCoordinates(25, 17)
+            new DiscreteCoordinates(25, 17),
+            new DiscreteCoordinates(8,3)
     };
     private final Orientation[] orientations = {
-            Orientation.DOWN
+            Orientation.DOWN,
+            Orientation.UP,
     };
     private final DiscreteCoordinates[] positions = {
-            new DiscreteCoordinates(16, 0)
+            new DiscreteCoordinates(16, 0),
+            new DiscreteCoordinates(6, 32)
     };
     private final DiscreteCoordinates[][] otherCells = {
-            {}
+            {}, {}
     };
 
     // Coordinates for rocks
@@ -72,7 +77,8 @@ public class Grotte extends ARPGArea {
         timerSpawner = Math.max(timerSpawner - deltaTime, 0);
 
         if (timerSpawner <= 0){
-            registerActor(new FlameSkull(this, Orientation.RIGHT, SPAWNER_COORDINATES));
+            registerActor(new FlameSkull(this, Orientation.DOWN, SPAWNER_COORDINATES_1));
+            registerActor(new FlameSkull(this, Orientation.RIGHT, SPAWNER_COORDINATES_2));
             timerSpawner = MIN_TIME_SPAWN + (MAX_TIME_SPAWN - MIN_TIME_SPAWN) * RandomGenerator.getInstance().nextFloat();
         }
 

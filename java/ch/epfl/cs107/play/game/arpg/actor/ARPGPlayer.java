@@ -15,6 +15,7 @@ import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Staff;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Sword;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.CastleDoor;
+import ch.epfl.cs107.play.game.arpg.actor.terrain.Chest;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.ARPGCollectableAreaEntity;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.CastleKey;
@@ -96,6 +97,11 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
                     door.open();
                 }
             }
+        }
+
+        @Override
+        public void interactWith(Chest chest) {
+            chest.open();
         }
 
         @Override
@@ -213,7 +219,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         statusGui = new ARPGStatusGUI((int) MAX_HP);
         
         handler = new ARPGPlayerHandler();
-        inventory = new ARPGInventory(165);
+        inventory = new ARPGInventory(30);
 
         //inventory.add(ARPGItem.SWORD, 1);
         inventory.add(ARPGItem.BOW, 1);

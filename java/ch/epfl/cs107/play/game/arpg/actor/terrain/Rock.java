@@ -25,7 +25,7 @@ public class Rock extends AreaEntity {
 
     private boolean isCraked;
 
-    private Sprite sprite = new Sprite("rock.1", 1f, 1f, this, new RegionOfInterest(0, 0, 16, 16));
+    private Sprite sprite;
 
     /**
      * Default AreaEntity constructor
@@ -36,6 +36,8 @@ public class Rock extends AreaEntity {
      */
     public Rock(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
+        sprite = new Sprite("rock.1", 1f, 1f, this, new RegionOfInterest(0, 0, 16, 16));
+        sprite.setDepth(-500);
         isCraked = false;
     }
 
