@@ -19,7 +19,7 @@ public class Sword extends ARPGCollectableAreaEntity {
     private static final float SIZE = 1f;
 
     /**
-     * Default ARPGCollectableAreaEntity constructor
+     * Default Sword constructor
      *
      * @param area        (Area): Owner area. Not null
      * @param orientation (Orientation): Initial orientation of the entity in the Area. Not null
@@ -47,5 +47,6 @@ public class Sword extends ARPGCollectableAreaEntity {
     public void acceptInteraction(AreaInteractionVisitor v) {
         ((ARPGInteractionVisitor) v).interactWith(this);
     }
+    
 }
 

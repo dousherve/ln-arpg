@@ -16,7 +16,7 @@ public class Alice extends Character {
     protected static final int MOVING_ANIMATION_DURATION = 10;
 
     /**
-     * Default Character constructor
+     * Default Alice constructor
      *
      * @param area        (Area): Owner area. Not null
      * @param orientation (Orientation): Initial orientation of the entity. Not null
@@ -67,7 +67,7 @@ public class Alice extends Character {
 
         // after than the player spoke to her for the first time, she turn right and walk to the Area's limit, then disappear
         if (walkToNextMap) {
-            if (!move(MOVING_ANIMATION_DURATION) && !isDisplacementOccurs()){
+            if (!move(MOVING_ANIMATION_DURATION) && !isDisplacementOccurs()) {
                 getOwnerArea().unregisterActor(this);
             }
             movingAnimations[getOrientation().ordinal()].update(deltaTime);
