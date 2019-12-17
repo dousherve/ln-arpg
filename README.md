@@ -14,7 +14,7 @@ Action Role Play Game - Mini-Projet EPFL
 - The player can buy item by interacting with the `Seller` in the village 
 - Animated graphic element (`Waterfall` at the end of the river)
 - Graphic elements and entity (`Rock`, `Bridge`, `Chest`, `CaveOpening`)
-- New area (`Grotte`, `Grotte2`, `RouteTemple`, `Temple`)
+- New area (`Grotte`, `Grotte2`, `RouteTemple`, `Temple`) (`Grotte` area can summon `FLameSkull` entity)
 
 #Story:
 The player have to defeat the `DarkLord` who keep the King in the Castle. 
@@ -27,4 +27,18 @@ Resolution: Go to the Village (some villagers say random sentences and often exp
             Now he can going back to see Alice again and follow her. In the temple, he have to take the staff and defeat the four `LogMonster` to go out.
             Then the player can fight the `DarkLord`, take the `CastleKey` and open the `CastleDoor`.
             
-             
+#Special commands:
+Use keys : <br>
+-`I` to open inventory     
+-`UP`,`LEFT`,`DOWN`,`RIGHT` to move or to navigate in inventory <br>
+-`E` to interact <br>
+-`SPACE` to use selected item <br>
+(test) <br>
+-`H` to heal the player<br>
+-`Z` to give to the player 5 of each item <br>
+<br>
+(only in RouteChateau to test)<br>
+-`D` to summon a `DarkLord`<br>
+-`S` to summon a `FlameSkull`<br>
+-`L` to summon a `LogMonster`<br>
+-`B` to summon a `Bomb`<br>
