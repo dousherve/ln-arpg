@@ -21,7 +21,7 @@ justifie son placement dans son paquetage, ou sa classe s'il est imbriqué.
         - Guard  (classe)
         - King   (classe)
         - Seller (classe)
-        - Woman  (classe) <br>
+        - Alice  (classe) <br>
         *Ces 4 classes sont des spécifications de `Character`.*
 
     - `actor.gui.status`  

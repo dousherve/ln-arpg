@@ -56,7 +56,7 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
 
     /**
      * Interaction with a character
-     * @param alice (Woman) the player to interact with
+     * @param alice (Alice) the player to interact with
      */
     default void interactWith(Alice alice) {
         // by default the interaction is empty

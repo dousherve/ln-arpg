@@ -53,7 +53,7 @@ public class Alice extends Character {
     @Override
     protected void setupAnimation() {
         super.setupAnimation();
-        Sprite[][] sprites = RPGSprite.extractSprites("zelda/woman", 4,
+        Sprite[][] sprites = RPGSprite.extractSprites("zelda/alice", 4,
                 1, 2, this, 16, 32,
                 new Orientation[] {Orientation.UP, Orientation.RIGHT, Orientation.DOWN, Orientation.LEFT});
         movingAnimations = RPGSprite.createAnimations(10 / 2, sprites);
