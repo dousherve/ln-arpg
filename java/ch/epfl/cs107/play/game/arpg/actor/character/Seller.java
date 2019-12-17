@@ -2,22 +2,28 @@ package ch.epfl.cs107.play.game.arpg.actor.character;
 
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
+import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.arpg.actor.ARPGItem;
 import ch.epfl.cs107.play.game.arpg.actor.ARPGPlayer;
 import ch.epfl.cs107.play.game.arpg.actor.gui.inventory.ARPGInventoryGUI;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
+import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.window.Button;
 import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Keyboard;
 
 public class Seller extends Character {
 
+    private Sprite sprite;
+
+    // MAK:- Shop
     private ARPGInventoryGUI inventoryGui;
     private ARPGPlayer player;
     private static ARPGItem[] ITEMS_IN_STOCK = new ARPGItem[]{
-            ARPGItem.BOMB, ARPGItem.ARROW, ARPGItem.BOW
+            ARPGItem.BOMB, ARPGItem.ARROW, ARPGItem.BOW, ARPGItem.HEAL_POTION
     };
 
     /**
@@ -30,6 +36,7 @@ public class Seller extends Character {
     public Seller(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
 
+        sprite = new RPGSprite("zelda/seller", 1,2, this, new RegionOfInterest(0,0,16,32));
         inventoryGui = new ARPGInventoryGUI(getOwnerArea().getCameraScaleFactor(), "Shop", ITEMS_IN_STOCK);
     }
 
@@ -75,7 +82,7 @@ public class Seller extends Character {
 
     @Override
     public void draw(Canvas canvas) {
-        movingAnimations[getOrientation().ordinal()].draw(canvas);
+        sprite.draw(canvas);
 
         if (state == State.SPECIAL) {
             inventoryGui.draw(canvas);

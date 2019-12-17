@@ -8,7 +8,8 @@ import ch.epfl.cs107.play.math.RegionOfInterest;
 public enum ARPGItem implements InventoryItem {
     
     ARROW("arrow.icon"), SWORD("sword.icon"), BOW("bow.icon"),
-    BOMB("bomb"), STAFF("staff_water.icon"), CASTLE_KEY("key");
+    BOMB("bomb"), STAFF("staff_water.icon"), CASTLE_KEY("key"),
+    HEAL_POTION("potion.heal");
     
     private Sprite sprite;
     private String resourceName;
@@ -28,6 +29,7 @@ public enum ARPGItem implements InventoryItem {
             case BOW:
             case BOMB:
             case STAFF:
+            case HEAL_POTION:
                 // For all of those names, we just return the name in lowercase, capitalized
                 String lower = toString().toLowerCase();
                 return lower.substring(0, 1).toUpperCase().concat(lower.substring(1));
@@ -61,6 +63,8 @@ public enum ARPGItem implements InventoryItem {
                 return 7;
             case CASTLE_KEY:
                 return 1;
+            case HEAL_POTION:
+                return 1;
             default:
                 return 0;
         }
@@ -79,6 +83,8 @@ public enum ARPGItem implements InventoryItem {
                 return 15;
             case STAFF:
                 return 30;
+            case HEAL_POTION:
+                return 50;
             case CASTLE_KEY:
                 return 80;
         }

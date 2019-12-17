@@ -221,14 +221,6 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         handler = new ARPGPlayerHandler();
         inventory = new ARPGInventory(30);
 
-        //inventory.add(ARPGItem.SWORD, 1);
-        inventory.add(ARPGItem.BOW, 1);
-        inventory.add(ARPGItem.ARROW, 5);
-        //inventory.add(ARPGItem.STAFF, 1);
-        inventory.add(ARPGItem.BOMB, 5);
-
-
-
         // We set the width of the Inventory GUI to the scale factor of the Area
         inventoryGui = new ARPGInventoryGUI(getOwnerArea().getCameraScaleFactor(), "Inventory", inventory.getItems());
 
@@ -590,6 +582,10 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
                 case STAFF:
                     state = State.ATTACKING_WITH_STAFF;
                     break;
+
+                case HEAL_POTION:
+                    heal(2.5f);
+                    inventory.remove(currentItem, 1);
         
                 default:
                     break;
