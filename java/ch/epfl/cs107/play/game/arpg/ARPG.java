@@ -28,6 +28,14 @@ public class ARPG extends RPG {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
+
+        if (((ARPGPlayer) getPlayer()).isDead()) {
+            getPlayer().leaveArea();
+            setCurrentArea("zelda/Ferme", true);
+            getPlayer().enterArea(getCurrentArea(), new DiscreteCoordinates(6,10));
+            ((ARPGPlayer) getPlayer()).heal(5f);
+        }
+
         if(getWindow().getKeyboard().get(Keyboard.ESC).isPressed()) {
             getCurrentArea().setPaused();
         }

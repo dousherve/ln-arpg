@@ -193,7 +193,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     private Animation currentAnimation;
 
     /// Animation duration in number of frames
-    private static final int MOVING_ANIMATION_DURATION = 2;
+    private static final int MOVING_ANIMATION_DURATION = 4;
     /// Action animation duration in number of frames
     private static final int ACTION_ANIMATION_DURATION = 1;
 
@@ -672,7 +672,6 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
      * @param damage (float) The amount of Health Points to remove from the ARPGPlayer
      */
     public void harm(float damage) {
-        System.out.println("Harmed");
         this.hp = Math.min(Math.max(this.hp - damage, 0), MAX_HP);
         wasHurt = true;
         statusGui.updateHp(this.hp);
@@ -682,9 +681,13 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
      * Heal the player.
      * @param hp (float) The amount of Health Points to add from the ARPGPlayer
      */
-    private void heal(float hp) {
+    public void heal(float hp) {
         this.hp = Math.min(this.hp + hp, MAX_HP);
         statusGui.updateHp(this.hp);
+    }
+
+    public boolean isDead(){
+        return hp <= 0;
     }
     
     // MARK:- Inventory.Holder
