@@ -9,7 +9,7 @@ import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.io.XMLTexts;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
-public class Woman extends Character {
+public class Alice extends Character {
 
     /// Boolean useful for quest
     private boolean walkToNextMap = false;
@@ -22,7 +22,7 @@ public class Woman extends Character {
      * @param orientation (Orientation): Initial orientation of the entity. Not null
      * @param position    (Coordinate): Initial position of the entity. Not null
      */
-    public Woman(Area area, Orientation orientation, DiscreteCoordinates position) {
+    public Alice(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
 
         state = State.STOPPED;

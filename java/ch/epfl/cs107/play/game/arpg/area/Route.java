@@ -1,8 +1,7 @@
 package ch.epfl.cs107.play.game.arpg.area;
 
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
-import ch.epfl.cs107.play.game.arpg.actor.character.Woman;
-import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
+import ch.epfl.cs107.play.game.arpg.actor.character.Alice;
 import ch.epfl.cs107.play.game.arpg.actor.monster.LogMonster;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Bridge;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
@@ -62,7 +61,7 @@ public class Route extends ARPGArea {
 
         registerActor(new Bridge(this, Orientation.DOWN, new DiscreteCoordinates(15, 9)));
 
-        registerActor(new Woman(this, Orientation.LEFT, new DiscreteCoordinates(15,10)));
+        registerActor(new Alice(this, Orientation.LEFT, new DiscreteCoordinates(15,10)));
         registerActor(new LogMonster(this, new DiscreteCoordinates(9,11)));
         registerActor(new LogMonster(this, new DiscreteCoordinates(3,5)));
     }

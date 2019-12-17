@@ -18,9 +18,11 @@ justifie son placement dans son paquetage, ou sa classe s'il est imbriqué.
         - Character (classe)
         *Personnage non-joueur de base*
         <br><br>
-        - Guard (classe)
-        - Woman (classe) <br>
-        *Ces 2 classes sont des spécifications de `Character`.*
+        - Guard  (classe)
+        - King   (classe)
+        - Seller (classe)
+        - Woman  (classe) <br>
+        *Ces 4 classes sont des spécifications de `Character`.*
 
     - `actor.gui.status`  
     *Sous-paquetage de `actor.gui` contenant tous les éléments de l'interface graphique utilisateur.*
@@ -45,6 +47,8 @@ justifie son placement dans son paquetage, ou sa classe s'il est imbriqué.
             - CastleKey (classe)
             - Coin (classe)
             - Heart (classe)  
+            - Staff (classe)
+            - Sword (classe)
             *Ces 3 classes représentent des éléments collectables.*
             
         - `item.projectile`  
@@ -74,8 +78,12 @@ justifie son placement dans son paquetage, ou sa classe s'il est imbriqué.
     - `actor.terrain`  
     *Sous-paquetage contenant tous les élements de décor.*
     
+        - Bridge (classe)
         - CastleDoor (classe)
+        - CaveOpening (classe)
+        - Chest (classe)
         - Grass (classe)
+        - Rock (classe)
         - Waterfall (classe)  
         *Ces 3 éléments font partie du décor.*
         
@@ -97,8 +105,12 @@ justifie son placement dans son paquetage, ou sa classe s'il est imbriqué.
     
     - Chateau (classe)
     - Ferme (classe)
+    - Grotte (classe)
+    - Grotte2 (classe)
     - Route (classe)
     - RouteChateau (classe)
+    - RouteTemple (classe)
+    - Temple (classe)
     - Village (classe)  
     *Ces classes sont des déclinaisons spécifiques de ARPGArea, qui sont bien sûr relatives aux aires de jeu.*
     

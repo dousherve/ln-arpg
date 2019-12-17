@@ -4,10 +4,9 @@ import ch.epfl.cs107.play.game.arpg.ARPGBehavior;
 import ch.epfl.cs107.play.game.arpg.actor.ARPGPlayer;
 import ch.epfl.cs107.play.game.arpg.actor.character.Character;
 import ch.epfl.cs107.play.game.arpg.actor.character.Seller;
-import ch.epfl.cs107.play.game.arpg.actor.character.Woman;
+import ch.epfl.cs107.play.game.arpg.actor.character.Alice;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Staff;
-import ch.epfl.cs107.play.game.arpg.actor.item.collectable.SuperHeart;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Sword;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.CastleDoor;
 import ch.epfl.cs107.play.game.arpg.actor.terrain.Chest;
@@ -57,9 +56,9 @@ public interface ARPGInteractionVisitor extends RPGInteractionVisitor {
 
     /**
      * Interaction with a character
-     * @param woman (Woman) the player to interact with
+     * @param alice (Woman) the player to interact with
      */
-    default void interactWith(Woman woman) {
+    default void interactWith(Alice alice) {
         // by default the interaction is empty
     }
 

@@ -1,7 +1,7 @@
 package ch.epfl.cs107.play.game.arpg.area;
 
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
-import ch.epfl.cs107.play.game.arpg.actor.character.Woman;
+import ch.epfl.cs107.play.game.arpg.actor.character.Alice;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 public class RouteTemple extends ARPGArea {
@@ -32,7 +32,7 @@ public class RouteTemple extends ARPGArea {
         // Doors
         registerDoors(areaKeys, destinationCoords, orientations, positions, otherCells);
 
-        registerActor(new Woman(this, Orientation.DOWN, new DiscreteCoordinates(4, 5)));
+        registerActor(new Alice(this, Orientation.DOWN, new DiscreteCoordinates(4, 5)));
     }
 
     @Override

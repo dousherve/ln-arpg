@@ -10,7 +10,7 @@ import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.arpg.actor.character.Character;
 import ch.epfl.cs107.play.game.arpg.actor.character.Seller;
 import ch.epfl.cs107.play.game.arpg.actor.gui.inventory.ARPGInventoryGUI;
-import ch.epfl.cs107.play.game.arpg.actor.character.Woman;
+import ch.epfl.cs107.play.game.arpg.actor.character.Alice;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Staff;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Sword;
@@ -115,11 +115,11 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         }
 
         @Override
-        public void interactWith(Woman woman) {
+        public void interactWith(Alice alice) {
             if (possess(ARPGItem.SWORD)){
-                woman.beginQuest();
+                alice.beginQuest();
             } else {
-                woman.personalInteraction();
+                alice.personalInteraction();
             }
         }
 
