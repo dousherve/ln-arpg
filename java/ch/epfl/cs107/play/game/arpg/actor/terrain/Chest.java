@@ -67,8 +67,9 @@ public class Chest extends AreaEntity {
      */
     private void generateCollectableItem() {
         if (!isOpen) {
+            for (Orientation orientation : new Orientation[]{Orientation.DOWN, Orientation.RIGHT, Orientation.LEFT, Orientation.UP})
             getOwnerArea().registerActor(new Coin(getOwnerArea(), Orientation.DOWN,
-                    getCurrentMainCellCoordinates().jump(0, -1)));
+                    getCurrentMainCellCoordinates().jump(orientation.toVector())));
         }
     }
 

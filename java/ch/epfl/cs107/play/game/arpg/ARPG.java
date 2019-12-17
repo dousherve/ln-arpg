@@ -31,7 +31,12 @@ public class ARPG extends RPG {
         addArea(new Grotte());
         addArea(new Grotte2());
     }
-    
+
+    @Override
+    public void update(float deltaTime) {
+        super.update(deltaTime);
+    }
+
     @Override
     public boolean begin(Window window, FileSystem fileSystem) {
         if (super.begin(window, fileSystem)) {
@@ -45,7 +50,7 @@ public class ARPG extends RPG {
         
         return false;
     }
-    
+
     @Override
     public String getTitle() {
         return "ZeldLN";

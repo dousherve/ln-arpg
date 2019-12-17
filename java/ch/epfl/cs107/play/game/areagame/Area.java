@@ -42,9 +42,8 @@ public abstract class Area implements Playable {
     private AreaBehavior areaBehavior;
     /// pause mechanics and menu to display. May be null
     /// - start indicate if area already begins, paused indicate if we display the pause menu
-    private boolean started;//, paused;
-
-
+    private boolean started;
+    private boolean paused;
 
     /** @return (float): camera scale factor, assume it is the same in x and y direction */
     public abstract float getCameraScaleFactor();
@@ -264,20 +263,26 @@ public abstract class Area implements Playable {
     public void update(float deltaTime) {    	
     	purgeRegistration();
 
-    	// Render actors
-    	for (Actor actor : actors) {
-    		actor.update(deltaTime);
-    	}
+    	if(getKeyboard().get(Keyboard.X).isPressed()) {
+    	    setPaused();
+        }
 
-    	// Realize interaction between interactors and their cells contents
-    	for (Interactor interactor : interactors) {
-    		if (interactor.wantsCellInteraction()) {
-    			areaBehavior.cellInteractionOf(interactor);
-    		}
-    		if (interactor.wantsViewInteraction()) {
-    			areaBehavior.viewInteractionOf(interactor);
-    		}
-    	}
+        if(!paused) {
+            // Render actors
+            for (Actor actor : actors) {
+                actor.update(deltaTime);
+            }
+
+            // Realize interaction between interactors and their cells contents
+            for (Interactor interactor : interactors) {
+                if (interactor.wantsCellInteraction()) {
+                    areaBehavior.cellInteractionOf(interactor);
+                }
+                if (interactor.wantsViewInteraction()) {
+                    areaBehavior.viewInteractionOf(interactor);
+                }
+            }
+        }
 
     	// Update camera location
     	updateCamera();
@@ -338,6 +343,12 @@ public abstract class Area implements Playable {
         // Does nothing by default
     }
 
+    /**
+     *  Switch pause state
+     */
+    public void setPaused(){
+        paused = !paused;
+    }
 
     @Override
     public void end() {

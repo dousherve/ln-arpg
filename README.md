@@ -34,6 +34,9 @@ Use keys : <br>
 -`E` to interact <br>
 -`SPACE` to use selected item <br>
 (test) <br>
+-`F` switch between fortune and money display
+-`P` print coordinates of the player
+-`M` add 10 coins to the player's inventory<br>
 -`H` to heal the player<br>
 -`Z` to give to the player 5 of each item <br>
 <br>

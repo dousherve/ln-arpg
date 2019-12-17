@@ -268,7 +268,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         if(wasHurt) {
             blink(deltaTime);
         }
-        
+
         // Handle the keyboard events
         handleKeyboardEvents();
 
@@ -473,7 +473,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             ARPGItem item = inventory.getItems()[currentItemIndex];
             if (item == currentItem) {
                 // We try again if we find an item which is different from the current one
-                // We have to do this beacause the swicthing is not done properly
+                // We have to do this because the switching is not done properly
                 // if we just picked up an Item
                 currentItemIndex = (currentItemIndex + 1) % inventory.getItems().length;
                 item = inventory.getItems()[currentItemIndex];
