@@ -22,7 +22,6 @@ public class ARPG extends RPG {
     private static final float DEATH_IMG_WIDTH = 8f, DEATH_IMG_HEIGHT = 3f;
 
     private ImageGraphics pauseImg;
-    private final Vector bottomLeftAnchor = getWindow().getTransform().getOrigin().sub(new Vector(getWindow().getScaledWidth() / 2, getWindow().getScaledHeight() / 2));
 
     //Alpha of death message
     private static final float ALPHA_MAX = 1;
@@ -58,6 +57,8 @@ public class ARPG extends RPG {
 
         // Draw pause graphic
         if (getCurrentArea().isPaused()) {
+            Vector bottomLeftAnchor = getWindow().getTransform().getOrigin().sub(new Vector(getWindow().getScaledWidth() / 2, getWindow().getScaledHeight() / 2));
+
             pauseImg.setAnchor(bottomLeftAnchor);
             pauseImg.draw(getWindow());
         }

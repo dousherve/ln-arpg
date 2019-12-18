@@ -5,7 +5,7 @@ Action Role Play Game - Mini-Projet EPFL
 
 #Changes in files: 
 - `MovableAreaEntity`: addition of method `blink(float deltaTime)` to make entities blink
-- addition of PNG files in sprite's resources. (`alice.png`, `chests.png`, `guard.png`, `potion.heal.png`) 
+- addition of PNG files in sprite's resources. (`alice.png`, `chests.png`, `guard.png`, `potion.heal.png`, `pause.png`, `death_message.png`) 
 
 #Extensions:
 - Inventory User Interface (the player can show his inventory by press `I` key)
@@ -16,7 +16,7 @@ Action Role Play Game - Mini-Projet EPFL
 - Graphic elements and entity (`Rock`, `Bridge`, `Chest`, `CaveOpening`)
 - New area (`Grotte`, `Grotte2`, `RouteTemple`, `Temple`) (`Grotte` area can summon `FLameSkull` entity)
 - Addition of heal potion
-- Pause
+- Pause and death handling
 
 #Story:
 The player have to defeat the `DarkLord` who keep the King in the Castle. 
