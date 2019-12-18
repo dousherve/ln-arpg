@@ -43,7 +43,7 @@ But Alice (a character standing in front of the bridge) will not let the player 
 |     `E`    |            Ask for a view interaction            |
 |   `Space`  |               Use the selected item              |
 
-***Controls to test the game***
+*Controls to test the game*
 
 | Key(s) |                          Action(s)                         |
 |:------:|:----------------------------------------------------------:|
@@ -53,7 +53,7 @@ But Alice (a character standing in front of the bridge) will not let the player 
 |   `H`  |                    Fully heal the Player                   |
 |   `Z`  |        Give every existing `ARPGItem` to the Player        |
 
-***Controls only working in `RouteChateau` to test the game***
+*Controls only working in `RouteChateau` to test the game*
 
 | Key(s) |       Action(s)      |
 |:------:|:--------------------:|
