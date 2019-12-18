@@ -127,6 +127,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         @Override
         public void interactWith(Seller seller) {
             if (state == State.STOPPED || state == State.IDLE) {
+                isInShop = !isInShop;
                 state = (state == State.STOPPED) ? State.IDLE : State.STOPPED;
                 seller.personalInteraction(ARPGPlayer.this);
             }
@@ -210,6 +211,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     /// The Inventory GUI
     private final ARPGInventoryGUI inventoryGui;
     private boolean isDisplayingInventory;
+    private boolean isInShop;
     
     /**
      * Default ARPGPlayer constructor
@@ -236,6 +238,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         
         isDisplayingMoney = true;
         isDisplayingInventory = false;
+        isInShop = false;
 
         resetMotion();
     }
@@ -426,7 +429,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         }
 
         // Toggle the inventory GUI
-        if (keyboard.get(Keyboard.I).isPressed()) {
+        if (keyboard.get(Keyboard.I).isPressed() && !isInShop) {
             inventoryGui.updateContent(inventory.getItemsAndQuantity());
             isDisplayingInventory = !isDisplayingInventory;
             state = isDisplayingInventory ? State.INVENTORY : State.IDLE;
