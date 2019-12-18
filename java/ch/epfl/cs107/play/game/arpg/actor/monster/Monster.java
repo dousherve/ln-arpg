@@ -86,7 +86,7 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
     public void update(float deltaTime) {
         super.update(deltaTime);
 
-        if(wasHurt) {
+        if(hasBeenHurt) {
             blink(deltaTime);
         }
         
@@ -145,7 +145,7 @@ public abstract class Monster extends MovableAreaEntity implements Interactor {
         
         if (isVulnerableTo(vulnerability)) {
             hp = Math.max(hp - damage, 0);
-            wasHurt = true;
+            hasBeenHurt = true;
 
             if (hp <= 0) {
                 die();

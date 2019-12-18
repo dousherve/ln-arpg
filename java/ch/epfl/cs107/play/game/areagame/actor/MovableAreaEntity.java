@@ -36,7 +36,7 @@ public abstract class MovableAreaEntity extends AreaEntity {
     private float hasBlinked = 0;
 
     protected boolean visible = true;
-    protected boolean wasHurt = false;
+    protected boolean hasBeenHurt = false;
 
     private Vector targetPosition;
     private Vector originPosition;
@@ -64,7 +64,7 @@ public abstract class MovableAreaEntity extends AreaEntity {
             ++hasBlinked;
         }
         if (hasBlinked >= BLINKING_TIME*2){
-            wasHurt = false;
+            hasBeenHurt = false;
             blinkTimer = 0;
             hasBlinked = 0;
             visible = true;

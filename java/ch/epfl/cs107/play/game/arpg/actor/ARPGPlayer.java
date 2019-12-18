@@ -41,7 +41,8 @@ import java.util.List;
 public class ARPGPlayer extends Player implements Inventory.Holder {
 
     private enum State {
-        IDLE, ATTACKING_WITH_BOW, ATTACKING_WITH_SWORD, ATTACKING_WITH_STAFF, STOPPED,
+        IDLE, STOPPED,
+        ATTACKING_WITH_BOW, ATTACKING_WITH_SWORD, ATTACKING_WITH_STAFF,
         INVENTORY
     }
     
@@ -196,6 +197,9 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     private static final int MOVING_ANIMATION_DURATION = 4;
     /// Action animation duration in number of frames
     private static final int ACTION_ANIMATION_DURATION = 1;
+    
+    /// The amount of HP the Health Potion gives
+    private static final float HEALTH_POTION_AMOUNT = 2.5f;
 
     /// InteractionVisitor handler
     private final ARPGPlayerHandler handler;
@@ -265,7 +269,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     public void update(float deltaTime) {
         super.update(deltaTime);
 
-        if(wasHurt) {
+        if (hasBeenHurt) {
             blink(deltaTime);
         }
 
@@ -282,7 +286,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         // Update the inventory
         inventoryGui.update(deltaTime);
         
-        // Behave according to the state
+        // Behave according to the current state
         
         switch (state) {
             case ATTACKING_WITH_BOW:
@@ -308,7 +312,8 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         }
         
         // Update the current animation 
-        // (we write this logic in a second switch statement for clarity's sake only)
+        // (we write this code in a second switch statement
+        // and not in the preivous for clarity's sake only)
         
         final int ANIMATION_INDEX = getOrientation().ordinal();
         
@@ -342,13 +347,15 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
                 } else {
                     currentAnimation.reset();
                 }
-                // We return here, because it is the only animation which may not be updated afterwards
+                // We return here, because it is the only animation
+                // which may not be updated afterwards
                 return;
         
             default:
                 return;
         }
         
+        // Update the current animation, only executed if not IDLE
         currentAnimation.update(deltaTime);
     }
 
@@ -367,7 +374,6 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             /// Draw the inventory GUI
             inventoryGui.updateContent(inventory.getItemsAndQuantity());
             inventoryGui.draw(canvas);
-
         }
     }
     
@@ -420,6 +426,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             navigateInventory(Orientation.DOWN, keyboard.get(Keyboard.DOWN));
         }
 
+        // Toggle the inventory GUI
         if (keyboard.get(Keyboard.I).isPressed()) {
             isDisplayingInventory = !isDisplayingInventory;
             state = isDisplayingInventory ? State.INVENTORY : State.IDLE;
@@ -429,12 +436,8 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             // Switch between fortune and money display by pressing 'F'
             isDisplayingMoney = !isDisplayingMoney;
         }
-
-        if (keyboard.get(Keyboard.O).isPressed()){
-            getOwnerArea().suspend();
-        }
         
-        // DEBUG:- give 5 of each item
+        // DEBUG:- give a quantity of 5 for each item
         if (keyboard.get(Keyboard.Z).isPressed()) {
             for (ARPGItem item : ARPGItem.values()) {
                 inventory.add(item, 5);
@@ -499,7 +502,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         return state == State.ATTACKING_WITH_SWORD && currentAnimation.isCompleted();
     }
     
-    // MARK:- Item collect
+    // MARK:- Collect the items
     
     /**
      * Handle coin collection
@@ -586,8 +589,11 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
                     break;
 
                 case HEAL_POTION:
-                    heal(2.5f);
-                    inventory.remove(currentItem, 1);
+                    if (MAX_HP - hp >= HEALTH_POTION_AMOUNT) {
+                        heal(HEALTH_POTION_AMOUNT);
+                        inventory.remove(ARPGItem.HEAL_POTION, 1);
+                    }
+                    break;
         
                 default:
                     break;
@@ -675,7 +681,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
      */
     public void harm(float damage) {
         this.hp = Math.min(Math.max(this.hp - damage, 0), MAX_HP);
-        wasHurt = true;
+        hasBeenHurt = true;
         statusGui.updateHp(this.hp);
     }
 
