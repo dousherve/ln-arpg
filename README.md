@@ -19,7 +19,7 @@ But Alice (a character standing in front of the bridge) will not let the player 
 ### Changes in the given files 
 - `MovableAreaEntity` : added a method `blink(float deltaTime)` to make the entities blink
 - `Interactor` : written a static method `getAllCellsInRadius()`
-- Added custom PNG files in `res/images/sprites/zelda`. (`alice.png`, `chests.png`, `guard.png`, `potion.heal.png`, `pause.png`, `death_message.png`)
+- Added custom PNG files in `res/images/sprites/zelda`. (`alice.png`, `chests.png`, `guard.png`, `potion.heal.png`, `pause.png`, `death_message.png`, `seller.png`)
 
 ### Implemented extensions
 - Inventory GUI (the player can display/dismiss his inventory by pressing the `I` key)
