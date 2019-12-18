@@ -352,6 +352,13 @@ public class DarkLord extends Monster {
     // MARK:- Interactable
     
     @Override
+    public void acceptInteraction(AreaInteractionVisitor v) {
+        ((ARPGInteractionVisitor) v).interactWith(this);
+    }
+
+    // MARK:- Interactor
+    
+    @Override
     public List<DiscreteCoordinates> getFieldOfViewCells() {
         final DiscreteCoordinates CURRENT_COORDS = getCurrentMainCellCoordinates();
         
@@ -361,28 +368,21 @@ public class DarkLord extends Monster {
         final int Y_END_COORD = CURRENT_COORDS.y + ACTION_RADIUS;
         
         List<DiscreteCoordinates> coords = new ArrayList<>();
-    
+        
         for (int i = X_START_COORD; i <= X_END_COORD; ++i) {
             for (int j = Y_START_COORD; j <= Y_END_COORD; ++j) {
                 if (
-                    i >= 0 && i < getOwnerArea().getWidth() &&
-                    j >= 0 && j < getOwnerArea().getHeight() && 
-                    !(i == CURRENT_COORDS.x && j == CURRENT_COORDS.y)
+                        i >= 0 && i < getOwnerArea().getWidth() &&
+                                j >= 0 && j < getOwnerArea().getHeight() &&
+                                !(i == CURRENT_COORDS.x && j == CURRENT_COORDS.y)
                 ) {
                     coords.add(new DiscreteCoordinates(i, j));
                 }
             }
         }
-    
+        
         return coords;
     }
-    
-    @Override
-    public void acceptInteraction(AreaInteractionVisitor v) {
-        ((ARPGInteractionVisitor) v).interactWith(this);
-    }
-
-    // MARK:- Interactor
 
     @Override
     public void interactWith(Interactable other) {

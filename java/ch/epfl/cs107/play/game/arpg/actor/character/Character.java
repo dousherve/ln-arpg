@@ -24,32 +24,35 @@ import java.util.Collections;
 import java.util.List;
 
 public class Character extends MovableAreaEntity implements Interactor {
-
-    protected enum State{
-        IDLE, STOPPED, ATTACKING, VANISHING, SPECIAL
-    }
-
+    
     protected class CharacterHandler implements ARPGInteractionVisitor {
-
+        
         @Override
         public void interactWith(ARPGPlayer player) {
             if (state == State.IDLE) {
                 state = State.STOPPED;
             }
         }
+        
     }
 
-    /// Default sentences that a default character can tell
-    private static final String[] DEFAULT_SENTENCES = new String[]{
+    protected enum State {
+        IDLE, STOPPED, ATTACKING, VANISHING, SPECIAL
+    }
+
+    /// Default sentences that a default character can say
+    private static final String[] DEFAULT_SENTENCES_KEYS = new String[] {
             "dialog_1", "dialog_2", "dialog_3", "dialog_4", "dialog_5"
     };
 
+    /// The radius of his FOV
     private static final int ACTION_RADIUS = 2;
 
-    /// State of the character
+    /// The State of the character
     protected State state;
-
-    protected float hp;
+    
+    /// The Health Points
+    private float hp;
 
     /// InteractionVisitor handler
     protected CharacterHandler handler;
@@ -59,13 +62,14 @@ public class Character extends MovableAreaEntity implements Interactor {
     /// Animations array
     protected Animation[] movingAnimations;
     protected static final int MOVING_ANIMATION_DURATION = 10;
+    
     /// The vanish Animation
-    protected Animation vanishAnimation;
-    protected static final int VANISH_ANIMATION_DURATION = 2;
+    private Animation vanishAnimation;
+    private static final int VANISH_ANIMATION_DURATION = 2;
 
     private static final float PROBABILITY_TO_CHANGE_ORIENTATION = 0.3f;
 
-    // Default dialog
+    /// Default dialog
     protected Dialog dialog;
     protected boolean showDialog = false;
 
@@ -81,9 +85,12 @@ public class Character extends MovableAreaEntity implements Interactor {
 
         setupAnimation();
 
-        hp  = 5f;
+        hp = 5f;
 
-        String text = XMLTexts.getText(DEFAULT_SENTENCES[RandomGenerator.getInstance().nextInt(DEFAULT_SENTENCES.length)]);
+        String text = XMLTexts.getText(
+                DEFAULT_SENTENCES_KEYS[RandomGenerator.getInstance().nextInt(DEFAULT_SENTENCES_KEYS.length)]
+        );
+        
         dialog = new Dialog(text, "zelda/dialog", getOwnerArea());
 
         handler = new CharacterHandler();
@@ -91,7 +98,7 @@ public class Character extends MovableAreaEntity implements Interactor {
     }
 
     /**
-     *  Initialize animations
+     *  Initialize animation
      */
     protected void setupAnimation(){
         Sprite[][] sprites = RPGSprite.extractSprites("zelda/character", 4,
@@ -106,14 +113,13 @@ public class Character extends MovableAreaEntity implements Interactor {
                     new Vector(-0.5f,0f));
         }
         vanishAnimation = new Animation(VANISH_ANIMATION_DURATION, vanishSprites, false);
-
     }
 
 
     /**
      * Randomly orientate the Character
      */
-    protected void randomlyOrientate() {
+    private void randomlyOrientate() {
         int randomIndex = RandomGenerator.getInstance().nextInt(4);
         orientate(Orientation.fromInt(randomIndex));
     }
@@ -121,7 +127,7 @@ public class Character extends MovableAreaEntity implements Interactor {
     /**
      * Randomly move the Character
      */
-    protected void randomlyMove() {
+    private void randomlyMove() {
         if (!isDisplacementOccurs()) {
             if (RandomGenerator.getInstance().nextFloat() < PROBABILITY_TO_CHANGE_ORIENTATION) {
                 randomlyOrientate();
@@ -135,27 +141,31 @@ public class Character extends MovableAreaEntity implements Interactor {
      *  What the character do when the player interact with
      */
     public void personalInteraction(){
-        setShowDialog();
+        toggleShowDialog();
     }
 
     /**
      *  Show/hide the dialog
      */
-    protected void setShowDialog(){
+    private void toggleShowDialog(){
         showDialog = !showDialog;
     }
-
-    public void harm(float damage){
+    
+    /**
+     * Harm the current Character
+     * @param damage (float) The damage to deal to the Character
+     */
+    public void harm(float damage) {
         hp = Math.max(hp - damage, 0);
     }
-
-    protected void die(){
+    
+    private void die() {
         state = State.VANISHING;
     }
 
     /**
-     *  Tell if the character is invincible or not
-     * @return true if invincible
+     * Tell if the character is invincible or not
+     * @return (boolean) true if invincible
      */
     public boolean isInvincible(){
         return true;
@@ -168,30 +178,31 @@ public class Character extends MovableAreaEntity implements Interactor {
         if (hp <= 0) {
             die();
         }
+        
         switch (state) {
             case IDLE:
                 randomlyMove();
                 movingAnimations[getOrientation().ordinal()].update(deltaTime);
                 break;
-            case ATTACKING:
-                break;
+
             case VANISHING:
                 vanishAnimation.update(deltaTime);
                 if (vanishAnimation.isCompleted()) {
                     getOwnerArea().unregisterActor(this);
                 }
                 break;
+                
             case STOPPED:
                 state = State.IDLE;
                 movingAnimations[getOrientation().ordinal()].reset();
                 break;
+                
             default:
                 break;
         }
 
     }
-
-
+    
     @Override
     public void draw(Canvas canvas) {
         if (hp <= 0){
@@ -200,7 +211,7 @@ public class Character extends MovableAreaEntity implements Interactor {
 
         if (state == State.VANISHING) {
             vanishAnimation.draw(canvas);
-        }else {
+        } else {
             movingAnimations[getOrientation().ordinal()].draw(canvas);
         }
 
@@ -240,28 +251,10 @@ public class Character extends MovableAreaEntity implements Interactor {
 
     @Override
     public List<DiscreteCoordinates> getFieldOfViewCells() {
-        final DiscreteCoordinates CURRENT_COORDS = getCurrentMainCellCoordinates();
-
-        final int X_START_COORD = CURRENT_COORDS.x - ACTION_RADIUS;
-        final int X_END_COORD = CURRENT_COORDS.x + ACTION_RADIUS;
-        final int Y_START_COORD = CURRENT_COORDS.y - ACTION_RADIUS;
-        final int Y_END_COORD = CURRENT_COORDS.y + ACTION_RADIUS;
-
-        List<DiscreteCoordinates> coords = new ArrayList<>();
-
-        for (int i = X_START_COORD; i <= X_END_COORD; ++i) {
-            for (int j = Y_START_COORD; j <= Y_END_COORD; ++j) {
-                if (
-                        i >= 0 && i < getOwnerArea().getWidth() &&
-                                j >= 0 && j < getOwnerArea().getHeight() &&
-                                !(i == CURRENT_COORDS.x && j == CURRENT_COORDS.y)
-                ) {
-                    coords.add(new DiscreteCoordinates(i, j));
-                }
-            }
-        }
-
-        return coords;
+        return Interactor.getAllCellsInRadius(
+                ACTION_RADIUS, getCurrentMainCellCoordinates(),
+                getOwnerArea().getWidth(), getOwnerArea().getHeight()
+        );
     }
 
     @Override

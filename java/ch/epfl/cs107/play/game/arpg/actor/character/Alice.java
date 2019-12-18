@@ -13,7 +13,7 @@ public class Alice extends Character {
 
     /// Boolean useful for quest
     private boolean walkToNextMap = false;
-    protected static final int MOVING_ANIMATION_DURATION = 10;
+    private static final int MOVING_ANIMATION_DURATION = 10;
 
     /**
      * Default Alice constructor
@@ -65,11 +65,13 @@ public class Alice extends Character {
         super.update(deltaTime);
         state = State.SPECIAL;
 
-        // after than the player spoke to her for the first time, she turn right and walk to the Area's limit, then disappear
+        // After the player speaks to her for the first time,
+        // she turns right and walks to the Area's limit, then disappears
         if (walkToNextMap) {
             if (!move(MOVING_ANIMATION_DURATION) && !isDisplacementOccurs()) {
                 getOwnerArea().unregisterActor(this);
             }
+            
             movingAnimations[getOrientation().ordinal()].update(deltaTime);
         }
     }
@@ -86,8 +88,9 @@ public class Alice extends Character {
 
     @Override
     public void acceptInteraction(AreaInteractionVisitor v) {
-        if  (!walkToNextMap){
+        if (!walkToNextMap) {
             ((ARPGInteractionVisitor) v).interactWith(this);
         }
     }
+    
 }
