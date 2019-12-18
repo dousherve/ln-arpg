@@ -27,7 +27,6 @@ public class LogMonster extends Monster {
     
         @Override
         public void interactWith(ARPGPlayer player) {
-            System.out.println(state);
             if (state == LogMonsterState.IDLE) {
                 state = LogMonsterState.ATTACKING;
                 inactivityDuration = 0;

@@ -222,8 +222,8 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         inventory = new ARPGInventory(30);
 
         // We set the width of the Inventory GUI to the scale factor of the Area
-        inventoryGui = new ARPGInventoryGUI(getOwnerArea().getCameraScaleFactor(), "Inventory", inventory.getItems());
-
+        inventoryGui = new ARPGInventoryGUI(getOwnerArea().getCameraScaleFactor(), "Inventory");
+        
         setupAnimations();
         
         hp = MAX_HP;
@@ -365,7 +365,9 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
 
         if (isDisplayingInventory) {
             /// Draw the inventory GUI
+            inventoryGui.updateContent(inventory.getItemsAndQuantity());
             inventoryGui.draw(canvas);
+
         }
     }
     

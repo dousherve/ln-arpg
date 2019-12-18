@@ -14,6 +14,7 @@ import ch.epfl.cs107.play.window.Canvas;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ARPGInventoryGUI implements Graphics, Updatable {
@@ -34,7 +35,7 @@ public class ARPGInventoryGUI implements Graphics, Updatable {
     private List<ARPGInventorySlotGUI> slots;
     private int currentItemIndex;
     
-    public ARPGInventoryGUI(float width, String titleText, ARPGItem[] itemToDisplay) {
+    public ARPGInventoryGUI(float width, String titleText) {
         RegionOfInterest roi = new RegionOfInterest(0, 0, 240, 240);
 
         title = new TextGraphics(titleText, 1f, Color.BLACK,
@@ -50,11 +51,22 @@ public class ARPGInventoryGUI implements Graphics, Updatable {
 
 
         slots = new ArrayList<>();
-        for (ARPGItem item : itemToDisplay) {
-            slots.add(new ARPGInventorySlotGUI(item, 1, 2.5f, background.getAnchor()));
-        }
-        if (!slots.isEmpty()) {
-            slots.get(0).setSelected(true);
+
+    }
+
+    public void updateContent(HashMap<ARPGItem, Integer> items){
+        boolean exist = false;
+
+        for (ARPGItem item : items.keySet()) {
+            for (ARPGInventorySlotGUI slot : slots) {
+                if (slot.getItem().getName().equals(item.getName())){
+                    slot.setQuantity(items.get(item));
+                    exist = true;
+                }
+            }
+            if (!exist) {
+                slots.add(new ARPGInventorySlotGUI(item, items.get(item), 2.5f, background.getAnchor()));
+            }
         }
     }
 

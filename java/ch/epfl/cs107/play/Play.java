@@ -33,10 +33,10 @@ public class Play {
         final Game game = new ARPG();
 
 		// Use Swing display
-		// final Window window = new SwingWindow(game.getTitle(), fileSystem, 600, 600);
+		final Window window = new SwingWindow(game.getTitle(), fileSystem, 600, 600);
 		
 		// Bigger window size (better for 4K Displays)
-		final Window window = new SwingWindow(game.getTitle(), fileSystem, 1200, 1200);
+		// final Window window = new SwingWindow(game.getTitle(), fileSystem, 1200, 1200);
 		
 		//Recorder recorder = new Recorder(window); 
 		//RecordReplayer replayer = new RecordReplayer(window); // not used in this project

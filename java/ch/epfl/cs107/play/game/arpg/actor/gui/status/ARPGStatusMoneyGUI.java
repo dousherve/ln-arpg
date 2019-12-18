@@ -24,7 +24,7 @@ public class ARPGStatusMoneyGUI implements ARPGStatusGUIElement {
     public ARPGStatusMoneyGUI() {
         coinsDisplay = new ImageGraphics(ResourcePath.getSprite(COINS_RESOURCE_NAME),
                 WIDTH, HEIGHT, new RegionOfInterest(0, 0, 64, 32));
-        coinsDisplay.setDepth(30);
+        coinsDisplay.setDepth(DEPTH);
 
         digits = new ImageGraphics[3];
         
@@ -46,7 +46,7 @@ public class ARPGStatusMoneyGUI implements ARPGStatusGUIElement {
             digits[i] = new ImageGraphics(ResourcePath.getSprite(DIGITS_RESOURCE_NAME),
                     DIGITS_SIZE, DIGITS_SIZE, getDigitRoi(getDigit(money, 2 - i)));
             digits[i].setAnchor(digitAnchor.add(i * SPACING, .65f));
-            digits[i].setDepth(35);
+            digits[i].setDepth(DEPTH);
             digits[i].draw(canvas);
         }
     }

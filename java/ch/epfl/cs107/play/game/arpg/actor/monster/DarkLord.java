@@ -218,7 +218,6 @@ public class DarkLord extends Monster {
         ++cycleCount;
         if (cycleCount >= spellWaitDuration) {
             cycleCount = 0;
-            System.out.println("PREPARING");
             randomizeSpellWaitDuration();
 
             if (RandomGenerator.getInstance().nextFloat() < PROBABILITY_TO_ATTACK) {
@@ -227,7 +226,6 @@ public class DarkLord extends Monster {
                 Orientation randomOrientation = getRandomFreeCellOrientation();
                 if (randomOrientation != getOrientation()) {
                     orientate(randomOrientation);
-                    System.out.println(getOrientation());
                 }
                 
             } else {
@@ -286,8 +284,7 @@ public class DarkLord extends Monster {
                     // Delta X, Delta Y
                     final int DX = RandomGenerator.getInstance().nextInt(TELEPORTATION_RADIUS * 2) - TELEPORTATION_RADIUS;
                     final int DY = RandomGenerator.getInstance().nextInt(TELEPORTATION_RADIUS * 2) - TELEPORTATION_RADIUS;
-                    System.out.println("dx " + DX + " dy " + DY);
-                
+
                     final DiscreteCoordinates mainTargetCoords = new DiscreteCoordinates(
                             getCurrentMainCellCoordinates().x + DX,
                             getCurrentMainCellCoordinates().y + DY

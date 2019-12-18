@@ -15,6 +15,8 @@ import ch.epfl.cs107.play.window.Button;
 import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Keyboard;
 
+import java.util.HashMap;
+
 public class Seller extends Character {
 
     private Sprite sprite;
@@ -22,8 +24,13 @@ public class Seller extends Character {
     // MAK:- Shop
     private ARPGInventoryGUI inventoryGui;
     private ARPGPlayer player;
-    private static ARPGItem[] ITEMS_IN_STOCK = new ARPGItem[]{
-            ARPGItem.BOMB, ARPGItem.ARROW, ARPGItem.BOW, ARPGItem.HEAL_POTION
+
+    private static HashMap<ARPGItem, Integer> ITEMS_IN_STOCK = new HashMap<>(){
+        {put(ARPGItem.BOMB, 1);
+         put(ARPGItem.ARROW, 1);
+         put(ARPGItem.BOW, 1);
+         put(ARPGItem.HEAL_POTION, 1);
+        }
     };
 
     /**
@@ -37,7 +44,8 @@ public class Seller extends Character {
         super(area, orientation, position);
 
         sprite = new RPGSprite("zelda/seller", 1,2, this, new RegionOfInterest(0,0,16,32));
-        inventoryGui = new ARPGInventoryGUI(getOwnerArea().getCameraScaleFactor(), "Shop", ITEMS_IN_STOCK);
+        inventoryGui = new ARPGInventoryGUI(getOwnerArea().getCameraScaleFactor(), "Shop");
+        inventoryGui.updateContent(ITEMS_IN_STOCK);
     }
 
     /**

@@ -1,8 +1,10 @@
 package ch.epfl.cs107.play.game.arpg.actor;
 
 import ch.epfl.cs107.play.game.rpg.Inventory;
+import ch.epfl.cs107.play.game.rpg.InventoryItem;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class ARPGInventory extends Inventory {
     
@@ -105,6 +107,18 @@ public class ARPGInventory extends Inventory {
     protected ARPGItem[] getItems() {
         // We cast every item as an ARPGItem
         return Arrays.copyOf(super.getItems(), super.getItems().length, ARPGItem[].class);
+    }
+
+    /**
+     * @return (HashMap<ARPGItem, Integer>) an Hashmap containing the items and quantity of this ARPGInventory
+     */
+    protected HashMap<ARPGItem, Integer> getItemsAndQuantity() {
+        // We cast every item as an ARPGItem
+        HashMap<ARPGItem, Integer> items = new HashMap<>();
+        for (InventoryItem item : super.getItems()) {
+            items.put((ARPGItem) item, super.getQuantity(item));
+        }
+        return items;
     }
     
 }

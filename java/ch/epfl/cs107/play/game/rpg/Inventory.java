@@ -1,5 +1,7 @@
 package ch.epfl.cs107.play.game.rpg;
 
+import ch.epfl.cs107.play.window.swing.Item;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;

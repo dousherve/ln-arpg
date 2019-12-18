@@ -34,7 +34,7 @@ public class MagicWaterProjectile extends Projectile {
         
     }
 
-    private static final float DAMAGE = 2.5f;
+    private static final float DAMAGE = 1f;
 
     private static MagicWaterProjectileHandler handler;
 
