@@ -213,7 +213,6 @@ public class Character extends MovableAreaEntity implements Interactor {
         } else {
             movingAnimations[getOrientation().ordinal()].draw(canvas);
         }
-
         if (showDialog){
             dialog.draw(canvas);
         }
