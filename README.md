@@ -10,7 +10,7 @@ But Alice (a character standing in front of the bridge) will not let the player 
 *Solution :* Go to the Village (some villagers say random sentences and often explain what is happening).
             There is a cave opening at `(25, 18)` against the wall which leads to a cave.
             In the cave, after dodging the various `FlameSkull`s, you will find the Sword at `(22, 36)`. 
-            *Bonus : with a bomb, the player can break a rock at the beginning at `(13, 5)` to go to a secret room, revealing a chest with a coin inside*
+            *Bonus : with a bomb, the player can break a rock at the beginning at `(13, 5)` to go to a secret room, revealing a chest with a coin inside*.
             Now he can go back to see Alice again and follow her. In the temple, he has to take the `Staff` and defeat the four (4) `LogMonster`s to be able to leave the room.
             Finally, the player is ready to fight the `DarkLord`, take the `CastleKey` and open the `CastleDoor`, to release the King.
             
@@ -23,7 +23,7 @@ But Alice (a character standing in front of the bridge) will not let the player 
 
 ### Implemented extensions
 - Inventory GUI (the player can display/dismiss his inventory by pressing the `I` key)
-- Many characters like a `Seller`, `King`, `Guard`, `Alice`...
+- Many characters (`Seller`, `King`, `Guard`, `Alice`...)
 - Dialog with characters
 - The player can buy items by interacting with the `Seller` in the village
 - Animated `Waterfall` at the end of the river
@@ -61,3 +61,7 @@ But Alice (a character standing in front of the bridge) will not let the player 
 |   `S`  | Spawn a `FlameSkull` |
 |   `L`  | Spawn a `LogMonster` |
 |   `B`  |    Spawn a `Bomb`    |
+
+#### Authors
+
+TERRIER Noé, HERVÉ Louis | Nov-Dec 2019 - EPFL
