@@ -657,13 +657,6 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             }
         }
     }
-    
-    /**
-     * Use the Sword by notifying the Behavior that we want a view Interaction
-     */
-    private void useSword() {
-        state = State.ATTACKING_WITH_SWORD;
-    }
 
     /**
      * Spawn a given entity at a given spot on the grid, if possible.
