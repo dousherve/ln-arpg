@@ -35,12 +35,12 @@ public class Guard extends Character {
      */
     public Guard(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
-        
+
         handler = new GuardHandler();
-        
+
         dialog.resetDialog("Rien à signaler.");
         attackTimer = 0;
-        
+
         setupAnimation();
     }
 

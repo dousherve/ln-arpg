@@ -372,7 +372,6 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
 
         if (isDisplayingInventory) {
             /// Draw the inventory GUI
-            inventoryGui.updateContent(inventory.getItemsAndQuantity());
             inventoryGui.draw(canvas);
         }
     }
@@ -428,6 +427,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
 
         // Toggle the inventory GUI
         if (keyboard.get(Keyboard.I).isPressed()) {
+            inventoryGui.updateContent(inventory.getItemsAndQuantity());
             isDisplayingInventory = !isDisplayingInventory;
             state = isDisplayingInventory ? State.INVENTORY : State.IDLE;
         }

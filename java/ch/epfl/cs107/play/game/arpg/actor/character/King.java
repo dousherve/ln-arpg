@@ -39,5 +39,6 @@ public class King extends Character {
     @Override
     protected void setupAnimation() {
         sprite = new Sprite("zelda/king", 1f, 2f, this, new RegionOfInterest(0, 32*2, 16, 32));
+        sprite.setDepth(-50);
     }
 }

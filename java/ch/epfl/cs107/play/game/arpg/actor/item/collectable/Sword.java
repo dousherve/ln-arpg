@@ -29,7 +29,7 @@ public class Sword extends ARPGCollectableAreaEntity {
         super(area, orientation, position);
 
         sprite = new Sprite("zelda/sword.icon", SIZE, SIZE, this, new RegionOfInterest(0,0,16,16));
-        sprite.setDepth(10f);
+        sprite.setDepth(-50);
 
     }
 

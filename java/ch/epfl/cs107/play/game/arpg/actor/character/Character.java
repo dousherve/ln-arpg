@@ -24,16 +24,15 @@ import java.util.Collections;
 import java.util.List;
 
 public class Character extends MovableAreaEntity implements Interactor {
-    
+
     protected class CharacterHandler implements ARPGInteractionVisitor {
-        
+
         @Override
         public void interactWith(ARPGPlayer player) {
             if (state == State.IDLE) {
                 state = State.STOPPED;
             }
         }
-        
     }
 
     protected enum State {
@@ -50,7 +49,7 @@ public class Character extends MovableAreaEntity implements Interactor {
 
     /// The State of the character
     protected State state;
-    
+
     /// The Health Points
     private float hp;
 
@@ -62,7 +61,7 @@ public class Character extends MovableAreaEntity implements Interactor {
     /// Animations array
     protected Animation[] movingAnimations;
     protected static final int MOVING_ANIMATION_DURATION = 10;
-    
+
     /// The vanish Animation
     private Animation vanishAnimation;
     private static final int VANISH_ANIMATION_DURATION = 2;
@@ -90,7 +89,7 @@ public class Character extends MovableAreaEntity implements Interactor {
         String text = XMLTexts.getText(
                 DEFAULT_SENTENCES_KEYS[RandomGenerator.getInstance().nextInt(DEFAULT_SENTENCES_KEYS.length)]
         );
-        
+
         dialog = new Dialog(text, "zelda/dialog", getOwnerArea());
 
         handler = new CharacterHandler();
@@ -150,7 +149,7 @@ public class Character extends MovableAreaEntity implements Interactor {
     private void toggleShowDialog(){
         showDialog = !showDialog;
     }
-    
+
     /**
      * Harm the current Character
      * @param damage (float) The damage to deal to the Character
@@ -158,7 +157,7 @@ public class Character extends MovableAreaEntity implements Interactor {
     public void harm(float damage) {
         hp = Math.max(hp - damage, 0);
     }
-    
+
     private void die() {
         state = State.VANISHING;
     }
@@ -178,7 +177,7 @@ public class Character extends MovableAreaEntity implements Interactor {
         if (hp <= 0) {
             die();
         }
-        
+
         switch (state) {
             case IDLE:
                 randomlyMove();
@@ -191,18 +190,18 @@ public class Character extends MovableAreaEntity implements Interactor {
                     getOwnerArea().unregisterActor(this);
                 }
                 break;
-                
+
             case STOPPED:
                 state = State.IDLE;
                 movingAnimations[getOrientation().ordinal()].reset();
                 break;
-                
+
             default:
                 break;
         }
 
     }
-    
+
     @Override
     public void draw(Canvas canvas) {
         if (hp <= 0){
