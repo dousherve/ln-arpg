@@ -5,7 +5,7 @@ Action Role Play Game - Mini-Projet EPFL
 
 #Changes in files: 
 - `MovableAreaEntity`: addition of method `blink(float deltaTime)` to make entities blink
-- addition of PNG files in sprite's resources. (`alice.png`, `chests.png`, `guard.png`, `potion.heal.png`, `pause.png`, `death_message.png`) 
+- addition of PNG files in sprite's resources. (`alice.png`, `chests.png`, `guard.png`, `seller.png`, `potion.heal.png`, `pause.png`, `death_message.png`) 
 
 #Extensions:
 - Inventory User Interface (the player can show his inventory by press `I` key)

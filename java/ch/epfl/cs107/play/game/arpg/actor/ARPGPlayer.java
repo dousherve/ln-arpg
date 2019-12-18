@@ -540,9 +540,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
      * Handle Sword collection
      * @param sword (Sword) A Sword
      */
-    private void collectItem(Sword sword) {
-        inventory.add(ARPGItem.SWORD, 1);
-    }
+    private void collectItem(Sword sword) { inventory.add(ARPGItem.SWORD, 1); }
 
 
     /**
@@ -583,7 +581,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
                 case SWORD:
                     state = State.ATTACKING_WITH_SWORD;
                     break;
-        
+
                 case STAFF:
                     state = State.ATTACKING_WITH_STAFF;
                     break;
