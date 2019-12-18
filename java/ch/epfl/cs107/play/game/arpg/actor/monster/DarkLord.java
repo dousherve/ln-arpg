@@ -3,6 +3,7 @@ package ch.epfl.cs107.play.game.arpg.actor.monster;
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Animation;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
+import ch.epfl.cs107.play.game.areagame.actor.Interactor;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
@@ -360,28 +361,10 @@ public class DarkLord extends Monster {
     
     @Override
     public List<DiscreteCoordinates> getFieldOfViewCells() {
-        final DiscreteCoordinates CURRENT_COORDS = getCurrentMainCellCoordinates();
-        
-        final int X_START_COORD = CURRENT_COORDS.x - ACTION_RADIUS;
-        final int X_END_COORD = CURRENT_COORDS.x + ACTION_RADIUS;
-        final int Y_START_COORD = CURRENT_COORDS.y - ACTION_RADIUS;
-        final int Y_END_COORD = CURRENT_COORDS.y + ACTION_RADIUS;
-        
-        List<DiscreteCoordinates> coords = new ArrayList<>();
-        
-        for (int i = X_START_COORD; i <= X_END_COORD; ++i) {
-            for (int j = Y_START_COORD; j <= Y_END_COORD; ++j) {
-                if (
-                        i >= 0 && i < getOwnerArea().getWidth() &&
-                                j >= 0 && j < getOwnerArea().getHeight() &&
-                                !(i == CURRENT_COORDS.x && j == CURRENT_COORDS.y)
-                ) {
-                    coords.add(new DiscreteCoordinates(i, j));
-                }
-            }
-        }
-        
-        return coords;
+        return Interactor.getAllCellsInRadius(
+                ACTION_RADIUS, getCurrentMainCellCoordinates(),
+                getOwnerArea().getWidth(), getOwnerArea().getHeight()
+        );
     }
 
     @Override
