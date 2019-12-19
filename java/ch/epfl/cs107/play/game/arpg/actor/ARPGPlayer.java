@@ -41,9 +41,8 @@ import java.util.List;
 public class ARPGPlayer extends Player implements Inventory.Holder {
 
     private enum State {
-        IDLE, STOPPED,
-        ATTACKING_WITH_BOW, ATTACKING_WITH_SWORD, ATTACKING_WITH_STAFF,
-        INVENTORY
+        IDLE, SHOPPING, CHATTING, INVENTORY,
+        ATTACKING_WITH_BOW, ATTACKING_WITH_SWORD, ATTACKING_WITH_STAFF
     }
     
     private class ARPGPlayerHandler implements ARPGInteractionVisitor {
@@ -109,27 +108,30 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         public void interactWith(Character character) {
             if (shouldSlay() && !character.isInvincible()) {
                 character.harm(SWORD_DAMAGE);
-            } else if (state != State.ATTACKING_WITH_SWORD) {
-                state = (state == State.STOPPED) ? State.IDLE : State.STOPPED;
+            } else if (state == State.IDLE || state == State.CHATTING) {
+                state = (state == State.IDLE) ? State.CHATTING : State.IDLE;
                 character.personalInteraction();
             }
         }
 
         @Override
         public void interactWith(Alice alice) {
-            if (possess(ARPGItem.SWORD)) {
-                alice.beginQuest();
-            } else {
-                alice.personalInteraction();
+            if (state == State.IDLE || state == State.CHATTING) {
+                if (possess(ARPGItem.SWORD)) {
+                    alice.beginQuest();
+                } else {
+                    alice.personalInteraction();
+                }
+                
+                state = (state == State.IDLE) ? State.CHATTING : State.IDLE;
             }
         }
 
         @Override
         public void interactWith(Seller seller) {
-            if (state == State.STOPPED || state == State.IDLE) {
-                isInShop = !isInShop;
-                state = (state == State.STOPPED) ? State.IDLE : State.STOPPED;
+            if (state == State.IDLE || state == State.SHOPPING) {
                 seller.personalInteraction(ARPGPlayer.this);
+                state = (state == State.IDLE) ? State.SHOPPING : State.IDLE;
             }
         }
 
@@ -211,7 +213,6 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     /// The Inventory GUI
     private final ARPGInventoryGUI inventoryGui;
     private boolean isDisplayingInventory;
-    private boolean isInShop;
     
     /**
      * Default ARPGPlayer constructor
@@ -238,7 +239,6 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         
         isDisplayingMoney = true;
         isDisplayingInventory = false;
-        isInShop = false;
 
         resetMotion();
     }
@@ -429,7 +429,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         }
 
         // Toggle the inventory GUI
-        if (keyboard.get(Keyboard.I).isPressed() && !isInShop) {
+        if (keyboard.get(Keyboard.I).isPressed() && state == State.IDLE) {
             inventoryGui.updateContent(inventory.getItemsAndQuantity());
             isDisplayingInventory = !isDisplayingInventory;
             state = isDisplayingInventory ? State.INVENTORY : State.IDLE;

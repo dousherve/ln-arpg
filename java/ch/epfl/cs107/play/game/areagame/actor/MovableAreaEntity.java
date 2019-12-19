@@ -65,7 +65,7 @@ public abstract class MovableAreaEntity extends AreaEntity {
             ++hasBlinked;
         }
         
-        if (hasBlinked >= BLINKING_TIME  *2) {
+        if (hasBlinked >= BLINKING_TIME * 2) {
             hasBeenHurt = false;
             blinkTimer = 0;
             hasBlinked = 0;

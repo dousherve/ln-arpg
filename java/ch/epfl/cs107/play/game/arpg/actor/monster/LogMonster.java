@@ -286,7 +286,7 @@ public class LogMonster extends Monster {
     
     @Override
     public boolean wantsViewInteraction() {
-        return (state == LogMonsterState.IDLE || state == LogMonsterState.ATTACKING);
+        return (state == LogMonsterState.IDLE || state == LogMonsterState.ATTACKING) && isAlive();
     }
     
     @Override

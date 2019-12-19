@@ -153,7 +153,6 @@ public class FlameSkull extends Monster implements FlyableEntity {
     
     @Override
     public boolean wantsCellInteraction() {
-        // We check if the monster has changed cell, in order not to deal the damage mutliple times
         return isAlive();
     }
     
