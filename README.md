@@ -30,7 +30,8 @@ But Alice (a character standing in front of the bridge) will not let the player 
 - Graphic elements and entity (`Rock`, `Bridge`, `Chest`, `CaveOpening`)
 - New areas (`Grotte`, `Grotte2`, `RouteTemple`, `Temple`) (`Grotte` area can summon `FlameSkull` entities)
 - Added a heal potion to the items
-- Implemented a mechanism of death and pause to the game
+- Implemented a mechanism of death and respawn
+- Possibility to pause the game by pressing `ESC`
             
 ### Keyboard controls
 
