@@ -7,23 +7,23 @@ import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.arpg.actor.character.Alice;
 import ch.epfl.cs107.play.game.arpg.actor.character.Character;
 import ch.epfl.cs107.play.game.arpg.actor.character.Seller;
 import ch.epfl.cs107.play.game.arpg.actor.gui.inventory.ARPGInventoryGUI;
-import ch.epfl.cs107.play.game.arpg.actor.character.Alice;
 import ch.epfl.cs107.play.game.arpg.actor.item.Bomb;
-import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Staff;
-import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Sword;
-import ch.epfl.cs107.play.game.arpg.actor.terrain.CastleDoor;
-import ch.epfl.cs107.play.game.arpg.actor.terrain.Chest;
-import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.ARPGCollectableAreaEntity;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.CastleKey;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Coin;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Heart;
+import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Staff;
+import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Sword;
 import ch.epfl.cs107.play.game.arpg.actor.item.projectile.Arrow;
 import ch.epfl.cs107.play.game.arpg.actor.item.projectile.MagicWaterProjectile;
 import ch.epfl.cs107.play.game.arpg.actor.monster.Monster;
+import ch.epfl.cs107.play.game.arpg.actor.terrain.CastleDoor;
+import ch.epfl.cs107.play.game.arpg.actor.terrain.Chest;
+import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.Inventory;
 import ch.epfl.cs107.play.game.rpg.InventoryItem;
@@ -429,7 +429,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
         }
 
         // Toggle the inventory GUI
-        if (keyboard.get(Keyboard.I).isPressed() && state == State.IDLE) {
+        if (keyboard.get(Keyboard.I).isPressed() && (state == State.IDLE || state == State.INVENTORY)) {
             inventoryGui.updateContent(inventory.getItemsAndQuantity());
             isDisplayingInventory = !isDisplayingInventory;
             state = isDisplayingInventory ? State.INVENTORY : State.IDLE;
@@ -440,31 +440,31 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
             isDisplayingMoney = !isDisplayingMoney;
         }
         
-        // DEBUG:- give a quantity of 5 for each item
+        // DEBUG:- Give a quantity of 5 for each item
         if (keyboard.get(Keyboard.Z).isPressed()) {
             for (ARPGItem item : ARPGItem.values()) {
                 inventory.add(item, 5);
             }
         }
         
-        // DEBUG:- add 10 coins to the player's money
+        // DEBUG:- Add 10 coins to the player's money
         if (keyboard.get(Keyboard.M).isPressed()) {
             inventory.addMoney(10);
         }
         
-        // DEBUG:- print current coordinates
+        // DEBUG:- Print the current coordinates
         if (keyboard.get(Keyboard.P).isPressed()) {
             System.out.println(getCurrentMainCellCoordinates().toString());
         }
         
-        // DEBUG:- heal the player
+        // DEBUG:- Fully heal the player
         if (keyboard.get(Keyboard.H).isPressed()) {
             heal(MAX_HP);
         }
     }
     
     /**
-     * Switch between items by looping through the content of the Inventory
+     * Switch between items by looping through the content of the current Inventory
      */
     private void switchCurrentItem() {
         if (state != State.IDLE) {

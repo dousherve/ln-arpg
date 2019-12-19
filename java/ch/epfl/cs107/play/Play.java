@@ -6,7 +6,6 @@ import ch.epfl.cs107.play.io.DefaultFileSystem;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.io.ResourceFileSystem;
 import ch.epfl.cs107.play.io.XMLTexts;
-import ch.epfl.cs107.play.recorder.RecordReplayer;
 import ch.epfl.cs107.play.window.Window;
 import ch.epfl.cs107.play.window.swing.SwingWindow;
 
@@ -33,10 +32,10 @@ public class Play {
         final Game game = new ARPG();
 
 		// Use Swing display
-		// final Window window = new SwingWindow(game.getTitle(), fileSystem, 800, 800);
+		final Window window = new SwingWindow(game.getTitle(), fileSystem, 800, 800);
 		
 		// Bigger window size (better for 4K Displays)
-		final Window window = new SwingWindow(game.getTitle(), fileSystem, 1200, 1200);
+		// final Window window = new SwingWindow(game.getTitle(), fileSystem, 1200, 1200);
 		
 		try {
 
