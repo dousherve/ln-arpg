@@ -21,7 +21,7 @@ public class King extends Character {
     public King(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
         
-        dialog.resetDialog("Merci de m'avoir délivré!");
+        setDialogText("Merci de m'avoir délivré!");
     }
 
     @Override
@@ -29,8 +29,8 @@ public class King extends Character {
 
     @Override
     public void draw(Canvas canvas) {
-        if (showDialog){
-            dialog.draw(canvas);
+        if (getShowDialog()){
+            drawDialog(canvas);
         }
         
         sprite.draw(canvas);

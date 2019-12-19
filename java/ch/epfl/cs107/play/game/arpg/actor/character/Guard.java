@@ -51,7 +51,7 @@ public class Guard extends Character {
 
         handler = new GuardHandler();
 
-        dialog.resetDialog("Rien à signaler.");
+        setDialogText("Rien à signaler.");
         attackTimer = 0;
 
         setupAnimation();

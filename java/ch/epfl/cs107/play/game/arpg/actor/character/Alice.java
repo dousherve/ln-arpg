@@ -27,9 +27,9 @@ public class Alice extends Character {
 
         state = State.STOPPED;
         if (getOwnerArea().getTitle().equals("zelda/Route")){
-            dialog.resetDialog(XMLTexts.getText("Road_staff_quest_1"));
+            setDialogText(XMLTexts.getText("Road_staff_quest_1"));
         } else {
-            dialog.resetDialog(XMLTexts.getText("templeDoor"));
+            setDialogText(XMLTexts.getText("templeDoor"));
         }
     }
 
@@ -38,10 +38,10 @@ public class Alice extends Character {
      */
     public void beginQuest() {
         if (getOwnerArea().getTitle().equals("zelda/Route")) {
-            dialog.resetDialog(XMLTexts.getText("Road_staff_quest_2"));
+            setDialogText(XMLTexts.getText("Road_staff_quest_2"));
             personalInteraction();
 
-            if (!showDialog && getOwnerArea().getTitle().equals("zelda/Route")) {
+            if (!getShowDialog() && getOwnerArea().getTitle().equals("zelda/Route")) {
                 walkToNextMap = true;
                 orientate(Orientation.RIGHT);
             }

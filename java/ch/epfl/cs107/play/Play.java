@@ -33,7 +33,7 @@ public class Play {
         final Game game = new ARPG();
 
 		// Use Swing display
-		// final Window window = new SwingWindow(game.getTitle(), fileSystem, 600, 600);
+		// final Window window = new SwingWindow(game.getTitle(), fileSystem, 800, 800);
 		
 		// Bigger window size (better for 4K Displays)
 		final Window window = new SwingWindow(game.getTitle(), fileSystem, 1200, 1200);

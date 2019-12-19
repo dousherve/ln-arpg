@@ -22,6 +22,9 @@ import ch.epfl.cs107.play.window.Canvas;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * A basic Character.
+ */
 public class Character extends MovableAreaEntity implements Interactor {
     
     protected class CharacterHandler implements ARPGInteractionVisitor {
@@ -71,8 +74,8 @@ public class Character extends MovableAreaEntity implements Interactor {
     private static final float PROBABILITY_TO_CHANGE_ORIENTATION = 0.3f;
 
     /// Default dialog
-    protected Dialog dialog;
-    protected boolean showDialog = false;
+    private Dialog dialog;
+    private boolean showDialog;
 
     /**
      * Default Character constructor
@@ -83,8 +86,10 @@ public class Character extends MovableAreaEntity implements Interactor {
      */
     public Character(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
-
+    
         setupAnimation();
+    
+        handler = new CharacterHandler();
 
         hp = MAX_HP;
 
@@ -93,15 +98,15 @@ public class Character extends MovableAreaEntity implements Interactor {
         );
 
         dialog = new Dialog(text, "zelda/dialog", getOwnerArea());
-
-        handler = new CharacterHandler();
+        showDialog = false;
+        
         state = State.IDLE;
     }
 
     /**
-     *  Initialize animation
+     *  Setup the animations
      */
-    protected void setupAnimation(){
+    protected void setupAnimation() {
         Sprite[][] sprites = RPGSprite.extractSprites("zelda/character", 4,
                 1, 2, this, 16, 32,
                 new Orientation[] {Orientation.UP, Orientation.RIGHT, Orientation.DOWN, Orientation.LEFT});
@@ -141,15 +146,38 @@ public class Character extends MovableAreaEntity implements Interactor {
     /**
      *  What the character do when the player interact with
      */
-    public void personalInteraction(){
+    public void personalInteraction() {
         toggleShowDialog();
     }
 
     /**
      *  Show/hide the dialog
      */
-    private void toggleShowDialog(){
+    protected void toggleShowDialog() {
         showDialog = !showDialog;
+    }
+    
+    /**
+     * @return (boolean) if we should show the dialog or not
+     */
+    protected boolean getShowDialog() {
+        return showDialog;
+    }
+    
+    /**
+     * Reset the current dialog with a given text
+     * @param newText (String) The text
+     */
+    protected void setDialogText(String newText) {
+        dialog.resetDialog(newText);
+    }
+    
+    /**
+     * Draw the dialog on the given canvas
+     * @param canvas (Canvas) The canvas on which the dialog should be drawn
+     */
+    protected void drawDialog(Canvas canvas) {
+        dialog.draw(canvas);
     }
 
     /**
@@ -271,4 +299,5 @@ public class Character extends MovableAreaEntity implements Interactor {
     public void interactWith(Interactable other) {
         other.acceptInteraction(handler);
     }
+    
 }
