@@ -17,6 +17,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class Chest extends AreaEntity {
+    
+    private static int WIDTH = 32, HEIGHT = 48;
 
     // MARK:- Animation
     private Sprite spriteOpen;
@@ -35,23 +37,29 @@ public class Chest extends AreaEntity {
      */
     public Chest(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
+        
         isOpen = false;
 
-        int HEIGHT = 48;
-        int WIDTH = 32;
-        spriteClose = new RPGSprite("zelda/chests", 1f, 2f, this, new RegionOfInterest(0,0, WIDTH, HEIGHT));
+        spriteClose = new RPGSprite(
+                "zelda/chests", 1f, 2f, this,
+                new RegionOfInterest(0, 0, WIDTH, HEIGHT)
+        );
         spriteClose.setDepth(50);
-        spriteOpen = new RPGSprite("zelda/chests", 1f, 2f, this, new RegionOfInterest(0, HEIGHT *3, WIDTH, HEIGHT));
+        
+        spriteOpen = new RPGSprite(
+                "zelda/chests", 1f, 2f, this,
+                new RegionOfInterest(0, HEIGHT * 3, WIDTH, HEIGHT)
+        );
         spriteOpen.setDepth(50);
 
-        Sprite[] cutSprites = new Sprite[4];
-        for (int i = 0; i < cutSprites.length; ++i) {
-            cutSprites[i] = new Sprite("zelda/chests", 1f, 2f,
+        Sprite[] sprites = new Sprite[4];
+        for (int i = 0; i < sprites.length; ++i) {
+            sprites[i] = new Sprite("zelda/chests", 1f, 2f,
                     this,
-                    new RegionOfInterest(0, i * HEIGHT, WIDTH, HEIGHT));
+                    new RegionOfInterest(0, i * HEIGHT, WIDTH, HEIGHT)
+            );
         }
-        animation = new Animation(ANIMATION_DURATION / 2, cutSprites, false);
-
+        animation = new Animation(ANIMATION_DURATION / 2, sprites, false);
     }
 
     /**
@@ -67,16 +75,21 @@ public class Chest extends AreaEntity {
      */
     private void generateCollectableItem() {
         if (!isOpen) {
-            for (Orientation orientation : new Orientation[]{Orientation.DOWN, Orientation.RIGHT, Orientation.LEFT, Orientation.UP})
-            getOwnerArea().registerActor(new Coin(getOwnerArea(), Orientation.DOWN,
-                    getCurrentMainCellCoordinates().jump(orientation.toVector())));
+            for (Orientation orientation : Orientation.values()) {
+                getOwnerArea().registerActor(
+                        new Coin(
+                                getOwnerArea(), Orientation.DOWN,
+                                getCurrentMainCellCoordinates().jump(orientation.toVector())
+                        )
+                );
+            }
         }
     }
 
     @Override
     public void draw(Canvas canvas) {
-        if (isOpen){
-            if (animation.isCompleted()){
+        if (isOpen) {
+            if (animation.isCompleted()) {
                 spriteOpen.draw(canvas);
             } else {
                 animation.draw(canvas);
@@ -117,4 +130,5 @@ public class Chest extends AreaEntity {
     public void acceptInteraction(AreaInteractionVisitor v) {
         ((ARPGInteractionVisitor) v).interactWith(this);
     }
+    
 }

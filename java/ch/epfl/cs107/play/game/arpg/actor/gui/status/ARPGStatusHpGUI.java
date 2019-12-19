@@ -6,9 +6,6 @@ import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *  Graphical user interface element showing health points.
  */

@@ -2,7 +2,6 @@ package ch.epfl.cs107.play.game.arpg.actor.item.collectable;
 
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Animation;
-import ch.epfl.cs107.play.game.areagame.actor.CollectableAreaEntity;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
@@ -35,8 +34,10 @@ public class Staff extends ARPGCollectableAreaEntity {
 
         Sprite[] sprites = new Sprite[8];
         for (int i = 0; i < sprites.length; ++i) {
-            sprites[i] = new RPGSprite("zelda/staff", SIZE, SIZE, this,
-                    new RegionOfInterest(32 * i, 0, 32, 32));
+            sprites[i] = new RPGSprite(
+                    "zelda/staff", SIZE, SIZE, this,
+                    new RegionOfInterest(32 * i, 0, 32, 32)
+            );
         }
 
         animation = new Animation(ANIMATION_DURATION, sprites, true);
@@ -62,4 +63,5 @@ public class Staff extends ARPGCollectableAreaEntity {
     public void acceptInteraction(AreaInteractionVisitor v) {
         ((ARPGInteractionVisitor) v).interactWith(this);
     }
+    
 }

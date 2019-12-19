@@ -9,6 +9,7 @@ import ch.epfl.cs107.play.game.arpg.actor.terrain.Grass;
 import ch.epfl.cs107.play.game.arpg.actor.monster.FireSpell;
 import ch.epfl.cs107.play.game.arpg.actor.monster.Monster;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
+import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.window.Canvas;
@@ -71,7 +72,7 @@ public class Arrow extends Projectile {
         movingSprites = new Sprite[Orientation.values().length];
         for (int i = 0; i < movingSprites.length; ++i) {
             movingSprites[Orientation.fromInt(i).ordinal()] = 
-                    new Sprite(
+                    new RPGSprite(
                             IMG_NAME, SIZE, SIZE, this,
                             new RegionOfInterest(32 * i, 0, 32, 32)
                     );

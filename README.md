@@ -4,7 +4,7 @@ Action Role Play Game - *ZeldLN* - Mini-Project EPFL
 
 ## Story
 The player has to defeat the `DarkLord`, who locked up the King in the Castle. 
-The magic Staff, magic tool required to defeat the boss, is in the Temple, on the other side of the river.
+The Staff, magic tool required to defeat the boss, is in the Temple, on the other side of the river.
 But Alice (a character standing in front of the bridge) will not let the player pass through the bridge if he doesn't have a sword in his inventory.
 
 *Solution :* Go to the Village (some villagers say random sentences and often explain what is happening).

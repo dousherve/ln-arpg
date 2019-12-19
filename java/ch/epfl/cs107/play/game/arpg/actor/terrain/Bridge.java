@@ -16,8 +16,9 @@ import java.util.List;
 public class Bridge extends AreaEntity implements FlyableEntity {
 
     private Sprite sprite;
+    
     /**
-     * Default AreaEntity constructor
+     * Default Bridge constructor
      *
      * @param area        (Area): Owner area. Not null
      * @param orientation (Orientation): Initial orientation of the entity in the Area. Not null
@@ -25,7 +26,11 @@ public class Bridge extends AreaEntity implements FlyableEntity {
      */
     public Bridge(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
-        sprite = new Sprite("zelda/bridge", 4f, 3f, this, new RegionOfInterest(0,0,64,48));
+        
+        sprite = new Sprite(
+                "zelda/bridge", 4f, 3f, this,
+                new RegionOfInterest(0, 0, 64, 48)
+        );
         sprite.setDepth(-500);
     }
 
@@ -60,7 +65,6 @@ public class Bridge extends AreaEntity implements FlyableEntity {
     }
 
     @Override
-    public void acceptInteraction(AreaInteractionVisitor v) {
-
-    }
+    public void acceptInteraction(AreaInteractionVisitor v) {}
+    
 }

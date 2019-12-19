@@ -76,6 +76,7 @@ public class ARPGInventorySlotGUI implements Updatable {
                 TextAlign.Horizontal.CENTER, TextAlign.Vertical.BOTTOM,
                 1f, DEPTH
         );
+        
         updateGui();
     }
     
@@ -133,12 +134,12 @@ public class ARPGInventorySlotGUI implements Updatable {
         quantityText.setText("x" + quantity);
     }
     
-    public void setQuantity(int quantity) {
+    protected void setQuantity(int quantity) {
         this.quantity = quantity;
         updateGui();
     }
     
-    public void setSelected(boolean selected) {
+    protected void setSelected(boolean selected) {
         isSelected = selected;
         updateGui();
     }

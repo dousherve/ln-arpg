@@ -15,9 +15,8 @@ public class Temple extends ARPGArea {
     private List<LogMonster> monsters = new ArrayList<>();
     private Rock rock;
 
-    boolean doorOpen;
-    boolean noMoreMonsters;
-
+    private boolean doorOpen;
+    
     private final String[] areaKeys = {"zelda/RouteTemple"};
     private final DiscreteCoordinates[] destinationCoords = {
             new DiscreteCoordinates(5, 5),
@@ -35,8 +34,8 @@ public class Temple extends ARPGArea {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-
-        noMoreMonsters = true;
+    
+        boolean noMoreMonsters = true;
         for (LogMonster logMonster : monsters) {
             if (logMonster.isAlive()) {
                 noMoreMonsters = false;

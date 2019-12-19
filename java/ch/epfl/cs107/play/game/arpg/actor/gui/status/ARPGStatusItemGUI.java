@@ -18,6 +18,9 @@ public class ARPGStatusItemGUI implements ARPGStatusGUIElement {
     private ImageGraphics gear;
     private Sprite itemSprite;
     
+    /**
+     * Default ARPGStatusItemGUI constructor
+     */
     public ARPGStatusItemGUI() {
         gear = new ImageGraphics(ResourcePath.getSprite("zelda/gearDisplay"),
                 SIZE, SIZE, new RegionOfInterest(0, 0, 32, 32));

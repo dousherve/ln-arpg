@@ -5,6 +5,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
+import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.window.Canvas;
@@ -28,9 +29,11 @@ public class Sword extends ARPGCollectableAreaEntity {
     public Sword(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
 
-        sprite = new Sprite("zelda/sword.icon", SIZE, SIZE, this, new RegionOfInterest(0,0,16,16));
+        sprite = new RPGSprite(
+                "zelda/sword.icon", SIZE, SIZE, this,
+                new RegionOfInterest(0, 0, 16, 16)
+        );
         sprite.setDepth(-50);
-
     }
 
     @Override

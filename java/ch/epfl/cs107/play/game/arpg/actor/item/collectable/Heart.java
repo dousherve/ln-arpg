@@ -36,8 +36,10 @@ public class Heart extends ARPGCollectableAreaEntity {
 
         Sprite[] sprites = new Sprite[4];
         for (int i = 0; i < sprites.length; ++i) {
-            sprites[i] = new RPGSprite("zelda/heart", SIZE, SIZE, this,
-                    new RegionOfInterest(16 * i, 0, 16, 16));
+            sprites[i] = new RPGSprite(
+                    "zelda/heart", SIZE, SIZE, this,
+                    new RegionOfInterest(16 * i, 0, 16, 16)
+            );
         }
 
         animation = new Animation(ANIMATION_DURATION, sprites, true);
@@ -70,4 +72,5 @@ public class Heart extends ARPGCollectableAreaEntity {
     public void acceptInteraction(AreaInteractionVisitor v) {
         ((ARPGInteractionVisitor) v).interactWith(this);
     }
+    
 }

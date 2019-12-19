@@ -35,7 +35,7 @@ public abstract class MovableAreaEntity extends AreaEntity {
     /// number of time it has already blinked
     private float hasBlinked = 0;
 
-    protected boolean visible = true;
+    private boolean visible = true;
     protected boolean hasBeenHurt = false;
 
     private Vector targetPosition;
@@ -56,19 +56,28 @@ public abstract class MovableAreaEntity extends AreaEntity {
      * Turn off/on the entity visibility BLINKING_TIME times at BLINK_FREQUENCY frequency
      * @param deltaTime (float) delta time to update blinking
      */
-    public void blink(float deltaTime){
+    protected void blink(float deltaTime) {
         blinkTimer += deltaTime;
+        
         if (blinkTimer >= BLINK_FREQUENCY) {
             blinkTimer = 0;
             visible = !visible;
             ++hasBlinked;
         }
-        if (hasBlinked >= BLINKING_TIME*2){
+        
+        if (hasBlinked >= BLINKING_TIME  *2) {
             hasBeenHurt = false;
             blinkTimer = 0;
             hasBlinked = 0;
             visible = true;
         }
+    }
+    
+    /**
+     * @return (boolean) Whether the Entity is visible or not.
+     */
+    protected boolean isVisible() {
+        return visible;
     }
 
     /**

@@ -62,7 +62,6 @@ public enum ARPGItem implements InventoryItem {
             case STAFF:
                 return 7;
             case CASTLE_KEY:
-                return 1;
             case HEAL_POTION:
                 return 1;
             default:

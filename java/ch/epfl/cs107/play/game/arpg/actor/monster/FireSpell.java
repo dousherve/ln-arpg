@@ -123,7 +123,7 @@ public class FireSpell extends AreaEntity implements Interactor {
 
         this.strength = Math.max(strength, 0);
 
-        if(!this.linearPropagation) {
+        if (!this.linearPropagation) {
             randomlyOrientate();
         }
     }
@@ -133,7 +133,7 @@ public class FireSpell extends AreaEntity implements Interactor {
     }
 
     /**
-     * extinguish the fire
+     * Extinguish the fire
      */
     public void extinguish(){
         getOwnerArea().unregisterActor(this);
@@ -185,7 +185,7 @@ public class FireSpell extends AreaEntity implements Interactor {
     }
 
     /**
-     * Randomly orientate the Flame
+     * Randomly orientate the flame
      */
     private void randomlyOrientate() {
         int randomIndex = RandomGenerator.getInstance().nextInt(4);

@@ -51,6 +51,11 @@ public class ARPGStatusMoneyGUI implements ARPGStatusGUIElement {
         }
     }
     
+    /**
+     * Compute the RegionOfInterest corresponding to the given digit. 
+     * @param digit (int) The digit
+     * @return (RegionOfInterest) The requested RegionOfInterest
+     */
     private RegionOfInterest getDigitRoi(int digit) {
         if (digit < 0 || digit > 9) {
             return null;

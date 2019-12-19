@@ -19,12 +19,11 @@ import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class Character extends MovableAreaEntity implements Interactor {
-
+    
     protected class CharacterHandler implements ARPGInteractionVisitor {
 
         @Override
@@ -33,6 +32,7 @@ public class Character extends MovableAreaEntity implements Interactor {
                 state = State.STOPPED;
             }
         }
+        
     }
 
     protected enum State {
@@ -43,6 +43,8 @@ public class Character extends MovableAreaEntity implements Interactor {
     private static final String[] DEFAULT_SENTENCES_KEYS = new String[] {
             "dialog_1", "dialog_2", "dialog_3", "dialog_4", "dialog_5"
     };
+    
+    private static final float MAX_HP = 5f;
 
     /// The radius of his FOV
     private static final int ACTION_RADIUS = 2;
@@ -60,7 +62,7 @@ public class Character extends MovableAreaEntity implements Interactor {
 
     /// Animations array
     protected Animation[] movingAnimations;
-    protected static final int MOVING_ANIMATION_DURATION = 10;
+    private static final int MOVING_ANIMATION_DURATION = 10;
 
     /// The vanish Animation
     private Animation vanishAnimation;
@@ -84,7 +86,7 @@ public class Character extends MovableAreaEntity implements Interactor {
 
         setupAnimation();
 
-        hp = 5f;
+        hp = MAX_HP;
 
         String text = XMLTexts.getText(
                 DEFAULT_SENTENCES_KEYS[RandomGenerator.getInstance().nextInt(DEFAULT_SENTENCES_KEYS.length)]

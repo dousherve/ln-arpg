@@ -366,7 +366,7 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
     @Override
     public void draw(Canvas canvas) {
         // Animate the player
-        if (visible) {
+        if (isVisible()) {
             currentAnimation.draw(canvas);
         }
         
@@ -590,10 +590,8 @@ public class ARPGPlayer extends Player implements Inventory.Holder {
                     break;
 
                 case HEAL_POTION:
-                    if (MAX_HP - hp >= HEALTH_POTION_AMOUNT) {
-                        heal(HEALTH_POTION_AMOUNT);
-                        inventory.remove(ARPGItem.HEAL_POTION, 1);
-                    }
+                    heal(HEALTH_POTION_AMOUNT);
+                    inventory.remove(ARPGItem.HEAL_POTION, 1);
                     break;
         
                 default:

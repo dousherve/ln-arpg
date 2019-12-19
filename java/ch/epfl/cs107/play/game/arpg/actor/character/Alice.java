@@ -11,7 +11,7 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 public class Alice extends Character {
 
-    /// Boolean useful for quest
+    /// Useful booleans for the quest
     private boolean walkToNextMap = false;
     private static final int MOVING_ANIMATION_DURATION = 10;
 
@@ -39,20 +39,21 @@ public class Alice extends Character {
     public void beginQuest() {
         if (getOwnerArea().getTitle().equals("zelda/Route")) {
             dialog.resetDialog(XMLTexts.getText("Road_staff_quest_2"));
-            super.personalInteraction();
+            personalInteraction();
 
             if (!showDialog && getOwnerArea().getTitle().equals("zelda/Route")) {
                 walkToNextMap = true;
                 orientate(Orientation.RIGHT);
             }
         } else {
-            super.personalInteraction();
+            personalInteraction();
         }
     }
 
     @Override
     protected void setupAnimation() {
         super.setupAnimation();
+        
         Sprite[][] sprites = RPGSprite.extractSprites("zelda/alice", 4,
                 1, 2, this, 16, 32,
                 new Orientation[] {Orientation.UP, Orientation.RIGHT, Orientation.DOWN, Orientation.LEFT});
@@ -63,10 +64,11 @@ public class Alice extends Character {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
+        
         state = State.SPECIAL;
 
         // After the player speaks to her for the first time,
-        // she turns right and walks to the Area's limit, then disappears
+        // she turns right and walks to the Area's limit, and then disappears
         if (walkToNextMap) {
             if (!move(MOVING_ANIMATION_DURATION) && !isDisplacementOccurs()) {
                 getOwnerArea().unregisterActor(this);

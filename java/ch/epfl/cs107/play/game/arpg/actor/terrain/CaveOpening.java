@@ -17,7 +17,7 @@ public class CaveOpening extends AreaEntity {
     private Sprite sprite;
 
     /**
-     * Default AreaEntity constructor
+     * Default CaveOpening constructor
      *
      * @param area        (Area): Owner area. Not null
      * @param orientation (Orientation): Initial orientation of the entity in the Area. Not null
@@ -25,7 +25,11 @@ public class CaveOpening extends AreaEntity {
      */
     public CaveOpening(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
-        sprite = new Sprite("zelda/cave.open", 1f, 1f, this, new RegionOfInterest(0,0,16,21));
+        
+        sprite = new Sprite(
+                "zelda/cave.open", 1f, 1f, this,
+                new RegionOfInterest(0, 0, 16, 21)
+        );
         sprite.setDepth(-500);
     }
 
@@ -55,7 +59,6 @@ public class CaveOpening extends AreaEntity {
     }
 
     @Override
-    public void acceptInteraction(AreaInteractionVisitor v) {
-
-    }
+    public void acceptInteraction(AreaInteractionVisitor v) {}
+    
 }

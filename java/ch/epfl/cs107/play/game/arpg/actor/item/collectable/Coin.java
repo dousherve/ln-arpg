@@ -37,8 +37,10 @@ public class Coin extends ARPGCollectableAreaEntity {
     
         Sprite[] sprites = new RPGSprite[4];
         for (int i = 0; i < sprites.length; ++i) {
-            sprites[i] = new RPGSprite("zelda/coin", SIZE, SIZE, this,
-                    new RegionOfInterest(16 * i, 0, 16, 16));
+            sprites[i] = new RPGSprite(
+                    "zelda/coin", SIZE, SIZE, this,
+                    new RegionOfInterest(16 * i, 0, 16, 16)
+            );
         }
         
         animation = new Animation(ANIMATION_DURATION, sprites, true);

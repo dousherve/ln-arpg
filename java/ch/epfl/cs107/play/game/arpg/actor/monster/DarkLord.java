@@ -75,7 +75,7 @@ public class DarkLord extends Monster {
     // Spell reloading time in number of cycles of simulation
     private int spellWaitDuration;
 
-    // Teleportation
+    /// Teleportation
     private static final int TELEPORTATION_RADIUS = 5;
     private static final int MAX_TELEPORTATION_ATTEMPTS = 5;
     private int teleportationAttempts;
@@ -144,8 +144,11 @@ public class DarkLord extends Monster {
         List<Orientation> possibleOrientations = new ArrayList<>();
         
         for (Orientation orientation : Orientation.values()) {
-            FireSpell fireSpell = new FireSpell(getOwnerArea(), orientation,
-                    getFacingCellCoordinates(), FIRE_SPELL_STRENGTH);
+            FireSpell fireSpell = new FireSpell(
+                    getOwnerArea(), orientation,
+                    getFacingCellCoordinates(), FIRE_SPELL_STRENGTH
+            );
+            
             if (canSummon(fireSpell, getFacingCellCoordinates())) {
                 possibleOrientations.add(orientation);
             }
@@ -338,7 +341,7 @@ public class DarkLord extends Monster {
     public void draw(Canvas canvas) {
         super.draw(canvas);
         
-        if (isAlive() && visible) {
+        if (isAlive() && isVisible()) {
             
             if (state == DarkLordState.IDLE) {
                 movingAnimations[animationIndex].draw(canvas);

@@ -48,6 +48,7 @@ public class Bomb extends AreaEntity implements Interactor {
         public void interactWith(Rock rock) {
             rock.crack();
         }
+        
     }
     
     private enum State {
@@ -84,6 +85,19 @@ public class Bomb extends AreaEntity implements Interactor {
         
         handler = new BombHandler();
     
+        setupAnimations();
+    
+        timer = DEFAULT_TIMER_VALUE;
+        hasDealtCellDamage = false;
+        hasDealtViewDamage = false;
+        
+        state = State.READY;
+    }
+    
+    /**
+     * Setup the animations
+     */
+    private void setupAnimations() {
         sprite = new RPGSprite("zelda/bomb", 1, 1, this,
                 new RegionOfInterest(0, 0, 16, 16));
     
@@ -94,12 +108,6 @@ public class Bomb extends AreaEntity implements Interactor {
                     new Vector(-0.5f, -0.5f));
         }
         explosionAnimation = new Animation(ANIMATION_DURATION / 2, explosionSprites, false);
-    
-        timer = DEFAULT_TIMER_VALUE;
-        hasDealtCellDamage = false;
-        hasDealtViewDamage = false;
-        
-        state = State.READY;
     }
     
     @Override
@@ -129,6 +137,7 @@ public class Bomb extends AreaEntity implements Interactor {
                     explode();
                 }
                 break;
+                
             case EXPLODING:
                 explosionAnimation.update(deltaTime);
     
@@ -136,6 +145,7 @@ public class Bomb extends AreaEntity implements Interactor {
                     state = State.HAS_EXPLODED;
                 }
                 break;
+                
             case HAS_EXPLODED:
                 // Unregister the bomb
                 getOwnerArea().unregisterActor(this);

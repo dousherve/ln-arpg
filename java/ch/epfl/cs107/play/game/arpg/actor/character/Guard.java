@@ -11,8 +11,27 @@ import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.window.Canvas;
 
 public class Guard extends Character {
+    
+    private class GuardHandler extends CharacterHandler {
+        
+        @Override
+        public void interactWith(ARPGPlayer player) {
+            if (state == State.ATTACKING && attackTimer <= 0 && attackAnimation.isCompleted()) {
+                player.harm(DAMAGE);
+                attackAnimation.reset();
+                attackTimer = ATTACK_TIMEOUT;
+            } else if (state == State.IDLE) {
+                state = State.STOPPED;
+            }
+            
+            if (player.isDead()) {
+                state = State.IDLE;
+            }
+        }
+        
+    }
 
-    private static final float DAMAGES = 1f;
+    private static final float DAMAGE = 1f;
 
     private static final float ATTACK_TIMEOUT = 1f;
     private float attackTimer;
@@ -20,25 +39,8 @@ public class Guard extends Character {
     private Animation attackAnimation;
     private static final int ACTION_ANIMATION_DURATION = 1;
 
-
-    class GuardHandler extends CharacterHandler {
-        @Override
-        public void interactWith(ARPGPlayer player) {
-            if (state == State.ATTACKING && attackTimer <= 0 && attackAnimation.isCompleted()){
-                player.harm(DAMAGES);
-                attackAnimation.reset();
-                attackTimer = ATTACK_TIMEOUT;
-            } else if (state == State.IDLE){
-                state = State.STOPPED;
-            }
-            if (player.isDead()) {
-                state = State.IDLE;
-            }
-        }
-    }
-
     /**
-     * Default Character constructor
+     * Default Guard constructor
      *
      * @param area        (Area): Owner area. Not null
      * @param orientation (Orientation): Initial orientation of the entity. Not null
@@ -69,6 +71,7 @@ public class Guard extends Character {
     @Override
     protected void setupAnimation() {
         super.setupAnimation();
+        
         Sprite[][] sprites = RPGSprite.extractSprites("zelda/guard", 4,
                 1, 2, this, 16, 32,
                 new Orientation[] {Orientation.UP, Orientation.RIGHT, Orientation.DOWN, Orientation.LEFT});
@@ -76,9 +79,11 @@ public class Guard extends Character {
 
         Sprite[] spritesAttack = new Sprite[4];
         for (int i = 0; i < spritesAttack.length; ++i) {
-            spritesAttack[i] = new RPGSprite("zelda/guard.sword", 2f, 2f, this, new RegionOfInterest(i*32,0, 32, 32));
+            spritesAttack[i] = new RPGSprite(
+                    "zelda/guard.sword", 2f, 2f, this, 
+                    new RegionOfInterest(32 * i, 0, 32, 32)
+            );
         }
-
         attackAnimation = new Animation(ACTION_ANIMATION_DURATION, spritesAttack, false);
     }
 
@@ -94,8 +99,9 @@ public class Guard extends Character {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        if (state == State.ATTACKING){
-            attackTimer = Math.max( attackTimer - deltaTime, 0);
+        
+        if (state == State.ATTACKING) {
+            attackTimer = Math.max(attackTimer - deltaTime, 0);
             attackAnimation.update(deltaTime);
         }
     }
@@ -104,4 +110,5 @@ public class Guard extends Character {
     public boolean wantsViewInteraction() {
         return true;
     }
+    
 }

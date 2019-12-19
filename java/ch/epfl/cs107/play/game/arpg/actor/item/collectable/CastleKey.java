@@ -30,8 +30,10 @@ public class CastleKey extends ARPGCollectableAreaEntity {
     public CastleKey(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
     
-        sprite = new RPGSprite("zelda/key", SIZE, SIZE, this,
-                new RegionOfInterest(0,0,16,16));
+        sprite = new RPGSprite(
+                "zelda/key", SIZE, SIZE, this,
+                new RegionOfInterest(0, 0, 16, 16)
+        );
     }
 
     @Override
@@ -48,4 +50,5 @@ public class CastleKey extends ARPGCollectableAreaEntity {
     public void acceptInteraction(AreaInteractionVisitor v) {
         ((ARPGInteractionVisitor) v).interactWith(this);
     }
+    
 }

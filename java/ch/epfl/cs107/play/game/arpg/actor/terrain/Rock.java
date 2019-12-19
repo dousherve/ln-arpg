@@ -7,8 +7,8 @@ import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.ARPGCollectableAreaEntity;
 import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Coin;
-import ch.epfl.cs107.play.game.arpg.actor.item.collectable.Heart;
 import ch.epfl.cs107.play.game.arpg.handler.ARPGInteractionVisitor;
+import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RandomGenerator;
 import ch.epfl.cs107.play.math.RegionOfInterest;
@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class Rock extends AreaEntity {
 
-    private boolean isCraked;
+    private boolean isCracked;
 
     private Sprite sprite;
 
@@ -36,16 +36,20 @@ public class Rock extends AreaEntity {
      */
     public Rock(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
-        sprite = new Sprite("rock.1", 1f, 1f, this, new RegionOfInterest(0, 0, 16, 16));
+        sprite = new RPGSprite(
+                "rock.1", 1f, 1f, this,
+                new RegionOfInterest(0, 0, 16, 16)
+        );
         sprite.setDepth(-500);
-        isCraked = false;
+        
+        isCracked = false;
     }
 
     /**
-     * break the Rock
+     * Crack the rock
      */
     public void crack(){
-        isCraked = true;
+        isCracked = true;
         generateCollectableItem();
         getOwnerArea().unregisterActor(this);
     }
@@ -73,7 +77,7 @@ public class Rock extends AreaEntity {
 
     @Override
     public boolean takeCellSpace() {
-        return !isCraked;
+        return !isCracked;
     }
 
     @Override
@@ -90,4 +94,5 @@ public class Rock extends AreaEntity {
     public void acceptInteraction(AreaInteractionVisitor v) {
         ((ARPGInteractionVisitor) v).interactWith(this);
     }
+    
 }

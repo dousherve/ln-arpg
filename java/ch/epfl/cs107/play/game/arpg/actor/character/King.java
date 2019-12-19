@@ -20,25 +20,29 @@ public class King extends Character {
      */
     public King(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
+        
         dialog.resetDialog("Merci de m'avoir délivré!");
     }
 
     @Override
-    public void update(float deltaTime) {
-
-    }
+    public void update(float deltaTime) {}
 
     @Override
     public void draw(Canvas canvas) {
         if (showDialog){
             dialog.draw(canvas);
         }
+        
         sprite.draw(canvas);
     }
 
     @Override
     protected void setupAnimation() {
-        sprite = new Sprite("zelda/king", 1f, 2f, this, new RegionOfInterest(0, 32*2, 16, 32));
+        sprite = new Sprite("zelda/king", 1f, 2f, this,
+                new RegionOfInterest(0, 32*2, 16, 32)
+        );
+        
         sprite.setDepth(-50);
     }
+    
 }

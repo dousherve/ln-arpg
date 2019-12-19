@@ -14,8 +14,8 @@ import ch.epfl.cs107.play.window.Canvas;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ARPGInventoryGUI implements Graphics, Updatable {
     
@@ -48,13 +48,15 @@ public class ARPGInventoryGUI implements Graphics, Updatable {
         background = new ImageGraphics(ResourcePath.getSprite(BACKGROUND_RES), width, HEIGHT,
                 roi, Vector.ZERO, 1f, BG_DEPTH
         );
-
-
+        
         slots = new ArrayList<>();
-
     }
-
-    public void updateContent(HashMap<ARPGItem, Integer> items){
+    
+    /**
+     * Update the content of the current inventory GUI with the given items
+     * @param items (Map<ARPGItem, Integer>) An HashMap containing the items needed and their quantities
+     */
+    public void updateContent(Map<ARPGItem, Integer> items){
         boolean exist = false;
 
         for (ARPGItem item : items.keySet()) {
@@ -69,7 +71,10 @@ public class ARPGInventoryGUI implements Graphics, Updatable {
             }
         }
     }
-
+    
+    /**
+     * @return (ARPGItem) The current selected Item.
+     */
     public ARPGItem getSelectedItem() {
         return slots.get(currentItemIndex).getItem();
     }
@@ -105,7 +110,11 @@ public class ARPGInventoryGUI implements Graphics, Updatable {
             slot.draw(canvas, topLeftAnchor.add((slot.getSize() + SPACING) * (i % 4), -(slot.getSize() + SPACING) * (i / 4)));
         }
     }
-
+    
+    /**
+     * Move through the inventory, according to the given Orientation.
+     * @param orientation (Orientation) The given orientation.
+     */
     public void navigate(Orientation orientation) {
         switch (orientation) {
             case RIGHT:

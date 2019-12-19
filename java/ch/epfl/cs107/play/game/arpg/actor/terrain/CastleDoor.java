@@ -45,8 +45,10 @@ public class CastleDoor extends Door {
     public CastleDoor(String destination, DiscreteCoordinates otherSideCoordinates, Area area, Orientation orientation, DiscreteCoordinates position, DiscreteCoordinates ... otherCells) {
         super(destination, otherSideCoordinates, Logic.FALSE, area, orientation, position, otherCells);
     
-        sprite = new RPGSprite(CLOSE_IMAGE_NAME, 2f, 2f, this,
-                new RegionOfInterest(0, 0, 32, 32));
+        sprite = new RPGSprite(
+                CLOSE_IMAGE_NAME, 2f, 2f, this,
+                new RegionOfInterest(0, 0, 32, 32)
+        );
     }
 
     @Override
@@ -91,4 +93,5 @@ public class CastleDoor extends Door {
     public void acceptInteraction(AreaInteractionVisitor v) {
         ((ARPGInteractionVisitor) v).interactWith(this);
     }
+    
 }

@@ -21,20 +21,25 @@ public class Seller extends Character {
 
     private Sprite sprite;
 
-    // MAK:- Shop
-    private ARPGInventoryGUI inventoryGui;
+    // MARK:- Shop
+    
+    private final ARPGInventoryGUI inventoryGui;
     private ARPGPlayer player;
 
-    private static HashMap<ARPGItem, Integer> ITEMS_IN_STOCK = new HashMap<>(){
-        {put(ARPGItem.BOMB, 1);
-         put(ARPGItem.ARROW, 1);
-         put(ARPGItem.BOW, 1);
-         put(ARPGItem.HEAL_POTION, 1);
+    /// The Items that the Seller can sell.
+    // We suppose that he always has everyting in stock,
+    // in any quantity.
+    private static final HashMap<ARPGItem, Integer> ITEMS_IN_STOCK = new HashMap<>() {
+        {
+            put(ARPGItem.BOMB, 1);
+            put(ARPGItem.ARROW, 1);
+            put(ARPGItem.BOW, 1);
+            put(ARPGItem.HEAL_POTION, 1);
         }
     };
 
     /**
-     * Default Character constructor
+     * Default Seller constructor
      *
      * @param area        (Area): Owner area. Not null
      * @param orientation (Orientation): Initial orientation of the entity. Not null
@@ -43,7 +48,11 @@ public class Seller extends Character {
     public Seller(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
 
-        sprite = new RPGSprite("zelda/seller", 1,2, this, new RegionOfInterest(0,0,16,32));
+        sprite = new RPGSprite(
+                "zelda/seller", 1, 2, this,
+                new RegionOfInterest(0, 0, 16, 32)
+        );
+        
         inventoryGui = new ARPGInventoryGUI(getOwnerArea().getCameraScaleFactor(), "Shop");
         inventoryGui.updateContent(ITEMS_IN_STOCK);
     }
@@ -64,6 +73,7 @@ public class Seller extends Character {
      */
     private void handleKeyboardEvents() {
         Keyboard keyboard = getOwnerArea().getKeyboard();
+        
         if (state == State.SPECIAL) {
             navigateInventory(Orientation.LEFT, keyboard.get(Keyboard.LEFT));
             navigateInventory(Orientation.UP, keyboard.get(Keyboard.UP));
@@ -79,7 +89,7 @@ public class Seller extends Character {
 
     public void personalInteraction(ARPGPlayer player) {
         this.player = player;
-        state = state == State.SPECIAL ? State.IDLE : State.SPECIAL;
+        state = (state == State.SPECIAL) ? State.IDLE : State.SPECIAL;
     }
 
     @Override
