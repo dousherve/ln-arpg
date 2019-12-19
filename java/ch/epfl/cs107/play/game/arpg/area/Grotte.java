@@ -35,8 +35,8 @@ public class Grotte extends ARPGArea {
             {}, {}
     };
 
-    // Coordinates for rocks
-    private final DiscreteCoordinates[] rockCoordinates = {
+    // Coordinates of Rocks
+    private static final DiscreteCoordinates[] rockCoordinates = {
             new DiscreteCoordinates(13,5),
             new DiscreteCoordinates(3,3),
             new DiscreteCoordinates(10,7),
@@ -76,7 +76,7 @@ public class Grotte extends ARPGArea {
         super.update(deltaTime);
         timerSpawner = Math.max(timerSpawner - deltaTime, 0);
 
-        if (timerSpawner <= 0){
+        if (timerSpawner <= 0) {
             registerActor(new FlameSkull(this, Orientation.DOWN, SPAWNER_COORDINATES_1));
             registerActor(new FlameSkull(this, Orientation.RIGHT, SPAWNER_COORDINATES_2));
             timerSpawner = MIN_TIME_SPAWN + (MAX_TIME_SPAWN - MIN_TIME_SPAWN) * RandomGenerator.getInstance().nextFloat();

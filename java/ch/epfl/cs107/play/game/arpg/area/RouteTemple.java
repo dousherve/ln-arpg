@@ -32,6 +32,7 @@ public class RouteTemple extends ARPGArea {
         // Doors
         registerDoors(areaKeys, destinationCoords, orientations, positions, otherCells);
 
+        // Alice
         registerActor(new Alice(this, Orientation.DOWN, new DiscreteCoordinates(4, 5)));
     }
 
@@ -39,4 +40,5 @@ public class RouteTemple extends ARPGArea {
     public String getTitle() {
         return "zelda/RouteTemple";
     }
+    
 }

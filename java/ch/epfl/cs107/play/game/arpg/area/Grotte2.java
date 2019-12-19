@@ -30,14 +30,13 @@ public class Grotte2 extends ARPGArea {
         // Doors
         registerDoors(areaKeys, destinationCoords, orientations, positions, otherCells);
 
-        //Chest
+        // Chest
         registerActor(new Chest(this, Orientation.DOWN, new DiscreteCoordinates(8,7)));
-
-
     }
 
     @Override
     public String getTitle() {
         return "GrotteMew";
     }
+    
 }

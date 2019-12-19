@@ -38,14 +38,9 @@ public class Play {
 		// Bigger window size (better for 4K Displays)
 		final Window window = new SwingWindow(game.getTitle(), fileSystem, 1200, 1200);
 		
-		//Recorder recorder = new Recorder(window); 
-		//RecordReplayer replayer = new RecordReplayer(window); // not used in this project
 		try {
 
 			if (game.begin(window, fileSystem)) {
-				//recorder.start();
-				//replayer.start("record1.xml");
-
 				// Use system clock to keep track of time progression
                 long currentTime = System.nanoTime();
 				long lastTime;
@@ -74,11 +69,9 @@ public class Play {
 
                     // Render and update input
                     window.update();
-                    //recorder.update();
-                    //replayer.update();
 				}
 			}
-			//recorder.stop("record1.xml");
+			
 			game.end();
 
 		} finally {

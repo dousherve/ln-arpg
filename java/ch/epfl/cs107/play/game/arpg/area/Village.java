@@ -35,30 +35,28 @@ public class Village extends ARPGArea {
             {}
     };
     
-    
-    @Override
-    public String getTitle() {
-        return "zelda/Village";
-    }
-    
     @Override
     protected void createArea() {
         // Background & Foreground
         registerBackgroundAndForeground();
-
-
+        
         // Doors
         registerDoors(areaKeys, destinationCoords, orientations, positions, otherCells);
 
+        // Cave opening
         registerActor(new CaveOpening(this, Orientation.DOWN, new DiscreteCoordinates(25, 18)));
 
-        //  Characters
-        registerActor(new Guard(this, Orientation.DOWN, new DiscreteCoordinates(15,6)));
-        registerActor(new Character(this, Orientation.DOWN, new DiscreteCoordinates(5,5)));
-        registerActor(new Character(this, Orientation.DOWN, new DiscreteCoordinates(30,15)));
-        registerActor(new Character(this, Orientation.DOWN, new DiscreteCoordinates(24,11)));
+        // Characters
+        registerActor(new Guard(this, Orientation.DOWN, new DiscreteCoordinates(15, 6)));
+        registerActor(new Character(this, Orientation.DOWN, new DiscreteCoordinates(5, 5)));
+        registerActor(new Character(this, Orientation.DOWN, new DiscreteCoordinates(30, 15)));
+        registerActor(new Character(this, Orientation.DOWN, new DiscreteCoordinates(24, 11)));
         registerActor(new Seller(this, Orientation.DOWN, new DiscreteCoordinates(17, 9)));
-
+    }
+    
+    @Override
+    public String getTitle() {
+        return "zelda/Village";
     }
     
 }

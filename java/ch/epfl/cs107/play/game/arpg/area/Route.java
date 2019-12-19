@@ -59,9 +59,13 @@ public class Route extends ARPGArea {
         // Waterfall
         registerActor(new Waterfall(this, new DiscreteCoordinates(15, 3)));
 
+        // Bridge
         registerActor(new Bridge(this, Orientation.DOWN, new DiscreteCoordinates(15, 9)));
 
+        // Alice
         registerActor(new Alice(this, Orientation.LEFT, new DiscreteCoordinates(15,10)));
+        
+        // Two monsters
         registerActor(new LogMonster(this, new DiscreteCoordinates(9,11)));
         registerActor(new LogMonster(this, new DiscreteCoordinates(3,5)));
     }

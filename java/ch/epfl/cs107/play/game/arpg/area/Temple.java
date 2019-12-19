@@ -15,7 +15,7 @@ public class Temple extends ARPGArea {
     private List<LogMonster> monsters = new ArrayList<>();
     private Rock rock;
 
-    private boolean doorOpen;
+    private boolean isDoorOpened;
     
     private final String[] areaKeys = {"zelda/RouteTemple"};
     private final DiscreteCoordinates[] destinationCoords = {
@@ -43,9 +43,9 @@ public class Temple extends ARPGArea {
             }
         }
 
-        if (noMoreMonsters && !doorOpen){
+        if (noMoreMonsters && !isDoorOpened){
             rock.crack();
-            doorOpen = true;
+            isDoorOpened = true;
         }
     }
 
@@ -60,7 +60,9 @@ public class Temple extends ARPGArea {
         // Staff
         registerActor(new Staff(this, Orientation.DOWN, new DiscreteCoordinates(4, 3)));
 
-        doorOpen = false;
+        isDoorOpened = false;
+        
+        // Rock
         rock = new Rock(this, Orientation.DOWN, new DiscreteCoordinates(4, 0));
         registerActor(rock);
 
@@ -73,12 +75,11 @@ public class Temple extends ARPGArea {
         for (Monster monster : monsters) {
             registerActor(monster);
         }
-
     }
 
     @Override
     public String getTitle() {
         return "zelda/Temple";
-
     }
+    
 }

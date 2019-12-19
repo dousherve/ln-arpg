@@ -25,7 +25,7 @@ public class Chateau extends ARPGArea {
         // Background & Foreground
         registerBackgroundAndForeground();
 
-        //King
+        // King
         registerActor(new King(this, Orientation.DOWN, new DiscreteCoordinates(7, 12)));
 
         // Doors
